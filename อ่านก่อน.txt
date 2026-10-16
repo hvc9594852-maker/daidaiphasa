@@ -1,0 +1,28 @@
+ใดๆภาษา.com — วิธีขึ้นเว็บจริง
+
+1) ขึ้นเว็บ + เปิดกล่องรับข้อความ (ฟรี)
+   - สร้างบัญชี GitHub แล้วสร้าง repository ใหม่ อัปโหลดไฟล์ทั้งหมดในโฟลเดอร์นี้ (index.html, netlify.toml, โฟลเดอร์ netlify)
+   - สร้างบัญชี Netlify → Add new site → Import an existing project → เลือก repository นั้น → Deploy
+   - Netlify → Forms → กด Enable form detection แล้ว Deploy ใหม่อีกครั้ง
+   - ข้อความจากกล่องแจ้งปัญหา / ส่งคำศัพท์ / แจ้งความหมายผิด จะไปอยู่ที่ Netlify → Forms (ฟอร์ม reports และ submissions)
+     ตั้งให้ส่งเข้าอีเมลได้ที่ Forms → Form notifications
+
+2) การแปล: ใช้ของฟรีก่อนเสมอ
+   - ชั้นที่ 1 คลังคำในเว็บ (ฟรี ใช้ได้ทุกเครื่อง)
+   - ชั้นที่ 2 ตัวแปลในเบราว์เซอร์ Chrome/Edge บนคอมพิวเตอร์ (ฟรี แปลในเครื่องผู้ใช้ ไม่ต้องตั้งค่าอะไร)
+   - ชั้นที่ 3 บริการแปลฟรีของ Microsoft (Azure Translator แพ็กเกจ F0) ใช้ได้ทุกเบราว์เซอร์ รวม Safari, Firefox และมือถือ
+       วิธีเปิด: สมัคร Azure → สร้าง Translator เลือก Pricing tier = Free F0
+       → คัดลอก KEY 1 และ Location/Region
+       → Netlify → Environment variables เพิ่ม AZURE_TRANSLATOR_KEY และ AZURE_TRANSLATOR_REGION แล้ว Deploy ใหม่
+       (รองรับไทย→อังกฤษสำหรับเครื่องมือภาษามือ ยังไม่รองรับเอสเปรันโต)
+   - ชั้นที่ 4 Claude (เสียเงินเล็กน้อย) ใช้เฉพาะเมื่อสามชั้นแรกแปลไม่ได้ และเฉพาะเมื่อคุณใส่ API key
+
+   เปิดชั้นที่ 3 (ไม่บังคับ):
+   - สมัคร Claude Console (console.anthropic.com) สร้าง API key และตั้งวงเงินใช้จ่ายรายเดือน
+   - Netlify → Site configuration → Environment variables → เพิ่ม ANTHROPIC_API_KEY = (key ที่ได้)
+   - Deploy ใหม่ ปุ่ม Claude จะขึ้นเองเมื่อระบบเห็น key
+   - key อยู่ฝั่งเซิร์ฟเวอร์เท่านั้น คนเปิดเว็บมองไม่เห็น และใช้ได้เฉพาะงานแปล/ถอดเสียง 5 แบบที่กำหนด
+
+3) ใช้ชื่อโดเมน ใดๆภาษา.com
+   - ซื้อโดเมนจากผู้ให้บริการ (รหัสโดเมนคือ xn--l3cy1a9ab1hwa.com)
+   - Netlify → Domain management → Add a domain แล้วทำตามขั้นตอน
