@@ -360,8 +360,9 @@ h2{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(38px,5vw,
 .sign-ch.th .hs svg{width:62px;height:78px}
 .sign-ch.th .hs i{font-style:normal;font-family:var(--term);font-size:18px;color:var(--signal);align-self:center}
 .sign-ch.th figcaption b{font-family:var(--display);font-size:22px}
-.sign-mark{margin:0;min-width:64px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:118px;gap:4px;text-align:center}
+.sign-mark{margin:0;min-width:64px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:132px;gap:4px;text-align:center}
 .sign-mark span{font-family:var(--display);font-weight:700;font-size:34px;line-height:1;border:1.5px dashed var(--rule);border-radius:10px;padding:10px 12px;min-width:52px}
+.sign-mark b{font-family:var(--body);font-weight:600;font-size:12.5px;color:var(--ink)}
 .sign-mark small{font-family:var(--body);font-weight:500;font-size:11.5px;color:var(--sub);max-width:80px;line-height:1.2}
 .cv-mark .hand-svg{height:.9em;width:auto}
 .sign-ch figcaption{display:flex;flex-direction:column;gap:2px;line-height:1.2}
@@ -1687,6 +1688,7 @@ footer a{color:#F4F4F0}
     'ส':'s','ศ':'s n1','ษ':'s n2','ซ':'s p','พ':'p','ป':'p n1','ผ':'p n2','ภ':'p n3','ห':'h','ฮ':'h n1',
     'บ':'b','ร':'r','ว':'w','ด':'d','ฎ':'d n1','ฟ':'f','ฝ':'f n1','ล':'l','ฬ':'l n1','จ':'j',
     'ย':'y','ญ':'y n1','ม':'m','น':'n','ณ':'n n1','ง':'n g','ท':'t h','ธ':'t h n1','ฉ':'c h','ช':'c h n1','ฌ':'c h n2','อ':'o'};
+  var TH_MARKN={'\u0E30':'สระอะ','\u0E31':'ไม้หันอากาศ','\u0E32':'สระอา','\u0E33':'สระอำ','\u0E34':'สระอิ','\u0E35':'สระอี','\u0E36':'สระอึ','\u0E37':'สระอือ','\u0E38':'สระอุ','\u0E39':'สระอู','\u0E40':'สระเอ','\u0E41':'สระแอ','\u0E42':'สระโอ','\u0E43':'ไม้ม้วน','\u0E44':'ไม้มลาย','\u0E45':'ลากข้าง','\u0E46':'ไม้ยมก','\u0E47':'ไม้ไต่คู้','\u0E48':'ไม้เอก','\u0E49':'ไม้โท','\u0E4A':'ไม้ตรี','\u0E4B':'ไม้จัตวา','\u0E4C':'การันต์','\u0E24':'ฤ','\u0E2F':'ไปยาลน้อย'};
   function fsLabel(k){ return k.charAt(0)==='n' && k.length===2 ? k.charAt(1) : k.toUpperCase(); }
   function paintThaiSign(t){
     var row=document.createElement('div'); row.className='sign-row';
@@ -1703,9 +1705,9 @@ footer a{color:#F4F4F0}
       } else if(/[\u0E00-\u0E7F]/.test(ch)){
         var isMark=/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/.test(ch), isTone=/[\u0E48-\u0E4B]/.test(ch);
         var m=document.createElement('figure'); m.className='sign-mark';
-        var sp=document.createElement('span'); sp.textContent=isMark?'◌'+ch:ch;
+        var sp=document.createElement('span'); sp.textContent=isMark?'\u0E2D'+ch:ch;
         var sm2=document.createElement('small'); sm2.textContent=isTone?'วรรณยุกต์ · ชี้บนมืออีกข้าง':/[\u0E03\u0E05\u0E24\u0E26]/.test(ch)?'ไม่มีในตาราง':/[\u0E46\u0E2F\u0E4C\u0E47]/.test(ch)?'เครื่องหมาย':/[\u0E50-\u0E59]/.test(ch)?'ตัวเลขไทย':'สระ · ชี้บนมืออีกข้าง';
-        m.appendChild(sp); m.appendChild(sm2); row.appendChild(m); marks++;
+        var nm=TH_MARKN[ch]; if(nm){ var nb=document.createElement('b'); nb.textContent=nm; m.appendChild(sp); m.appendChild(nb); } else m.appendChild(sp); m.appendChild(sm2); row.appendChild(m); marks++;
       } else if(/[a-z]/i.test(ch) && window.HAND){
         var g=document.createElement('figure'); g.className='sign-ch'; g.appendChild(HAND.draw(ch.toLowerCase())); var gc=document.createElement('figcaption'); var gb=document.createElement('b'); gb.textContent=ch.toUpperCase(); gc.appendChild(gb); g.appendChild(gc); row.appendChild(g); n++;
       } else if(/\s/.test(ch)){ var gp=document.createElement('span'); gp.className='sign-gap'; row.appendChild(gp); }
