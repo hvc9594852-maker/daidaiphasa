@@ -360,6 +360,9 @@ h2{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(38px,5vw,
 .sign-ch.th .hs svg{width:62px;height:78px}
 .sign-ch.th .hs i{font-style:normal;font-family:var(--term);font-size:18px;color:var(--signal);align-self:center}
 .sign-ch.th figcaption b{font-family:var(--display);font-size:22px}
+.sign-ch.th.vw{width:104px}
+.sign-ch.th.vw .hs svg{width:84px;height:104px}
+.sign-ch.th.vw small{display:block;max-width:104px}
 .sign-mark{margin:0;min-width:64px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:132px;gap:4px;text-align:center}
 .sign-mark span{font-family:var(--display);font-weight:700;font-size:34px;line-height:1;border:1.5px dashed var(--rule);border-radius:10px;padding:10px 12px;min-width:52px}
 .sign-mark b{font-family:var(--body);font-weight:600;font-size:12.5px;color:var(--ink)}
@@ -1689,6 +1692,16 @@ footer a{color:#F4F4F0}
     'บ':'b','ร':'r','ว':'w','ด':'d','ฎ':'d n1','ฟ':'f','ฝ':'f n1','ล':'l','ฬ':'l n1','จ':'j',
     'ย':'y','ญ':'y n1','ม':'m','น':'n','ณ':'n n1','ง':'n g','ท':'t h','ธ':'t h n1','ฉ':'c h','ช':'c h n1','ฌ':'c h n2','อ':'o'};
   var TH_MARKN={'\u0E30':'สระอะ','\u0E31':'ไม้หันอากาศ','\u0E32':'สระอา','\u0E33':'สระอำ','\u0E34':'สระอิ','\u0E35':'สระอี','\u0E36':'สระอึ','\u0E37':'สระอือ','\u0E38':'สระอุ','\u0E39':'สระอู','\u0E40':'สระเอ','\u0E41':'สระแอ','\u0E42':'สระโอ','\u0E43':'ไม้ม้วน','\u0E44':'ไม้มลาย','\u0E45':'ลากข้าง','\u0E46':'ไม้ยมก','\u0E47':'ไม้ไต่คู้','\u0E48':'ไม้เอก','\u0E49':'ไม้โท','\u0E4A':'ไม้ตรี','\u0E4B':'ไม้จัตวา','\u0E4C':'การันต์','\u0E24':'ฤ','\u0E2F':'ไปยาลน้อย'};
+  // vowels and tone marks: the right index finger touches a spot on the other hand (open palm facing the viewer)
+  var THV={'\u0E30':[27,37,'แตะปลายนิ้วชี้'],'\u0E32':[35,60,'แตะโคนนิ้วชี้'],'\u0E38':[43,33,'แตะปลายนิ้วกลาง'],'\u0E39':[46,60,'แตะโคนนิ้วกลาง'],
+    '\u0E40':[59,36,'แตะปลายนิ้วนาง'],'\u0E41':[57,60,'แตะโคนนิ้วนาง'],'\u0E24':[66,62,'แตะโคนนิ้วก้อย'],'\u0E33':[11,69,'แตะปลายนิ้วโป้ง'],
+    '\u0E48':[26,25,'ชี้เหนือนิ้วชี้'],'\u0E49':[42,20,'ชี้เหนือนิ้วกลาง'],'\u0E4A':[61,23,'ชี้เหนือนิ้วนาง'],'\u0E4B':[75,32,'ชี้เหนือนิ้วก้อย']};
+  function drawSpot(xy){
+    var sv=HAND.draw('n5'); if(!sv) return null; var NS='http://www.w3.org/2000/svg';
+    var r=document.createElementNS(NS,'circle'); r.setAttribute('cx',xy[0]); r.setAttribute('cy',xy[1]); r.setAttribute('r','9'); r.setAttribute('style','fill:none;stroke:var(--signal);stroke-width:2.5;opacity:.55'); sv.appendChild(r);
+    var c=document.createElementNS(NS,'circle'); c.setAttribute('cx',xy[0]); c.setAttribute('cy',xy[1]); c.setAttribute('r','4.6'); c.setAttribute('style','fill:var(--signal);stroke:var(--ink);stroke-width:1.2'); sv.appendChild(c);
+    return sv;
+  }
   function fsLabel(k){ return k.charAt(0)==='n' && k.length===2 ? k.charAt(1) : k.toUpperCase(); }
   function paintThaiSign(t){
     var row=document.createElement('div'); row.className='sign-row';
@@ -1702,11 +1715,16 @@ footer a{color:#F4F4F0}
         f.appendChild(hs);
         var c=document.createElement('figcaption'); var bb=document.createElement('b'); bb.textContent=ch; var sm=document.createElement('small'); sm.textContent=keys.map(fsLabel).join(' + ');
         c.appendChild(bb); c.appendChild(sm); f.appendChild(c); row.appendChild(f); n++;
+      } else if(THV[ch] && window.HAND){
+        var v=THV[ch], fv=document.createElement('figure'); fv.className='sign-ch th vw';
+        var hv=document.createElement('div'); hv.className='hs'; var svv=drawSpot(v); if(svv) hv.appendChild(svv); fv.appendChild(hv);
+        var cv=document.createElement('figcaption'); var bv=document.createElement('b'); bv.textContent=/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/.test(ch)?'\u0E2D'+ch:ch; var sv2=document.createElement('small'); sv2.textContent=(TH_MARKN[ch]||'')+' · '+v[2];
+        cv.appendChild(bv); cv.appendChild(sv2); fv.appendChild(cv); row.appendChild(fv); n++;
       } else if(/[\u0E00-\u0E7F]/.test(ch)){
         var isMark=/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/.test(ch), isTone=/[\u0E48-\u0E4B]/.test(ch);
         var m=document.createElement('figure'); m.className='sign-mark';
         var sp=document.createElement('span'); sp.textContent=isMark?'\u0E2D'+ch:ch;
-        var sm2=document.createElement('small'); sm2.textContent=isTone?'วรรณยุกต์ · ชี้บนมืออีกข้าง':/[\u0E03\u0E05\u0E24\u0E26]/.test(ch)?'ไม่มีในตาราง':/[\u0E46\u0E2F\u0E4C\u0E47]/.test(ch)?'เครื่องหมาย':/[\u0E50-\u0E59]/.test(ch)?'ตัวเลขไทย':'สระ · ชี้บนมืออีกข้าง';
+        var sm2=document.createElement('small'); sm2.textContent=/[\u0E03\u0E05\u0E26]/.test(ch)?'ไม่มีในตาราง':/[\u0E50-\u0E59]/.test(ch)?'ตัวเลขไทย':'ท่าเฉพาะ · ดูแผนภาพต้นฉบับ';
         var nm=TH_MARKN[ch]; if(nm){ var nb=document.createElement('b'); nb.textContent=nm; m.appendChild(sp); m.appendChild(nb); } else m.appendChild(sp); m.appendChild(sm2); row.appendChild(m); marks++;
       } else if(/[a-z]/i.test(ch) && window.HAND){
         var g=document.createElement('figure'); g.className='sign-ch'; g.appendChild(HAND.draw(ch.toLowerCase())); var gc=document.createElement('figcaption'); var gb=document.createElement('b'); gb.textContent=ch.toUpperCase(); gc.appendChild(gb); g.appendChild(gc); row.appendChild(g); n++;
@@ -1716,7 +1734,7 @@ footer a{color:#F4F4F0}
     if(!n && !marks){ out.className='note'; out.textContent='พิมพ์คำภาษาไทย เช่น ชื่อของคุณ เพื่อดูตัวสะกดนิ้วมือไทย'; return; }
     out.appendChild(row);
     var ex=document.createElement('p'); ex.className='sign-note';
-    ex.innerHTML='<b>ตัวสะกดนิ้วมือไทย</b> ใช้สะกดชื่อคน ชื่อสถานที่ หรือคำที่ยังไม่มีท่ามือ พยัญชนะแต่ละตัวใช้ท่ามือ ASL ของเสียงที่ตรงกัน แล้วเพิ่มท่าตัวเลขเพื่อแยกตัวที่เสียงเหมือนกัน เช่น ส = S, ศ = S + 1, ษ = S + 2 ส่วน<b>สระและวรรณยุกต์</b>ทำโดยใช้นิ้วชี้ไปที่ตำแหน่งต่างๆ บนมืออีกข้าง เครื่องมือนี้แสดงเป็นสัญลักษณ์ไว้ให้ก่อน<br>ที่มา: แบบสะกดนิ้วมือไทยของสมาคมคนหูหนวกแห่งประเทศไทย ประดิษฐ์โดยคุณหญิงกมลา ไกรฤกษ์ และงานของ รศ. ดร. อภิลักษณ์ ธรรมทวีธิกุล (มหาวิทยาลัยเกษตรศาสตร์) · พิมพ์ภาษาอังกฤษเพื่อดูตัวสะกดนิ้วแบบ ASL';
+    ex.innerHTML='<b>ตัวสะกดนิ้วมือไทย</b> ใช้สะกดชื่อคน ชื่อสถานที่ หรือคำที่ยังไม่มีท่ามือ พยัญชนะแต่ละตัวใช้ท่ามือ ASL ของเสียงที่ตรงกัน แล้วเพิ่มท่าตัวเลขเพื่อแยกตัวที่เสียงเหมือนกัน เช่น ส = S, ศ = S + 1, ษ = S + 2 ส่วน<b>สระและวรรณยุกต์</b>ส่วนใหญ่ใช้นิ้วชี้ไปแตะตำแหน่งบนมืออีกข้างที่กางออก (จุดสีส้มในภาพ) เช่น ะ ปลายนิ้วชี้ า โคนนิ้วชี้ ไม้เอกเหนือนิ้วชี้ ส่วนสระอิ อี อึ อื โอ ใอ ไอ และเครื่องหมายบางตัวมีท่ามือเฉพาะ ยังแสดงเป็นสัญลักษณ์ไว้ ดู<a href="https://www.gotoknow.org/posts/604277" target="_blank" rel="noopener">แผนภาพต้นฉบับ</a>ประกอบ<br><b>หมายเหตุ</b> การสะกดนิ้วใช้กับชื่อเฉพาะหรือคำที่ไม่มีท่ามือ คำทั่วไปเช่น "สวัสดี" คนหูหนวกไทยใช้ท่ามือของคำนั้นโดยตรง ไม่ได้สะกดทีละตัว<br>ที่มา: แบบสะกดนิ้วมือไทยของสมาคมคนหูหนวกแห่งประเทศไทย ประดิษฐ์โดยคุณหญิงกมลา ไกรฤกษ์ และงานของ รศ. ดร. อภิลักษณ์ ธรรมทวีธิกุล (มหาวิทยาลัยเกษตรศาสตร์) · พิมพ์ภาษาอังกฤษเพื่อดูตัวสะกดนิ้วแบบ ASL';
     out.appendChild(ex);
     var lg=document.createElement('p'); lg.className='sign-legend'; lg.innerHTML='<i></i>สีส้มอ่อน = นิ้วโป้ง · ภาพมองจากฝั่งคนดู มือขวา หันฝ่ามือออก · ท่าที่มีเครื่องหมาย + ทำต่อกันตามลำดับ';
     out.appendChild(lg);
