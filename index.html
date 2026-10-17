@@ -116,6 +116,10 @@ h1 .dot{color:var(--signal)}
 .group-pick{display:flex;flex-wrap:wrap;gap:6px}
 .chip{border:1px solid var(--ink);background:var(--paper);padding:6px 10px;font-size:13px;cursor:pointer;min-height:36px}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.tr-pick{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tr-pick select{font-family:var(--body);font-size:14px;border:1px solid var(--ink);background:var(--paper);color:var(--ink);min-height:36px;padding:4px 8px;border-radius:0}
+.tr-pick span{color:var(--sub)}
+output.tr{font-family:var(--body);font-weight:600;font-size:26px}
 textarea{flex:1;width:100%;min-height:210px;resize:vertical;border:none;padding:20px;font-family:var(--display);font-weight:600;font-size:30px;line-height:1.45;color:var(--ink);background:var(--paper)}
 textarea:focus{outline:none;background:var(--wash)}
 .pane-foot{display:flex;justify-content:space-between;align-items:center;padding:0 20px;border-top:1px solid var(--rule);color:var(--sub)}
@@ -351,6 +355,14 @@ h2{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(38px,5vw,
 .sign-row{display:flex;flex-wrap:wrap;gap:12px 4px;align-items:flex-start}
 .sign-ch{margin:0;width:92px;text-align:center}
 .sign-ch svg{width:82px;height:100px}
+.sign-ch.th{width:auto;min-width:92px}
+.sign-ch.th .hs{display:flex;justify-content:center;align-items:flex-end;gap:0}
+.sign-ch.th .hs svg{width:62px;height:78px}
+.sign-ch.th .hs i{font-style:normal;font-family:var(--term);font-size:18px;color:var(--signal);align-self:center}
+.sign-ch.th figcaption b{font-family:var(--display);font-size:22px}
+.sign-mark{margin:0;min-width:64px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:118px;gap:4px;text-align:center}
+.sign-mark span{font-family:var(--display);font-weight:700;font-size:34px;line-height:1;border:1.5px dashed var(--rule);border-radius:10px;padding:10px 12px;min-width:52px}
+.sign-mark small{font-family:var(--body);font-weight:500;font-size:11.5px;color:var(--sub);max-width:80px;line-height:1.2}
 .cv-mark .hand-svg{height:.9em;width:auto}
 .sign-ch figcaption{display:flex;flex-direction:column;gap:2px;line-height:1.2}
 .sign-ch figcaption b{font-family:var(--term);font-weight:700;font-size:16px;color:var(--ink)}
@@ -513,6 +525,7 @@ footer a{color:#F4F4F0}
   <ul class="hero-index" aria-label="ทางลัดเครื่องมือ">
     <li><button data-go="fix"><span>ลืมสลับแป้น</span><span class="mono">l;ylfu → สวัสดี</span></button></li>
     <li><button data-go="romanize"><span>ถอดเสียง ไทย ⇄ อังกฤษ</span><span class="mono">computer → คอมพิวเตอร์</span></button></li>
+    <li><button data-go="tr"><span>แปลภาษา (ใหม่)</span><span class="mono">ไทย ⇄ 20 ภาษา</span></button></li>
     <li><button type="button" data-open="SGN"><span>ภาษามือ (ใหม่)</span><span class="mono"><i class="mini-hand" data-hand="flat"></i>10 บท</span></button></li>
     <li><button type="button" data-open="EPO"><span>เอสเปรันโต (ใหม่)</span><span class="mono">Saluton!</span></button></li>
     <li><button data-go="slang"><span>ภาษาเฉพาะกลุ่ม</span><span class="mono">มงลง → ชนะแน่</span></button></li>
@@ -540,6 +553,7 @@ footer a{color:#F4F4F0}
       <div class="pane-head">
         <span class="lbl">ผลลัพธ์<b id="dstLabel"></b></span>
         <div class="group-pick" id="groupPick" hidden></div>
+        <div class="tr-pick" id="trPick" hidden><select id="trFrom" aria-label="แปลจากภาษา"></select><span aria-hidden="true">→</span><select id="trTo" aria-label="แปลเป็นภาษา"></select></div>
         <span class="mono" id="hint" style="color:var(--sub);text-align:right"></span>
       </div>
       <output id="out" aria-live="polite" for="src"></output>
@@ -993,7 +1007,9 @@ footer a{color:#F4F4F0}
     w:{f:'uuuc',t:'across',ang:[-15,0,14]}, x:{f:'hccc',t:'front'},
     y:{f:'cccu',t:'out',ang:[0,0,0,26]}, z:{f:'uccc',t:'across',motion:'z'},
     hello:{f:'uuuu',t:'out',ang:[-10,-2,6,15],rot:-12,wave:1},
-    flat:{f:'uuuu',t:'across',rot:-8}
+    flat:{f:'uuuu',t:'across',rot:-8},
+    n1:{f:'uccc',t:'front'}, n2:{f:'uucc',t:'front',ang:[-12,11]}, n3:{f:'uucc',t:'out',ang:[-12,11]},
+    n4:{f:'uuuu',t:'tuck',ang:[-12,-4,5,14]}, n5:{f:'uuuu',t:'out',ang:[-12,-4,5,14]}
   };
   function el(n,a){ var e=document.createElementNS(NS,n); for(var k in a) e.setAttribute(k,a[k]); return e; }
   function tube(g,d,w,ink,fill){
@@ -1059,7 +1075,7 @@ footer a{color:#F4F4F0}
     if(s.wave){ ['M84,30 Q92,40 86,52','M92,22 Q103,40 94,58'].forEach(function(d){ svg.appendChild(el('path',{d:d,fill:'none',style:'stroke:'+acc,'stroke-width':'2.4','stroke-linecap':'round'})); }); }
     return svg;
   }
-  var HINT={a:'กำมือ โป้งแนบข้าง',b:'สี่นิ้วชิด โป้งพับ',c:'งอมือเป็นรูป C',d:'ชูนิ้วชี้ ที่เหลือแตะโป้ง',e:'งอทุกนิ้ว โป้งพับใต้',f:'ชี้แตะโป้งเป็นวง',g:'ชี้กับโป้งชี้ไปข้าง',h:'ชี้กับกลางชี้ไปข้าง',i:'ชูนิ้วก้อย',j:'ก้อยวาดตัว J',k:'ชี้+กลาง โป้งตรงกลาง',l:'ชี้กับโป้งเป็นรูป L',m:'โป้งซ่อนใต้สามนิ้ว',n:'โป้งซ่อนใต้สองนิ้ว',o:'ทุกนิ้วแตะโป้งเป็นวง',p:'ท่า K ชี้ลง',q:'ท่า G ชี้ลง',r:'ชี้กับกลางไขว้กัน',s:'กำมือ โป้งทับด้านหน้า',t:'โป้งแทรกระหว่างชี้กับกลาง',u:'ชี้กับกลางชิดกัน',v:'ชี้กับกลางแยกเป็นรูป V',w:'สามนิ้วแยกกัน',x:'งอนิ้วชี้เป็นตะขอ',y:'กางโป้งกับก้อย',z:'นิ้วชี้วาดตัว Z'};
+  var HINT={a:'กำมือ โป้งแนบข้าง',b:'สี่นิ้วชิด โป้งพับ',c:'งอมือเป็นรูป C',d:'ชูนิ้วชี้ ที่เหลือแตะโป้ง',e:'งอทุกนิ้ว โป้งพับใต้',f:'ชี้แตะโป้งเป็นวง',g:'ชี้กับโป้งชี้ไปข้าง',h:'ชี้กับกลางชี้ไปข้าง',i:'ชูนิ้วก้อย',j:'ก้อยวาดตัว J',k:'ชี้+กลาง โป้งตรงกลาง',l:'ชี้กับโป้งเป็นรูป L',m:'โป้งซ่อนใต้สามนิ้ว',n:'โป้งซ่อนใต้สองนิ้ว',o:'ทุกนิ้วแตะโป้งเป็นวง',p:'ท่า K ชี้ลง',q:'ท่า G ชี้ลง',r:'ชี้กับกลางไขว้กัน',s:'กำมือ โป้งทับด้านหน้า',t:'โป้งแทรกระหว่างชี้กับกลาง',u:'ชี้กับกลางชิดกัน',v:'ชี้กับกลางแยกเป็นรูป V',w:'สามนิ้วแยกกัน',x:'งอนิ้วชี้เป็นตะขอ',y:'กางโป้งกับก้อย',z:'นิ้วชี้วาดตัว Z',n1:'เลข 1 ชูนิ้วชี้',n2:'เลข 2 ชูชี้กับกลาง',n3:'เลข 3 โป้ง ชี้ กลาง',n4:'เลข 4 สี่นิ้ว โป้งพับ',n5:'เลข 5 กางทุกนิ้ว'};
   window.HAND={draw:draw, hint:HINT, letters:'abcdefghijklmnopqrstuvwxyz'.split('')};
 })();
 </script>
@@ -1478,6 +1494,7 @@ footer a{color:#F4F4F0}
   var MODES = [
     {id:'fix', label:'ลืมสลับแป้น', sample:'l;ylfu8iy['},
     {id:'romanize', label:'ถอดเสียง', sample:'computer internet happy birthday'},
+    {id:'tr', label:'แปลภาษา', sample:'วันนี้อากาศดีมาก ไปเที่ยวทะเลกันไหม'},
     {id:'slang', label:'ภาษาเฉพาะกลุ่ม', sample:'งานนี้มงลง ต๊าช มาก'},
     {id:'lu', label:'ภาษาลู', sample:'หนูไม่รู้ ลองรัก'},
     {id:'braille', label:'อักษรเบรลล์', sample:'hello world'},
@@ -1618,6 +1635,90 @@ footer a{color:#F4F4F0}
       });
     }).catch(function(){ if(te.unk.length && store.ai) $('aiBtn').click(); });
   }
+  // ---------- general translation: Claude on claude.ai; browser translator, then free Azure tier on the real site ----------
+  var TRL=[['auto','ตรวจหาภาษาเอง'],['th','ไทย'],['en','อังกฤษ'],['zh-Hans','จีน'],['ja','ญี่ปุ่น'],['ko','เกาหลี'],['fr','ฝรั่งเศส'],['de','เยอรมัน'],['es','สเปน'],['it','อิตาลี'],['pt','โปรตุเกส'],['ru','รัสเซีย'],['vi','เวียดนาม'],['id','อินโดนีเซีย'],['ms','มลายู'],['lo','ลาว'],['km','เขมร'],['my','พม่า'],['ar','อาหรับ'],['hi','ฮินดี'],['nl','ดัตช์'],['tr','ตุรกี']];
+  var TRN={}; TRL.forEach(function(x){ TRN[x[0]]=x[1]; });
+  var TREN={th:'Thai',en:'English','zh-Hans':'Simplified Chinese',ja:'Japanese',ko:'Korean',fr:'French',de:'German',es:'Spanish',it:'Italian',pt:'Portuguese',ru:'Russian',vi:'Vietnamese',id:'Indonesian',ms:'Malay',lo:'Lao',km:'Khmer',my:'Burmese',ar:'Arabic',hi:'Hindi',nl:'Dutch',tr:'Turkish'};
+  function trDetect(t){
+    if(/[\u0E00-\u0E7F]/.test(t)) return 'th'; if(/[\u3040-\u30FF]/.test(t)) return 'ja'; if(/[\uAC00-\uD7AF]/.test(t)) return 'ko';
+    if(/[\u4E00-\u9FFF]/.test(t)) return 'zh-Hans'; if(/[\u0400-\u04FF]/.test(t)) return 'ru'; if(/[\u0600-\u06FF]/.test(t)) return 'ar';
+    if(/[\u0E80-\u0EFF]/.test(t)) return 'lo'; if(/[\u1780-\u17FF]/.test(t)) return 'km'; if(/[\u1000-\u109F]/.test(t)) return 'my'; if(/[\u0900-\u097F]/.test(t)) return 'hi';
+    return 'en';
+  }
+  function trPair(t){
+    var from=$('trFrom').value||'auto', to=$('trTo').value||'th';
+    var src0 = from==='auto' ? trDetect(t) : from;
+    if(src0===to) to = to==='th' ? 'en' : 'th';   // typing Thai with target Thai: flip to English
+    return {from:from, src:src0, to:to};
+  }
+  var BTR={};
+  function browserTr(from,to){
+    if(!('Translator' in self)) return Promise.resolve(null);
+    var a=from==='zh-Hans'?'zh':from, b=to==='zh-Hans'?'zh':to, k=a+'>'+b;
+    if(BTR[k]!==undefined) return Promise.resolve(BTR[k]);
+    var p=Translator.availability({sourceLanguage:a,targetLanguage:b}).then(function(av){
+      if(av==='unavailable') return null;
+      return Translator.create({sourceLanguage:a,targetLanguage:b});
+    }).catch(function(){ return null; });
+    return Promise.race([p,new Promise(function(r){ setTimeout(function(){ r(undefined); },3000); })]).then(function(tr){ if(tr!==undefined) BTR[k]=tr; return tr||null; });
+  }
+  function trGo(t){
+    if(st.mode!=='tr' || src.value!==t) return;
+    var tp=trPair(t), key=tp.from+'|'+tp.to+'|'+t;
+    function done(v,by){ if(st.mode!=='tr' || src.value!==t) return; st.trCache={k:key,v:String(v||'').trim(),by:by}; render(); }
+    function fail(){ if(st.mode!=='tr' || src.value!==t) return; out.className='note'; out.textContent='แปลไม่ได้ตอนนี้ ลองใหม่อีกครั้ง หรือเปิดด้วย Chrome บนคอมพิวเตอร์'; }
+    if(store.ai){
+      var pr='Translate the following text'+(tp.from==='auto'?'':' from '+TREN[tp.src])+' into '+TREN[tp.to]+'. Keep the meaning and tone natural. Reply with only the translation, nothing else.\n\n'+t;
+      store.ai(pr,{modelTier:'quick'}).then(function(r){ var v=r&&r.text; if(!v) throw 0; done(v,'แปลโดย Claude'); }).catch(fail);
+      return;
+    }
+    browserTr(tp.src,tp.to).then(function(tr){
+      if(tr) return tr.translate(t).then(function(v){ done(v,'แปลในเบราว์เซอร์ของคุณ'); });
+      return ftReady().then(function(ok){
+        if(!ok) return fail();
+        return fetch('/.netlify/functions/translate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t,from:tp.from==='auto'?'':tp.src,to:tp.to})})
+          .then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){ done(j.text,'บริการแปลฟรี'); });
+      });
+    }).catch(fail);
+  }
+  // ---------- Thai fingerspelling (Thai Association of the Deaf, devised by Khunying Kamala Krairiksh) ----------
+  // base = ASL handshape for the matching sound, + number handshapes to tell same-sound letters apart
+  var THFS={'ก':'k','ข':'k n1','ค':'k n2','ฆ':'k n3','ต':'t','ถ':'t n1','ฐ':'t n2','ฒ':'t n3','ฑ':'t n4','ฏ':'t n5',
+    'ส':'s','ศ':'s n1','ษ':'s n2','ซ':'s p','พ':'p','ป':'p n1','ผ':'p n2','ภ':'p n3','ห':'h','ฮ':'h n1',
+    'บ':'b','ร':'r','ว':'w','ด':'d','ฎ':'d n1','ฟ':'f','ฝ':'f n1','ล':'l','ฬ':'l n1','จ':'j',
+    'ย':'y','ญ':'y n1','ม':'m','น':'n','ณ':'n n1','ง':'n g','ท':'t h','ธ':'t h n1','ฉ':'c h','ช':'c h n1','ฌ':'c h n2','อ':'o'};
+  function fsLabel(k){ return k.charAt(0)==='n' && k.length===2 ? k.charAt(1) : k.toUpperCase(); }
+  function paintThaiSign(t){
+    var row=document.createElement('div'); row.className='sign-row';
+    var chars=Array.from(t).slice(0,60), n=0, marks=0;
+    chars.forEach(function(ch){
+      var spec=THFS[ch];
+      if(spec && window.HAND){
+        var keys=spec.split(' '), f=document.createElement('figure'); f.className='sign-ch th';
+        var hs=document.createElement('div'); hs.className='hs';
+        keys.forEach(function(k,i){ if(i){ var pl=document.createElement('i'); pl.textContent='+'; hs.appendChild(pl); } var sv=HAND.draw(k); if(sv) hs.appendChild(sv); });
+        f.appendChild(hs);
+        var c=document.createElement('figcaption'); var bb=document.createElement('b'); bb.textContent=ch; var sm=document.createElement('small'); sm.textContent=keys.map(fsLabel).join(' + ');
+        c.appendChild(bb); c.appendChild(sm); f.appendChild(c); row.appendChild(f); n++;
+      } else if(/[\u0E00-\u0E7F]/.test(ch)){
+        var isMark=/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/.test(ch), isTone=/[\u0E48-\u0E4B]/.test(ch);
+        var m=document.createElement('figure'); m.className='sign-mark';
+        var sp=document.createElement('span'); sp.textContent=isMark?'◌'+ch:ch;
+        var sm2=document.createElement('small'); sm2.textContent=isTone?'วรรณยุกต์ · ชี้บนมืออีกข้าง':/[\u0E03\u0E05\u0E24\u0E26]/.test(ch)?'ไม่มีในตาราง':/[\u0E46\u0E2F\u0E4C\u0E47]/.test(ch)?'เครื่องหมาย':/[\u0E50-\u0E59]/.test(ch)?'ตัวเลขไทย':'สระ · ชี้บนมืออีกข้าง';
+        m.appendChild(sp); m.appendChild(sm2); row.appendChild(m); marks++;
+      } else if(/[a-z]/i.test(ch) && window.HAND){
+        var g=document.createElement('figure'); g.className='sign-ch'; g.appendChild(HAND.draw(ch.toLowerCase())); var gc=document.createElement('figcaption'); var gb=document.createElement('b'); gb.textContent=ch.toUpperCase(); gc.appendChild(gb); g.appendChild(gc); row.appendChild(g); n++;
+      } else if(/\s/.test(ch)){ var gp=document.createElement('span'); gp.className='sign-gap'; row.appendChild(gp); }
+    });
+    out.textContent='';
+    if(!n && !marks){ out.className='note'; out.textContent='พิมพ์คำภาษาไทย เช่น ชื่อของคุณ เพื่อดูตัวสะกดนิ้วมือไทย'; return; }
+    out.appendChild(row);
+    var ex=document.createElement('p'); ex.className='sign-note';
+    ex.innerHTML='<b>ตัวสะกดนิ้วมือไทย</b> ใช้สะกดชื่อคน ชื่อสถานที่ หรือคำที่ยังไม่มีท่ามือ พยัญชนะแต่ละตัวใช้ท่ามือ ASL ของเสียงที่ตรงกัน แล้วเพิ่มท่าตัวเลขเพื่อแยกตัวที่เสียงเหมือนกัน เช่น ส = S, ศ = S + 1, ษ = S + 2 ส่วน<b>สระและวรรณยุกต์</b>ทำโดยใช้นิ้วชี้ไปที่ตำแหน่งต่างๆ บนมืออีกข้าง เครื่องมือนี้แสดงเป็นสัญลักษณ์ไว้ให้ก่อน<br>ที่มา: แบบสะกดนิ้วมือไทยของสมาคมคนหูหนวกแห่งประเทศไทย ประดิษฐ์โดยคุณหญิงกมลา ไกรฤกษ์ และงานของ รศ. ดร. อภิลักษณ์ ธรรมทวีธิกุล (มหาวิทยาลัยเกษตรศาสตร์) · พิมพ์ภาษาอังกฤษเพื่อดูตัวสะกดนิ้วแบบ ASL';
+    out.appendChild(ex);
+    var lg=document.createElement('p'); lg.className='sign-legend'; lg.innerHTML='<i></i>สีส้มอ่อน = นิ้วโป้ง · ภาพมองจากฝั่งคนดู มือขวา หันฝ่ามือออก · ท่าที่มีเครื่องหมาย + ทำต่อกันตามลำดับ';
+    out.appendChild(lg);
+  }
   // ---------- fingerspelling (ASL manual alphabet) ----------
   function paintSign(t, thai, unk){
     var row=document.createElement('div'); row.className='sign-row';
@@ -1665,6 +1766,9 @@ footer a{color:#F4F4F0}
     $('kbRows').appendChild(row);
   });
 
+  TRL.forEach(function(x,i){ var o=document.createElement('option'); o.value=x[0]; o.textContent=x[1]; $('trFrom').appendChild(o); if(i){ var o2=o.cloneNode(true); $('trTo').appendChild(o2); } });
+  $('trFrom').value='auto'; $('trTo').value='th';
+  ['trFrom','trTo'].forEach(function(id){ $(id).addEventListener('change',function(){ st.trCache=null; render(); }); });
   function setMode(id, sample){
     st.mode=id; st.reverse=false;
     if(sample){ var m=MODES.filter(function(x){return x.id===id;})[0]; src.value=m.sample; if(id==='slang') st.group='lgbt'; }
@@ -1715,8 +1819,11 @@ footer a{color:#F4F4F0}
       if(isMo){ res=t.trim().split(/\s*\/\s*|\s{2,}/).map(function(w){return w.split(/\s+/).map(function(c){return MO_REV[c]||'?';}).join('');}).join(' '); sl='มอร์ส'; dl='อังกฤษ'; }
       else { res=t.toLowerCase().split(/\s+/).filter(Boolean).map(function(w){return Array.from(w).map(function(c){return MO[c]||'';}).filter(Boolean).join(' ');}).join(' / '); sl='อังกฤษ'; dl='มอร์ส'; cls='morse'; }
       hint='ใส่ . และ - เพื่อแปลกลับ';
+    } else if(mode==='tr'){
+      var tp=trPair(t); sl=TRN[tp.from]||'ตรวจหาภาษาเอง'; dl=TRN[tp.to]; cls='tr';
+      if(!t.trim()){ res=''; } else if(st.trCache && st.trCache.k===tp.from+'|'+tp.to+'|'+t){ res=st.trCache.v; dl=TRN[tp.to]+' · '+st.trCache.by; } else { res='กำลังแปล…'; cls='tr note'; clearTimeout(st.trT); st.trT=setTimeout(function(){ trGo(t); },550); }
     } else if(mode==='sign'){
-      if(isThai){ var te=th2en(t); st.signTh=te; clearTimeout(st.signT); st.signT=setTimeout(function(){ signUpgrade(t, te); }, 700); res=te.en.toUpperCase(); sl='ภาษาไทย'; dl='แปลความหมายเป็นภาษาอังกฤษ แล้วสะกดนิ้ว ASL'; hint=te.unk.length?'คำที่ไม่มีในคลังสะกดตามเสียง':'แปลตามความหมาย'; }
+      if(isThai){ res=''; sl='ภาษาไทย'; dl='ตัวสะกดนิ้วมือไทย'; hint='ตามแบบของสมาคมคนหูหนวกแห่งประเทศไทย'; }
       else { res=t.toUpperCase(); sl='ตัวอักษรอังกฤษ'; dl='ตัวสะกดนิ้ว ASL'; hint='มือขวา หันฝ่ามือออก'; }
     } else if(mode==='eo'){
       if(isThai){ var r2=th2eo(t); res=r2.text; sl='ภาษาไทย'; dl='ภาษาเอสเปรันโต (แปลทีละคำ)'; hint=r2.miss?'คำในวงเล็บ [ ] ยังไม่มีในคลัง':'แปลทีละคำ ไม่ใช่ประโยคที่สมบูรณ์'; }
@@ -1732,13 +1839,14 @@ footer a{color:#F4F4F0}
       else if(r.hits===0){ res='ไม่พบคำในคลังของกลุ่มนี้\nลองเลือกกลุ่มอื่น หรือช่วยเพิ่มคำได้ที่ส่วน "ร่วมเขียน"'; }
       else { res=r.lines.join('\n'); }
     }
-    out.className=cls; out.textContent=res; if(mode==='sign') paintSign(isThai?st.signTh.en:t, isThai?t:null, isThai?st.signTh.unk:null);
+    out.className=cls; out.textContent=res; if(mode==='sign'){ if(isThai) paintThaiSign(t); else paintSign(t, null, null); }
     $('srcLabel').textContent=sl; $('dstLabel').textContent=dl; $('hint').textContent=hint;
     $('count').textContent=Array.from(t).length+' ตัวอักษร';
     $('groupPick').hidden = mode!=='slang';
+    $('trPick').hidden = mode!=='tr'; if(mode==='tr') $('hint').textContent='';
     $('hint').hidden = mode==='slang';
     $('swap').hidden = mode==='lu' || mode==='sign' || mode==='eo';
-    $('aiBtn').hidden = !((mode==='romanize'||mode==='eo'||(mode==='sign'&&isThai)) && store.ai); $('aiBtn').textContent = mode==='eo' ? 'ให้ Claude แปลทั้งประโยค' : mode==='sign' ? 'ให้ Claude แปลความหมาย' : 'ให้ Claude ถอดเสียง';
+    $('aiBtn').hidden = !((mode==='romanize'||mode==='eo') && store.ai); $('aiBtn').textContent = mode==='eo' ? 'ให้ Claude แปลทั้งประโยค' : mode==='sign' ? 'ให้ Claude แปลความหมาย' : 'ให้ Claude ถอดเสียง';
     Array.prototype.forEach.call(document.querySelectorAll('.chip'),function(c){c.setAttribute('aria-pressed', c.dataset.g===st.group?'true':'false');});
     MODES.forEach(function(m){ $('tab-'+m.id).setAttribute('aria-selected', m.id===mode?'true':'false'); });
     $('kb').hidden = mode!=='fix';
@@ -1760,6 +1868,7 @@ footer a{color:#F4F4F0}
   $('clear').addEventListener('click',function(){src.value='';render();src.focus();});
   $('swap').addEventListener('click',function(){
     if(st.mode==='slang'){ st.reverse=!st.reverse; render(); return; }
+    if(st.mode==='tr'){ var tp=trPair(src.value), res0=st.trCache&&st.trCache.v; $('trFrom').value=tp.to; $('trTo').value=tp.src; if(res0){ src.value=res0; } st.trCache=null; render(); return; }
     // swapping back right away restores the exact original text instead of re-converting the output
     var before=src.value, after=out.textContent;
     if(st.pair && before===st.pair.now){ src.value=st.pair.orig; st.pair={orig:before, now:st.pair.orig}; }
@@ -1795,6 +1904,7 @@ footer a{color:#F4F4F0}
     if(st.mode==='morse'){ var code=/^[\s.\-\/]+$/.test(src.value)?src.value:out.textContent; beepMorse(code); return; }
     if(st.mode==='braille'){ toast('อักษรเบรลล์ใช้อ่านด้วยการสัมผัส ไม่มีเสียงอ่าน'); return; }
     if(st.mode==='sign'){ toast('ภาษามือเป็นภาษาที่ใช้ตาดู ไม่มีเสียงอ่าน'); return; }
+    if(st.mode==='tr'){ try{ var tu=new SpeechSynthesisUtterance(out.textContent); tu.lang=trPair(src.value).to.replace('zh-Hans','zh-CN'); speechSynthesis.cancel(); speechSynthesis.speak(tu); }catch(e){ toast('เบราว์เซอร์นี้อ่านออกเสียงไม่ได้'); } return; }
     if(st.mode==='eo'){ try{ var eot=/[฀-๿]/.test(src.value)?out.textContent:src.value; var ue=new SpeechSynthesisUtterance(eoX(eot.replace(/\[[^\]]*\]/g,''))); ue.lang='eo'; speechSynthesis.cancel(); speechSynthesis.speak(ue); }catch(e){ toast('เบราว์เซอร์นี้อ่านออกเสียงไม่ได้'); } return; }
     try{
       var txt = st.mode==='slang' ? src.value : out.textContent;
@@ -1818,7 +1928,7 @@ footer a{color:#F4F4F0}
     {go:'slang', hw:'ภาษาเฉพาะกลุ่ม', say:'/pʰaː.sǎː/', pos:'น.', def:'ถอดความศัพท์ของกลุ่ม LGBTQ+ ภาษาในเรือนจำ และภาษาวัยรุ่น พร้อมหมายเหตุบริบทการใช้', ex:'ขาใหญ่ → ผู้ต้องขังที่มีอิทธิพล'},
     {go:'lu', hw:'ภาษาลู', say:'/pʰaː.sǎː luː/', pos:'น.', def:'ภาษารหัสของวัยรุ่นไทย เปลี่ยนพยางค์เดียวเป็นสองพยางค์ด้วยเสียง ล และสระอู', ex:'ไม่รู้ → ไล่มู่ ซู้รี้'},
     {go:'braille', hw:'เบรลล์', say:'/breːn/', pos:'น.', def:'แปลงข้อความเป็นอักษรเบรลล์ภาษาอังกฤษเกรด 1 และแปลงกลับเป็นตัวอักษรได้', ex:'book → ⠃⠕⠕⠅'},
-    {go:'sign', hw:'สะกดนิ้ว', say:'/sa.kòt níw/', pos:'ก.', def:'พิมพ์ตัวอักษรอังกฤษแล้วดูท่ามือของแต่ละตัวตามตัวสะกดนิ้วภาษามืออเมริกัน (ASL) ใช้สะกดชื่อคนหรือคำที่ยังไม่มีท่ามือ', ex:'hi → ท่ามือ H และ I'},
+    {go:'sign', hw:'สะกดนิ้ว', say:'/sa.kòt níw/', pos:'ก.', def:'พิมพ์ภาษาไทยเพื่อดูตัวสะกดนิ้วมือไทย หรือพิมพ์ภาษาอังกฤษเพื่อดูตัวสะกดนิ้วแบบสากล (ASL) ใช้สะกดชื่อคนหรือคำที่ยังไม่มีท่ามือ', ex:'สมชาย → ส ม ช า ย'},
     {go:'morse', hw:'มอร์ส', say:'/mɔːt/', pos:'น.', def:'แปลงข้อความเป็นรหัสมอร์สและแปลงกลับ กดฟังเสียงตามจังหวะจริงได้', ex:'hi → .... ..'},
     {go:null, hw:'แปล', say:'/plɛː/', pos:'ก.', def:'แปลมากกว่า 100 ภาษา บอกระดับความสุภาพ และยกตัวอย่างประโยคจริง เปิดให้ใช้เร็ว ๆ นี้', ex:'ขอบคุณ → ありがとう'}
   ];
