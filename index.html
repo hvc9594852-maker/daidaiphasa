@@ -131,9 +131,9 @@ output .gloss{display:block;margin-top:12px;font-family:var(--body);font-weight:
 .out-actions button:hover{background:var(--ink);color:var(--paper)}
 
 .kb{margin:24px 0 0}
-.kb figcaption{color:var(--sub);margin-bottom:10px}
+.kb figcaption{color:var(--sub);margin-bottom:10px;text-align:center}
 .kb-scroll{overflow-x:auto;padding-bottom:4px}
-.kb-rows{min-width:760px;display:flex;flex-direction:column;gap:6px}
+.kb-rows{min-width:760px;width:max-content;margin:0 auto;display:flex;flex-direction:column;gap:6px}
 .kb-row{display:flex;gap:6px}
 .key{flex:0 0 58px;height:58px;border:1px solid var(--ink);background:var(--paper);position:relative;transition:background .15s}
 .key.on{background:var(--signal);color:var(--on-signal)}.key.on .sm{color:#333}
@@ -518,7 +518,6 @@ footer a{color:#F4F4F0}
     <li><button data-go="slang"><span>ภาษาเฉพาะกลุ่ม</span><span class="mono">มงลง → ชนะแน่</span></button></li>
     <li><button data-go="lu"><span>ภาษาลู</span><span class="mono">รัก → ซักรุก</span></button></li>
     <li><button data-go="sign"><span>สะกดนิ้วภาษามือ</span><span class="mono">hi → <i class="mini-hand" data-hand="h"></i><i class="mini-hand" data-hand="i"></i></span></button></li>
-    <li><button data-go="eo"><span>แปลเอสเปรันโต</span><span class="mono">amiko → เพื่อน</span></button></li>
     <li><button data-go="braille"><span>อักษรเบรลล์</span><span class="mono">hi → ⠓⠊</span></button></li>
     <li><button data-go="morse"><span>รหัสมอร์ส</span><span class="mono">sos → ...---...</span></button></li>
   </ul>
@@ -1483,8 +1482,7 @@ footer a{color:#F4F4F0}
     {id:'lu', label:'ภาษาลู', sample:'หนูไม่รู้ ลองรัก'},
     {id:'braille', label:'อักษรเบรลล์', sample:'hello world'},
     {id:'morse', label:'รหัสมอร์ส', sample:'sos help'},
-    {id:'sign', label:'ภาษามือ', sample:'hello'},
-    {id:'eo', label:'เอสเปรันโต', sample:'Saluton! Mi estas via amiko.'}
+    {id:'sign', label:'ภาษามือ', sample:'hello'}
   ];
   // ---------- Esperanto ⇄ Thai (word by word) ----------
   var EO_RAW = 'mi:ฉัน|ผม|ดิฉัน;vi:คุณ|เธอ;li:เขา(ชาย);ŝi:เขา(หญิง)|หล่อน;ĝi:มัน;ni:เรา|พวกเรา;ili:พวกเขา;oni:ใคร ๆ|คนทั่วไป;si:ตัวเอง;'+
@@ -1821,7 +1819,6 @@ footer a{color:#F4F4F0}
     {go:'lu', hw:'ภาษาลู', say:'/pʰaː.sǎː luː/', pos:'น.', def:'ภาษารหัสของวัยรุ่นไทย เปลี่ยนพยางค์เดียวเป็นสองพยางค์ด้วยเสียง ล และสระอู', ex:'ไม่รู้ → ไล่มู่ ซู้รี้'},
     {go:'braille', hw:'เบรลล์', say:'/breːn/', pos:'น.', def:'แปลงข้อความเป็นอักษรเบรลล์ภาษาอังกฤษเกรด 1 และแปลงกลับเป็นตัวอักษรได้', ex:'book → ⠃⠕⠕⠅'},
     {go:'sign', hw:'สะกดนิ้ว', say:'/sa.kòt níw/', pos:'ก.', def:'พิมพ์ตัวอักษรอังกฤษแล้วดูท่ามือของแต่ละตัวตามตัวสะกดนิ้วภาษามืออเมริกัน (ASL) ใช้สะกดชื่อคนหรือคำที่ยังไม่มีท่ามือ', ex:'hi → ท่ามือ H และ I'},
-    {go:'eo', hw:'เอสเปรันโต', say:'/ʔés.pɛː.ran.toː/', pos:'น.', def:'แปลภาษาเอสเปรันโตกับภาษาไทยทีละคำ แยกรากศัพท์และคำลงท้ายให้ดู หรือให้ Claude แปลทั้งประโยค', ex:'amiko → เพื่อน'},
     {go:'morse', hw:'มอร์ส', say:'/mɔːt/', pos:'น.', def:'แปลงข้อความเป็นรหัสมอร์สและแปลงกลับ กดฟังเสียงตามจังหวะจริงได้', ex:'hi → .... ..'},
     {go:null, hw:'แปล', say:'/plɛː/', pos:'ก.', def:'แปลมากกว่า 100 ภาษา บอกระดับความสุภาพ และยกตัวอย่างประโยคจริง เปิดให้ใช้เร็ว ๆ นี้', ex:'ขอบคุณ → ありがとう'}
   ];
@@ -6156,7 +6153,7 @@ footer a{color:#F4F4F0}
   // ---------- theme (light / dark) ----------
   var THEME = 'light';
   try { THEME = localStorage.getItem('lh-theme') || ''; } catch(e){ THEME=''; }
-  if (THEME!=='light' && THEME!=='dark') THEME = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  if (THEME!=='light' && THEME!=='dark') THEME = 'light';
   function applyTheme(t){
     THEME = t; document.documentElement.setAttribute('data-theme', t);
     var icon = t==='dark' ? '☀' : '☾';
