@@ -558,6 +558,11 @@ footer a{color:#F4F4F0}
   .cv-card{box-shadow:5px 5px 0 var(--c-acc);padding:18px}
   .cv-barapp{font-size:15px}
 }
+@media (max-width:640px){
+  body.m-pages #mainView main > section:not(.m-on), body.m-pages #mainView > section:not(.m-on){display:none!important}
+  body.m-pages .tool{padding-top:18px}
+  .navlinks a.m-cur{text-decoration:underline;text-decoration-color:var(--signal);text-decoration-thickness:3px;text-underline-offset:6px;font-weight:600}
+}
 </style>
 
 <div id="mainView">
@@ -6595,6 +6600,35 @@ footer a{color:#F4F4F0}
   window.__lh={c:COUNTRIES, open:openCountry, d:DECKS, theme:applyTheme, ui:setUiLang};
   var startMode='fix'; try{ var sm=localStorage.getItem('lh-mode'); if(sm && MODES.some(function(m){return m.id===sm;})) startMode=sm; }catch(e){}
   setMode(startMode,true);
+  // phones: one section at a time. The home screen is just the converter; the top menu opens the other sections.
+  (function(){
+    if(!window.matchMedia) return;
+    var mq=matchMedia('(max-width:640px)');
+    var secs=Array.prototype.slice.call(document.querySelectorAll('#mainView main > section, #mainView > section'));
+    var cur='tool';
+    function show(id){
+      var t=document.getElementById(id); if(!t || secs.indexOf(t)<0 || !t.id || t.hasAttribute('hidden')) t=$('tool');
+      cur=t.id; secs.forEach(function(s){ s.classList.toggle('m-on', s===t); });
+      Array.prototype.forEach.call(document.querySelectorAll('.navlinks a'),function(a){ a.classList.toggle('m-cur', a.getAttribute('href')==='#'+cur); });
+      setTimeout(function(){ window.dispatchEvent(new Event('resize')); },30);
+    }
+    function apply(){ document.body.classList.toggle('m-pages', mq.matches); if(mq.matches) show((location.hash||'').slice(1)||'tool'); }
+    document.addEventListener('click',function(e){
+      if(!mq.matches) return;
+      var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
+      var id=a.getAttribute('href').slice(1); if(!id || id==='top') id='tool';
+      var t=document.getElementById(id); if(!t || secs.indexOf(t)<0) return;
+      e.preventDefault(); show(id); try{ history.replaceState(null,'','#'+id); }catch(_){} window.scrollTo(0,0);
+    },true);
+    var orig=Element.prototype.scrollIntoView;
+    Element.prototype.scrollIntoView=function(o){
+      if(mq.matches){ for(var i=0;i<secs.length;i++){ if(secs[i].contains(this) && !secs[i].classList.contains('m-on') && secs[i].id){ show(secs[i].id); break; } } }
+      return orig.apply(this,arguments);
+    };
+    window.addEventListener('hashchange',function(){ if(mq.matches) show(location.hash.slice(1)||'tool'); });
+    if(mq.addEventListener) mq.addEventListener('change',apply); else if(mq.addListener) mq.addListener(apply);
+    apply();
+  })();
 })();
 </script>
 
