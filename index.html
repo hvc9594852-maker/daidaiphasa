@@ -1013,7 +1013,8 @@ footer a{color:#F4F4F0}
     hello:{f:'uuuu',t:'out',ang:[-10,-2,6,15],rot:-12,wave:1},
     flat:{f:'uuuu',t:'across',rot:-8},
     n1:{f:'uccc',t:'front'}, n2:{f:'uucc',t:'front',ang:[-12,11]}, n3:{f:'uucc',t:'out',ang:[-12,11]},
-    n4:{f:'uuuu',t:'tuck',ang:[-12,-4,5,14]}, n5:{f:'uuuu',t:'out',ang:[-12,-4,5,14]}
+    n4:{f:'uuuu',t:'tuck',ang:[-12,-4,5,14]}, n5:{f:'uuuu',t:'out',ang:[-12,-4,5,14]},
+    sside:{f:'cccc',t:'front',rot:-90}, ibent:{f:'ccch',t:'across'}
   };
   function el(n,a){ var e=document.createElementNS(NS,n); for(var k in a) e.setAttribute(k,a[k]); return e; }
   function tube(g,d,w,ink,fill){
@@ -1079,7 +1080,7 @@ footer a{color:#F4F4F0}
     if(s.wave){ ['M84,30 Q92,40 86,52','M92,22 Q103,40 94,58'].forEach(function(d){ svg.appendChild(el('path',{d:d,fill:'none',style:'stroke:'+acc,'stroke-width':'2.4','stroke-linecap':'round'})); }); }
     return svg;
   }
-  var HINT={a:'กำมือ โป้งแนบข้าง',b:'สี่นิ้วชิด โป้งพับ',c:'งอมือเป็นรูป C',d:'ชูนิ้วชี้ ที่เหลือแตะโป้ง',e:'งอทุกนิ้ว โป้งพับใต้',f:'ชี้แตะโป้งเป็นวง',g:'ชี้กับโป้งชี้ไปข้าง',h:'ชี้กับกลางชี้ไปข้าง',i:'ชูนิ้วก้อย',j:'ก้อยวาดตัว J',k:'ชี้+กลาง โป้งตรงกลาง',l:'ชี้กับโป้งเป็นรูป L',m:'โป้งซ่อนใต้สามนิ้ว',n:'โป้งซ่อนใต้สองนิ้ว',o:'ทุกนิ้วแตะโป้งเป็นวง',p:'ท่า K ชี้ลง',q:'ท่า G ชี้ลง',r:'ชี้กับกลางไขว้กัน',s:'กำมือ โป้งทับด้านหน้า',t:'โป้งแทรกระหว่างชี้กับกลาง',u:'ชี้กับกลางชิดกัน',v:'ชี้กับกลางแยกเป็นรูป V',w:'สามนิ้วแยกกัน',x:'งอนิ้วชี้เป็นตะขอ',y:'กางโป้งกับก้อย',z:'นิ้วชี้วาดตัว Z',n1:'เลข 1 ชูนิ้วชี้',n2:'เลข 2 ชูชี้กับกลาง',n3:'เลข 3 โป้ง ชี้ กลาง',n4:'เลข 4 สี่นิ้ว โป้งพับ',n5:'เลข 5 กางทุกนิ้ว'};
+  var HINT={a:'กำมือ โป้งแนบข้าง',b:'สี่นิ้วชิด โป้งพับ',c:'งอมือเป็นรูป C',d:'ชูนิ้วชี้ ที่เหลือแตะโป้ง',e:'งอทุกนิ้ว โป้งพับใต้',f:'ชี้แตะโป้งเป็นวง',g:'ชี้กับโป้งชี้ไปข้าง',h:'ชี้กับกลางชี้ไปข้าง',i:'ชูนิ้วก้อย',j:'ก้อยวาดตัว J',k:'ชี้+กลาง โป้งตรงกลาง',l:'ชี้กับโป้งเป็นรูป L',m:'โป้งซ่อนใต้สามนิ้ว',n:'โป้งซ่อนใต้สองนิ้ว',o:'ทุกนิ้วแตะโป้งเป็นวง',p:'ท่า K ชี้ลง',q:'ท่า G ชี้ลง',r:'ชี้กับกลางไขว้กัน',s:'กำมือ โป้งทับด้านหน้า',t:'โป้งแทรกระหว่างชี้กับกลาง',u:'ชี้กับกลางชิดกัน',v:'ชี้กับกลางแยกเป็นรูป V',w:'สามนิ้วแยกกัน',x:'งอนิ้วชี้เป็นตะขอ',y:'กางโป้งกับก้อย',z:'นิ้วชี้วาดตัว Z',n1:'เลข 1 ชูนิ้วชี้',n2:'เลข 2 ชูชี้กับกลาง',n3:'เลข 3 โป้ง ชี้ กลาง',n4:'เลข 4 สี่นิ้ว โป้งพับ',n5:'เลข 5 กางทุกนิ้ว',sside:'กำมือหันข้าง',ibent:'งอนิ้วก้อยลง'};
   window.HAND={draw:draw, hint:HINT, letters:'abcdefghijklmnopqrstuvwxyz'.split('')};
 })();
 </script>
@@ -1690,12 +1691,15 @@ footer a{color:#F4F4F0}
   var THFS={'ก':'k','ข':'k n1','ค':'k n2','ฆ':'k n3','ต':'t','ถ':'t n1','ฐ':'t n2','ฒ':'t n3','ฑ':'t n4','ฏ':'t n5',
     'ส':'s','ศ':'s n1','ษ':'s n2','ซ':'s p','พ':'p','ป':'p n1','ผ':'p n2','ภ':'p n3','ห':'h','ฮ':'h n1',
     'บ':'b','ร':'r','ว':'w','ด':'d','ฎ':'d n1','ฟ':'f','ฝ':'f n1','ล':'l','ฬ':'l n1','จ':'j',
-    'ย':'y','ญ':'y n1','ม':'m','น':'n','ณ':'n n1','ง':'n g','ท':'t h','ธ':'t h n1','ฉ':'c h','ช':'c h n1','ฌ':'c h n2','อ':'o'};
+    'ย':'y','ญ':'y n1','ม':'m','น':'n','ณ':'n n1','ง':'n g','ท':'t h','ธ':'t h n1','ฉ':'c h','ช':'c h n1','ฌ':'c h n2','อ':'a'};
   var TH_MARKN={'\u0E30':'สระอะ','\u0E31':'ไม้หันอากาศ','\u0E32':'สระอา','\u0E33':'สระอำ','\u0E34':'สระอิ','\u0E35':'สระอี','\u0E36':'สระอึ','\u0E37':'สระอือ','\u0E38':'สระอุ','\u0E39':'สระอู','\u0E40':'สระเอ','\u0E41':'สระแอ','\u0E42':'สระโอ','\u0E43':'ไม้ม้วน','\u0E44':'ไม้มลาย','\u0E45':'ลากข้าง','\u0E46':'ไม้ยมก','\u0E47':'ไม้ไต่คู้','\u0E48':'ไม้เอก','\u0E49':'ไม้โท','\u0E4A':'ไม้ตรี','\u0E4B':'ไม้จัตวา','\u0E4C':'การันต์','\u0E24':'ฤ','\u0E2F':'ไปยาลน้อย'};
   // vowels and tone marks: the right index finger touches a spot on the other hand (open palm facing the viewer)
   var THV={'\u0E30':[27,37,'แตะปลายนิ้วชี้'],'\u0E32':[35,60,'แตะโคนนิ้วชี้'],'\u0E38':[43,33,'แตะปลายนิ้วกลาง'],'\u0E39':[46,60,'แตะโคนนิ้วกลาง'],
-    '\u0E40':[59,36,'แตะปลายนิ้วนาง'],'\u0E41':[57,60,'แตะโคนนิ้วนาง'],'\u0E24':[66,62,'แตะโคนนิ้วก้อย'],'\u0E33':[11,69,'แตะปลายนิ้วโป้ง'],
-    '\u0E48':[26,25,'ชี้เหนือนิ้วชี้'],'\u0E49':[42,20,'ชี้เหนือนิ้วกลาง'],'\u0E4A':[61,23,'ชี้เหนือนิ้วนาง'],'\u0E4B':[75,32,'ชี้เหนือนิ้วก้อย']};
+    '\u0E40':[59,36,'แตะปลายนิ้วนาง'],'\u0E41':[57,60,'แตะโคนนิ้วนาง'],'\u0E4C':[72,44,'แตะปลายนิ้วก้อย'],'\u0E24':[66,62,'แตะโคนนิ้วก้อย'],
+    '\u0E33':[11,69,'แตะปลายนิ้วโป้ง'],'\u0E47':[26,87,'แตะโคนนิ้วโป้ง'],'\u0E31':[50,88,'แตะกลางฝ่ามือ'],'\u0E2F':[50,116,'แตะสันมือด้านล่าง'],
+    '\u0E48':[27,28,'แตะปลายนิ้วชี้จากด้านบน'],'\u0E49':[43,23,'แตะปลายนิ้วกลางจากด้านบน'],'\u0E4A':[60,27,'แตะปลายนิ้วนางจากด้านบน'],'\u0E4B':[73,36,'แตะปลายนิ้วก้อยจากด้านบน']};
+  // vowels with their own handshapes (sequence left to right)
+  var THVH={'\u0E34':'s n1','\u0E35':'s','\u0E36':'s sside','\u0E37':'s n2','\u0E42':'o','\u0E43':'i ibent','\u0E44':'i'};
   function drawSpot(xy){
     var sv=HAND.draw('n5'); if(!sv) return null; var NS='http://www.w3.org/2000/svg';
     var r=document.createElementNS(NS,'circle'); r.setAttribute('cx',xy[0]); r.setAttribute('cy',xy[1]); r.setAttribute('r','9'); r.setAttribute('style','fill:none;stroke:var(--signal);stroke-width:2.5;opacity:.55'); sv.appendChild(r);
@@ -1711,10 +1715,17 @@ footer a{color:#F4F4F0}
       if(spec && window.HAND){
         var keys=spec.split(' '), f=document.createElement('figure'); f.className='sign-ch th';
         var hs=document.createElement('div'); hs.className='hs';
-        keys.forEach(function(k,i){ if(i){ var pl=document.createElement('i'); pl.textContent='+'; hs.appendChild(pl); } var sv=HAND.draw(k); if(sv) hs.appendChild(sv); });
+        keys.forEach(function(k,i){ if(i){ var pl=document.createElement('i'); pl.textContent='\u2192'; hs.appendChild(pl); } var sv=HAND.draw(k); if(sv) hs.appendChild(sv); });
         f.appendChild(hs);
-        var c=document.createElement('figcaption'); var bb=document.createElement('b'); bb.textContent=ch; var sm=document.createElement('small'); sm.textContent=keys.map(fsLabel).join(' + ');
+        var c=document.createElement('figcaption'); var bb=document.createElement('b'); bb.textContent=ch; var sm=document.createElement('small'); sm.textContent=keys.map(fsLabel).join(' \u2192 ');
         c.appendChild(bb); c.appendChild(sm); f.appendChild(c); row.appendChild(f); n++;
+      } else if(THVH[ch] && window.HAND){
+        var ks=THVH[ch].split(' '), fh=document.createElement('figure'); fh.className='sign-ch th';
+        var hh=document.createElement('div'); hh.className='hs';
+        ks.forEach(function(k,i){ if(i){ var ar=document.createElement('i'); ar.textContent='\u2192'; hh.appendChild(ar); } var sk=HAND.draw(k); if(sk) hh.appendChild(sk); });
+        fh.appendChild(hh);
+        var ch2=document.createElement('figcaption'); var bh=document.createElement('b'); bh.textContent=/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/.test(ch)?'\u0E2D'+ch:ch; var shh=document.createElement('small'); shh.textContent=(TH_MARKN[ch]||'')+' · '+ks.map(function(k){ return k==='sside'?'กำมือหันข้าง':k==='ibent'?'งอก้อยลง':fsLabel(k); }).join(' \u2192 ');
+        ch2.appendChild(bh); ch2.appendChild(shh); fh.appendChild(ch2); row.appendChild(fh); n++;
       } else if(THV[ch] && window.HAND){
         var v=THV[ch], fv=document.createElement('figure'); fv.className='sign-ch th vw';
         var hv=document.createElement('div'); hv.className='hs'; var svv=drawSpot(v); if(svv) hv.appendChild(svv); fv.appendChild(hv);
@@ -1724,7 +1735,7 @@ footer a{color:#F4F4F0}
         var isMark=/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/.test(ch), isTone=/[\u0E48-\u0E4B]/.test(ch);
         var m=document.createElement('figure'); m.className='sign-mark';
         var sp=document.createElement('span'); sp.textContent=isMark?'\u0E2D'+ch:ch;
-        var sm2=document.createElement('small'); sm2.textContent=/[\u0E03\u0E05\u0E26]/.test(ch)?'ไม่มีในตาราง':/[\u0E50-\u0E59]/.test(ch)?'ตัวเลขไทย':'ท่าเฉพาะ · ดูแผนภาพต้นฉบับ';
+        var sm2=document.createElement('small'); sm2.textContent=/[\u0E50-\u0E59]/.test(ch)?'ตัวเลขไทย':'ไม่มีในแบบสะกดนิ้ว';
         var nm=TH_MARKN[ch]; if(nm){ var nb=document.createElement('b'); nb.textContent=nm; m.appendChild(sp); m.appendChild(nb); } else m.appendChild(sp); m.appendChild(sm2); row.appendChild(m); marks++;
       } else if(/[a-z]/i.test(ch) && window.HAND){
         var g=document.createElement('figure'); g.className='sign-ch'; g.appendChild(HAND.draw(ch.toLowerCase())); var gc=document.createElement('figcaption'); var gb=document.createElement('b'); gb.textContent=ch.toUpperCase(); gc.appendChild(gb); g.appendChild(gc); row.appendChild(g); n++;
@@ -1734,9 +1745,9 @@ footer a{color:#F4F4F0}
     if(!n && !marks){ out.className='note'; out.textContent='พิมพ์คำภาษาไทย เช่น ชื่อของคุณ เพื่อดูตัวสะกดนิ้วมือไทย'; return; }
     out.appendChild(row);
     var ex=document.createElement('p'); ex.className='sign-note';
-    ex.innerHTML='<b>ตัวสะกดนิ้วมือไทย</b> ใช้สะกดชื่อคน ชื่อสถานที่ หรือคำที่ยังไม่มีท่ามือ พยัญชนะแต่ละตัวใช้ท่ามือ ASL ของเสียงที่ตรงกัน แล้วเพิ่มท่าตัวเลขเพื่อแยกตัวที่เสียงเหมือนกัน เช่น ส = S, ศ = S + 1, ษ = S + 2 ส่วน<b>สระและวรรณยุกต์</b>ส่วนใหญ่ใช้นิ้วชี้ไปแตะตำแหน่งบนมืออีกข้างที่กางออก (จุดสีส้มในภาพ) เช่น ะ ปลายนิ้วชี้ า โคนนิ้วชี้ ไม้เอกเหนือนิ้วชี้ ส่วนสระอิ อี อึ อื โอ ใอ ไอ และเครื่องหมายบางตัวมีท่ามือเฉพาะ ยังแสดงเป็นสัญลักษณ์ไว้ ดู<a href="https://www.gotoknow.org/posts/604277" target="_blank" rel="noopener">แผนภาพต้นฉบับ</a>ประกอบ<br><b>หมายเหตุ</b> การสะกดนิ้วใช้กับชื่อเฉพาะหรือคำที่ไม่มีท่ามือ คำทั่วไปเช่น "สวัสดี" คนหูหนวกไทยใช้ท่ามือของคำนั้นโดยตรง ไม่ได้สะกดทีละตัว<br>ที่มา: แบบสะกดนิ้วมือไทยของสมาคมคนหูหนวกแห่งประเทศไทย ประดิษฐ์โดยคุณหญิงกมลา ไกรฤกษ์ และงานของ รศ. ดร. อภิลักษณ์ ธรรมทวีธิกุล (มหาวิทยาลัยเกษตรศาสตร์) · พิมพ์ภาษาอังกฤษเพื่อดูตัวสะกดนิ้วแบบ ASL';
+    ex.innerHTML='<b>ตัวสะกดนิ้วมือไทย</b> ใช้สะกดชื่อคน ชื่อสถานที่ หรือคำที่ยังไม่มีท่ามือ พยัญชนะแต่ละตัวใช้ท่ามือ ASL ของเสียงที่ตรงกัน แล้วเพิ่มท่าตัวเลขเพื่อแยกตัวที่เสียงเหมือนกัน เช่น ส = S, ศ = S + 1, ษ = S + 2 ส่วน<b>สระและวรรณยุกต์</b>ส่วนใหญ่ใช้นิ้วชี้ขวาแตะตำแหน่งบนฝ่ามือซ้ายที่กางออก (จุดสีส้มในภาพ) เช่น ะ ปลายนิ้วชี้ า โคนนิ้วชี้ วรรณยุกต์แตะปลายนิ้วจากด้านบน ส่วนสระอิ อี อึ อื โอ ใอ ไอ มีท่ามือของตัวเอง เช่น อิ = S แล้วชูนิ้วชี้<br><b>หมายเหตุ</b> การสะกดนิ้วใช้กับชื่อเฉพาะหรือคำที่ไม่มีท่ามือ คำทั่วไปเช่น "สวัสดี" คนหูหนวกไทยใช้ท่ามือของคำนั้นโดยตรง ไม่ได้สะกดทีละตัว<br>ที่มา: แบบสะกดนิ้วมือไทยของสมาคมคนหูหนวกแห่งประเทศไทย ประดิษฐ์โดยคุณหญิงกมลา ไกรฤกษ์, ฟอนต์ Nattanan TSL Fingerspelling ของอาจารย์ณัฐนันทน์ แนวมาลี (ม.อัสสัมชัญ) และงานของ รศ. ดร. อภิลักษณ์ ธรรมทวีธิกุล (ม.เกษตรศาสตร์) · พิมพ์ภาษาอังกฤษเพื่อดูตัวสะกดนิ้วแบบ ASL';
     out.appendChild(ex);
-    var lg=document.createElement('p'); lg.className='sign-legend'; lg.innerHTML='<i></i>สีส้มอ่อน = นิ้วโป้ง · ภาพมองจากฝั่งคนดู มือขวา หันฝ่ามือออก · ท่าที่มีเครื่องหมาย + ทำต่อกันตามลำดับ';
+    var lg=document.createElement('p'); lg.className='sign-legend'; lg.innerHTML='<i></i>สีส้มอ่อน = นิ้วโป้ง · ภาพมองจากฝั่งคนดู มือขวา หันฝ่ามือออก · ท่าที่มีลูกศร → ทำต่อกันตามลำดับ';
     out.appendChild(lg);
   }
   // ---------- fingerspelling (ASL manual alphabet) ----------
