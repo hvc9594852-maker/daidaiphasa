@@ -78,3 +78,4 @@ footer.bot nav{display:flex;gap:18px;flex-wrap:wrap}
   .try{padding:18px}
   th,td{padding:8px 10px;font-size:15px}
 }
+.cards b span{font-size:inherit;color:inherit;line-height:inherit;display:inline}
