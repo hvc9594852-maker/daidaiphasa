@@ -4,7 +4,7 @@
   --serif:'Noto Serif Thai','FreeSerif',Georgia,serif;
   --sans:'IBM Plex Sans Thai Looped','IBM Plex Sans Thai','Loma',system-ui,sans-serif;
   --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
-  --brand:'Chakra Petch','Bai Jamjuree',system-ui,sans-serif;
+  --brand:'Chakra Petch','Bai Jamjuree',system-ui,sans-serif;--head:'Chakra Petch','Noto Serif Thai',system-ui,sans-serif;
   --col:660px;--wide:1040px;
   color-scheme:light}
 :root[data-theme="dark"]{--paper:#141413;--ink:#ECE9E2;--sub:#A9A49A;--faint:#7C786F;--rule:#2E2C29;--plate:#1D1C1A;--accent-ink:#FF8A5B;color-scheme:dark}
@@ -167,5 +167,23 @@ footer.bot a:hover{color:var(--ink)}
   .chips b{font-size:24px}
   .tl{min-width:620px}
 }
+
+/* headings use the site-name face (Chakra Petch) */
+.hed h1,.story h2,.story h3,.cards h3,.lead-story h2,.hub-head h1,.pq p,.tool strong,.place h3{font-family:var(--head)}
+.hed h1{line-height:1.22;letter-spacing:-.01em}
+.story h2{font-size:28px;line-height:1.35}
+.hub-head h1{line-height:1.05}
+/* guide place cards */
+.place{border-top:2px solid var(--ink);padding:18px 0 6px;margin:1.6em 0}
+.place .ptype{font-family:var(--sans);font-size:14px;color:var(--accent-ink);font-weight:600;margin:0 0 2px!important}
+.place h3{font-size:24px;line-height:1.35;margin:0 0 12px;font-weight:700}
+.place dl{display:grid;grid-template-columns:150px 1fr;gap:0;margin:0 0 10px;font-family:var(--sans);font-size:16px;line-height:1.75}
+.place dt{color:var(--sub);padding:9px 12px 9px 0;border-top:1px solid var(--rule)}
+.place dd{margin:0;padding:9px 0;border-top:1px solid var(--rule)}
+.place .pnote{font-size:17px;background:var(--plate);padding:12px 16px;border-radius:2px}
+.place .psrc{font-family:var(--sans);font-size:13.5px;color:var(--faint)}
+.place .psrc a{color:var(--sub)}
+.checked{font-family:var(--sans);font-size:14.5px;color:var(--sub);border-left:3px solid var(--accent);padding:4px 0 4px 14px;margin-top:2em}
+@media (max-width:600px){.place dl{grid-template-columns:1fr}.place dt{padding-bottom:0;border-top:1px solid var(--rule)}.place dd{border-top:0;padding-top:2px}}
 
 html,body{overflow-x:clip}
