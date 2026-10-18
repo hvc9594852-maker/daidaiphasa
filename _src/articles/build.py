@@ -456,12 +456,27 @@ def build_article(a):
 <section class="more"><h2>อ่านเรื่องอื่น</h2><ul class="cards">{more}</ul></section>
 </main>
 '''
-    return head(a['title'] + ' | ใดๆภาษา.com', a['desc'], path, ld) + body + FOOT
+    crumbs = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "ใดๆภาษา.com", "item": "https://daidaiphasa.com/"},
+        {"@type": "ListItem", "position": 2, "name": "บทความ", "item": "https://daidaiphasa.com/articles"},
+        {"@type": "ListItem", "position": 3, "name": a['h1'], "item": "https://daidaiphasa.com" + path}]}
+    ld["articleSection"] = a['cat']
+    ld["keywords"] = a.get('keywords', a['cat'])
+    page = head(a['title'] + ' | ใดๆภาษา.com', a['desc'], path, [ld, crumbs]) + body + FOOT
+    d = a.get('date_iso', DATE_ISO)
+    extra = (f'<meta property="article:published_time" content="{d}T09:00:00+07:00">\n'
+             f'<meta property="article:modified_time" content="{d}T09:00:00+07:00">\n'
+             f'<meta property="article:section" content="{html.escape(a["cat"])}">\n'
+             '<meta name="twitter:title" content="' + html.escape(a['title']) + '">\n'
+             '<meta name="twitter:description" content="' + html.escape(a['desc']) + '">\n'
+             '<meta name="twitter:image" content="https://daidaiphasa.com/og.jpg">\n')
+    return page.replace('<meta name="twitter:card" content="summary_large_image">\n', '<meta name="twitter:card" content="summary_large_image">\n' + extra, 1)
 
 def build_hub():
     ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": "บทความ | ใดๆภาษา.com", "inLanguage": "th",
           "url": "https://daidaiphasa.com/articles",
-          "hasPart": [{"@type": "Article", "headline": a['title'], "url": "https://daidaiphasa.com/" + a['slug']} for a in ARTICLES]}
+          "hasPart": [{"@type": "Article", "headline": a['title'], "url": "https://daidaiphasa.com/" + a['slug']} for a in ARTICLES],
+          "mainEntity": {"@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": "https://daidaiphasa.com/" + a['slug'], "name": a['h1']} for i, a in enumerate(ARTICLES)]}}
     lead = POSTS[0] if POSTS else GUIDES[2]
     gcards = ''.join(card(x, f'g{n}') for n, x in enumerate([g for g in GUIDES if g is not lead]))
     pcards = ''.join(card(x, f'p{n}') for n, x in enumerate([p for p in POSTS if p is not lead]))
