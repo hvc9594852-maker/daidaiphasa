@@ -399,7 +399,24 @@ sources=[('Wikipedia: Thai and Lao Braille', 'https://en.wikipedia.org/wiki/Thai
          ('Britannica: Louis Braille', 'https://www.britannica.com/biography/Louis-Braille')])
 
 STORIES = [A1, A2, A3, A4, A5, A6]
-ARTICLES = STORIES + GUIDES
+
+# ---- daily posts: every file in posts/ defines ARTICLE = dict(...)  (see README.md)
+import glob, importlib.util
+from covers import register_cover
+POSTS = []
+for _f in sorted(glob.glob(os.path.join(HERE, 'posts', '*.py'))):
+    _spec = importlib.util.spec_from_file_location(os.path.basename(_f)[:-3].replace('-', '_'), _f)
+    _m = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_m)
+    _a = _m.ARTICLE
+    for _k in ('slug', 'cat', 'title', 'h1', 'dek', 'desc', 'card', 'body', 'sources', 'date_iso', 'date_th', 'cover'):
+        assert _k in _a, (_f, 'missing', _k)
+    _a.setdefault('cover_cap', 'ภาพประกอบ: ใดๆภาษา'); _a.setdefault('tool', '/'); _a.setdefault('tool_name', 'เครื่องมือภาษาทั้งหมด')
+    register_cover(_a['slug'], _a['cover'])
+    POSTS.append(_a)
+POSTS.sort(key=lambda a: a['date_iso'], reverse=True)
+_slugs = [a['slug'] for a in STORIES + GUIDES + POSTS]
+assert len(_slugs) == len(set(_slugs)), 'duplicate slug'
+ARTICLES = POSTS + STORIES + GUIDES
 
 def text_len(h): return len(re.sub(r'<[^>]+>', '', re.sub(r'<svg.*?</svg>', '', h, flags=re.S)))
 
@@ -411,12 +428,12 @@ def build_article(a):
     path = '/' + a['slug']
     mins = max(3, math.ceil(text_len(a['body'] + a['dek']) / 800))
     ld = {"@context": "https://schema.org", "@type": "Article", "headline": a['title'], "description": a['desc'],
-          "inLanguage": "th", "datePublished": DATE_ISO, "dateModified": DATE_ISO, "image": "https://daidaiphasa.com/og.jpg",
+          "inLanguage": "th", "datePublished": a.get('date_iso', DATE_ISO), "dateModified": a.get('date_iso', DATE_ISO), "image": "https://daidaiphasa.com/og.jpg",
           "mainEntityOfPage": "https://daidaiphasa.com" + path,
           "author": {"@type": "Organization", "name": "ใดๆภาษา.com", "url": "https://daidaiphasa.com/"},
           "publisher": {"@type": "Organization", "name": "ใดๆภาษา.com", "url": "https://daidaiphasa.com/"}}
     src = ''.join(f'<li><a href="{u}" rel="noopener">{html.escape(t)}</a></li>' for t, u in a['sources'])
-    pool = GUIDES if a in GUIDES else STORIES
+    pool = GUIDES if a in GUIDES else (POSTS + STORIES)
     i = pool.index(a); others = [pool[(i + k) % len(pool)] for k in (1, 2, 3)]
     more = ''.join(card(o, f'r{n}') for n, o in enumerate(others))
     body = f'''<main>
@@ -427,7 +444,7 @@ def build_article(a):
 <a class="cat" href="/articles">{a['cat']}</a>
 <h1>{a['h1']}</h1>
 <p class="dek">{a['dek']}</p>
-<p class="credit"><span>เรื่อง <b>ทีมใดๆภาษา</b></span><span>{DATE_TH}</span><span>อ่าน {mins} นาที</span></p>
+<p class="credit"><span>เรื่อง <b>ทีมใดๆภาษา</b></span><span>{a.get('date_th', DATE_TH)}</span><span>อ่าน {mins} นาที</span></p>
 <hr class="rule-mark">
 </header>
 <div class="story">
@@ -445,13 +462,15 @@ def build_hub():
     ld = {"@context": "https://schema.org", "@type": "CollectionPage", "name": "บทความ | ใดๆภาษา.com", "inLanguage": "th",
           "url": "https://daidaiphasa.com/articles",
           "hasPart": [{"@type": "Article", "headline": a['title'], "url": "https://daidaiphasa.com/" + a['slug']} for a in ARTICLES]}
-    lead = GUIDES[2]
+    lead = POSTS[0] if POSTS else GUIDES[2]
     gcards = ''.join(card(x, f'g{n}') for n, x in enumerate([g for g in GUIDES if g is not lead]))
+    pcards = ''.join(card(x, f'p{n}') for n, x in enumerate([p for p in POSTS if p is not lead]))
     scards = ''.join(card(x, f's{n}') for n, x in enumerate(STORIES))
     body = f'''<main>
 <header class="hub-head"><h1>บทความ</h1><p>คู่มือหาที่เรียนภาษาพร้อมราคาและที่อยู่ และเรื่องเล่าเบื้องหลังเครื่องมือในเว็บ</p></header>
 <section class="lead-story"><a href="/{lead['slug']}"><div class="pic">{cover(lead['slug'], 'L')}</div>
 <div><span class="cat">{lead['cat']}</span><h2>{lead['h1']}</h2><p>{lead['dek']}</p></div></a></section>
+{f'<section class="hub-grid"><h2 class="sec-h">เรื่องใหม่</h2><ul class="cards">{pcards}</ul></section>' if pcards else ''}
 <section class="hub-grid"><h2 class="sec-h">ที่เรียนภาษา ราคาและที่อยู่</h2><ul class="cards">{gcards}</ul></section>
 <section class="hub-grid"><h2 class="sec-h">เรื่องเล่าเกี่ยวกับภาษา</h2><ul class="cards">{scards}</ul></section>
 </main>
@@ -464,4 +483,11 @@ if __name__ == '__main__':
     open(os.path.join(OUT, 'articles.html'), 'w', encoding='utf-8').write(build_hub())
     css = open(os.path.join(HERE, 'article.css'), encoding='utf-8').read() + '\nhtml,body{overflow-x:clip}\n'
     open(os.path.join(OUT, 'article.css'), 'w', encoding='utf-8').write(css)
+    # add any new article URL to sitemap.xml
+    sm_path = os.path.join(OUT, 'sitemap.xml')
+    if os.path.exists(sm_path):
+        sm = open(sm_path, encoding='utf-8').read()
+        add = ''.join(f'<url><loc>https://daidaiphasa.com/{a["slug"]}</loc><lastmod>{a.get("date_iso", DATE_ISO)}</lastmod></url>\n'
+                      for a in ARTICLES if f'https://daidaiphasa.com/{a["slug"]}<' not in sm)
+        if add: open(sm_path, 'w', encoding='utf-8').write(sm.replace('</urlset>', add + '</urlset>'))
     for f in sorted(os.listdir(OUT)): print(f, os.path.getsize(os.path.join(OUT, f)))

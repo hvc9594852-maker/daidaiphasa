@@ -127,6 +127,24 @@ COVERS = {'fix-wrong-keyboard-language': keyboard, 'thai-fingerspelling-chart': 
 def cover(slug, uid):
     return COVERS[slug](uid)
 
+# ---- generic typographic cover for daily posts
+# spec = {'big': 'คำหรือตัวอักษรใหญ่ (สั้นๆ 1–8 ตัว)', 'small': 'บรรทัดเล็กใต้คำใหญ่', 'bg': '#E4E8EE'}
+BG_CHOICES = ['#E9E2D5', '#E1E5DC', '#E4E8EE', '#F0E1D8', '#E7E2EC', '#DCE6E3', '#EDE4D3', '#E2E6F0']
+def _esc(t): return str(t).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+def generic(spec, slug):
+    bg = spec.get('bg') or BG_CHOICES[sum(map(ord, slug)) % len(BG_CHOICES)]
+    big = _esc(spec.get('big', '')); small = _esc(spec.get('small', ''))
+    size = 360 if len(spec.get('big', '')) <= 4 else (260 if len(spec.get('big', '')) <= 7 else 190)
+    def f(uid):
+        return frame(uid, bg, map_lines() +
+            f'<text x="800" y="560" text-anchor="middle" font-family="{SERIF},{CJK}" font-size="{size}" font-weight="700" fill="{INK}">{big}</text>'
+            f'<path d="M560 660 H1040" stroke="{ACC}" stroke-width="12" stroke-linecap="round"/>'
+            f'<text x="800" y="770" text-anchor="middle" font-family="{SANS}" font-size="52" fill="{INK}" opacity=".6">{small}</text>'
+            f'<circle cx="1460" cy="140" r="16" fill="{ACC}"/>', label=small or big)
+    return f
+def register_cover(slug, spec):
+    if slug not in COVERS: COVERS[slug] = generic(spec, slug)
+
 # ------------------------------------------------------------------ guides (where to learn)
 CJK = "'Noto Serif SC','Noto Serif JP','Noto Serif KR','Songti SC','Hiragino Mincho ProN','Apple SD Gothic Neo',serif"
 def pin(x, y, s=1.0, col=ACC):
