@@ -135,6 +135,14 @@ h1 .dot{color:var(--signal)}
 .tr-pick{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .tr-pick select{font-family:var(--body);font-size:14px;border:1px solid var(--ink);background:var(--paper);color:var(--ink);min-height:36px;padding:4px 8px;border-radius:0}
 .tr-pick span{color:var(--sub)}
+.dict-box{border-top:1px solid var(--rule)}
+.dict-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--rule)}
+.dict-item>div{min-width:0}
+.dict-item b{display:block;font-size:16px;font-weight:600}
+.dict-item small{display:block;color:var(--sub);font-size:13px;margin-top:2px}
+.dict-go{flex:0 0 auto;border:1px solid var(--ink);background:var(--paper);color:var(--ink);padding:8px 12px;min-height:40px;font:inherit;font-size:14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.dict-go:hover{background:var(--signal);color:var(--on-signal)}
+.dict-note{padding:10px 20px;color:var(--sub);font-size:12px;margin:0}
 output.tr{font-family:var(--body);font-weight:600;font-size:26px}
 textarea{flex:1;width:100%;min-height:210px;resize:vertical;border:none;padding:20px;font-family:var(--display);font-weight:600;font-size:30px;line-height:1.45;color:var(--ink);background:var(--paper)}
 textarea:focus{outline:none;background:var(--wash)}
@@ -544,6 +552,8 @@ footer a{color:#F4F4F0}
   .out-actions button{min-height:48px;font-size:14px}
   .tr-pick{width:100%;order:3}
   .tr-pick select{flex:1;min-width:0}
+  .dict-item{flex-wrap:wrap}
+  .dict-go{width:100%}
   .kb-rows{min-width:0;width:100%;gap:4px}
   .kb-row{gap:3px;justify-content:center;padding-left:0!important}
   .key{flex:0 1 30px;min-width:0;height:44px}
@@ -621,6 +631,7 @@ footer a{color:#F4F4F0}
     <li><button data-go="sign"><span>สะกดนิ้วภาษามือ</span><span class="mono">hi → <i class="mini-hand" data-hand="h"></i><i class="mini-hand" data-hand="i"></i></span></button></li>
     <li><button data-go="braille"><span>อักษรเบรลล์</span><span class="mono">hi → ⠓⠊</span></button></li>
     <li><button data-go="morse"><span>รหัสมอร์ส</span><span class="mono">sos → ...---...</span></button></li>
+    <li><button data-go="dict"><span>ค้นพจนานุกรม (ใหม่)</span><span class="mono">8 ภาษา · ฟรี</span></button></li>
   </ul>
 </section>
 
@@ -641,10 +652,12 @@ footer a{color:#F4F4F0}
       <div class="pane-head">
         <span class="lbl">ผลลัพธ์<b id="dstLabel"></b></span>
         <div class="group-pick" id="groupPick" hidden></div>
+        <div class="tr-pick" id="dictPick" hidden><select id="dictLang" aria-label="ภาษาของพจนานุกรม"></select></div>
         <div class="tr-pick" id="trPick" hidden><select id="trFrom" aria-label="แปลจากภาษา"></select><span aria-hidden="true">→</span><select id="trTo" aria-label="แปลเป็นภาษา"></select></div>
         <span class="mono" id="hint" style="color:var(--sub);text-align:right"></span>
       </div>
       <output id="out" aria-live="polite" for="src"></output>
+      <div class="dict-box" id="dictBox" hidden></div>
       <div class="out-actions">
         <button id="speak">ฟังเสียง</button>
         <button id="outReport">แจ้งข้อผิดพลาด</button>
@@ -1739,7 +1752,8 @@ footer a{color:#F4F4F0}
     {id:'lu', label:'ภาษาลู', sample:'หนูไม่รู้ ลองรัก'},
     {id:'braille', label:'อักษรเบรลล์', sample:'hello world'},
     {id:'morse', label:'รหัสมอร์ส', sample:'sos help'},
-    {id:'sign', label:'ภาษามือ', sample:'hello'}
+    {id:'sign', label:'ภาษามือ', sample:'hello'},
+    {id:'dict', label:'พจนานุกรม', sample:'house'}
   ];
   // ---------- Esperanto ⇄ Thai (word by word) ----------
   var EO_RAW = 'mi:ฉัน|ผม|ดิฉัน;vi:คุณ|เธอ;li:เขา(ชาย);ŝi:เขา(หญิง)|หล่อน;ĝi:มัน;ni:เรา|พวกเรา;ili:พวกเขา;oni:ใคร ๆ|คนทั่วไป;si:ตัวเอง;'+
@@ -2035,6 +2049,73 @@ footer a{color:#F4F4F0}
   TRL.forEach(function(x,i){ var o=document.createElement('option'); o.value=x[0]; o.textContent=x[1]; $('trFrom').appendChild(o); if(i){ var o2=o.cloneNode(true); $('trTo').appendChild(o2); } });
   $('trFrom').value='auto'; $('trTo').value='th';
   ['trFrom','trTo'].forEach(function(id){ $(id).addEventListener('change',function(){ st.trCache=null; render(); }); });
+  // ---------- dictionaries: free official/reference dictionaries, linked out (no word data is copied) ----------
+  // u = home page, q = search URL with {q} (only where the URL pattern was checked to work)
+  var DICTS = {
+    th:{n:'ไทย', l:[
+      {t:'พจนานุกรม ฉบับราชบัณฑิตยสถาน', by:'สำนักงานราชบัณฑิตยสภา', d:'ตัวสะกดและความหมายคำไทย', u:'https://dictionary.orst.go.th/'},
+      {t:'ระบบค้นคำทับศัพท์', by:'สำนักงานราชบัณฑิตยสภา', d:'เขียนคำภาษาต่างประเทศเป็นภาษาไทย', u:'https://transliteration.orst.go.th/search'},
+      {t:'ศัพท์บัญญัติ', by:'สำนักงานราชบัณฑิตยสภา', d:'คำไทยที่บัญญัติแทนศัพท์วิชาการ', u:'https://coined-word.orst.go.th/'}]},
+    en:{n:'อังกฤษ', l:[
+      {t:'Merriam-Webster', by:'Merriam-Webster', d:'อังกฤษ-อังกฤษ แบบอเมริกัน', u:'https://www.merriam-webster.com/', q:'https://www.merriam-webster.com/dictionary/{q}'}]},
+    fr:{n:'ฝรั่งเศส', l:[
+      {t:"Dictionnaire de l'Académie française", by:'Académie française', d:'ฉบับที่ 9 และฉบับเก่าตั้งแต่ปี 1694', u:'https://www.dictionnaire-academie.fr/'}]},
+    es:{n:'สเปน', l:[
+      {t:'Diccionario de la lengua española', by:'RAE ร่วมกับ ASALE', d:'ฉบับที่ 23 ออนไลน์', u:'https://dle.rae.es/', q:'https://dle.rae.es/{q}'}]},
+    id:{n:'อินโดนีเซีย', l:[
+      {t:'Kamus Besar Bahasa Indonesia (KBBI)', by:'Badan Bahasa', d:'พจนานุกรมของรัฐอินโดนีเซีย', u:'https://kbbi.kemdikbud.go.id/'}]},
+    ko:{n:'เกาหลี', l:[
+      {t:'พจนานุกรมพื้นฐานภาษาเกาหลี ฉบับภาษาไทย', by:'สถาบันภาษาเกาหลีแห่งชาติ', d:'เกาหลี-ไทย สำหรับผู้เรียน', u:'https://krdict.korean.go.kr/tha/mainAction'},
+      {t:'พจนานุกรมภาษาเกาหลีมาตรฐาน', by:'สถาบันภาษาเกาหลีแห่งชาติ', d:'เกาหลี-เกาหลี ฉบับอ้างอิง', u:'https://stdict.korean.go.kr/'}]},
+    ja:{n:'ญี่ปุ่น', l:[
+      {t:'โคโตแบงก์ (Kotobank)', by:'C-POT', d:'ค้นหลายเล่มพร้อมกัน รวม デジタル大辞泉', u:'https://kotobank.jp/'}]},
+    zh:{n:'จีน (ตัวเต็ม)', l:[
+      {t:'重編國語辭典修訂本', by:'กระทรวงศึกษาธิการไต้หวัน', d:'จีนตัวเต็ม', u:'https://dict.revised.moe.edu.tw/', q:'https://dict.revised.moe.edu.tw/search.jsp?md=1&word={q}'}]}
+  };
+  var DICT_TTS={th:'th-TH',en:'en-US',fr:'fr-FR',es:'es-ES',id:'id-ID',ko:'ko-KR',ja:'ja-JP',zh:'zh-TW'};
+  (function(){
+    var sel=$('dictLang'), o=document.createElement('option'); o.value='auto'; o.textContent='เดาภาษาให้เอง'; sel.appendChild(o);
+    Object.keys(DICTS).forEach(function(k){ var x=document.createElement('option'); x.value=k; x.textContent='พจนานุกรมภาษา'+DICTS[k].n; sel.appendChild(x); });
+    sel.value='auto'; sel.addEventListener('change',function(){ render(); });
+  })();
+  function dictLang(t){
+    var v=$('dictLang').value; if(v!=='auto' && DICTS[v]) return v;
+    if(/[฀-๿]/.test(t)) return 'th';
+    if(/[가-힯ᄀ-ᇿ㄰-㆏]/.test(t)) return 'ko';
+    if(/[぀-ヿ]/.test(t)) return 'ja';
+    if(/[一-鿿]/.test(t)) return 'zh';
+    return 'en';
+  }
+  function paintDict(q, lang){
+    var box=$('dictBox'); box.innerHTML='';
+    DICTS[lang].l.forEach(function(d){
+      var row=document.createElement('div'); row.className='dict-item';
+      var info=document.createElement('div'), b=document.createElement('b'), sm=document.createElement('small');
+      b.textContent=d.t; sm.textContent=d.by+' · '+d.d; info.appendChild(b); info.appendChild(sm); row.appendChild(info);
+      var go;
+      if(d.q && q){ go=document.createElement('a'); go.href=d.q.replace('{q}', encodeURIComponent(q)); go.textContent='เปิดผลค้นหา ↗'; }
+      else if(q){
+        go=document.createElement('button'); go.type='button'; go.textContent='คัดลอกคำแล้วเปิดเว็บ ↗';
+        go.addEventListener('click',function(){
+          window.open(d.u,'_blank','noopener');
+          try{ navigator.clipboard.writeText(q).then(function(){ toast('คัดลอก “'+q+'” แล้ว วางในช่องค้นหาของเว็บที่เปิดขึ้นมา'); },function(){}); }catch(e){}
+        });
+      } else { go=document.createElement('a'); go.href=d.u; go.textContent='เปิดเว็บ ↗'; }
+      if(go.tagName==='A'){ go.target='_blank'; go.rel='noopener'; }
+      go.className='dict-go'; row.appendChild(go); box.appendChild(row);
+    });
+    if(q){
+      var row2=document.createElement('div'); row2.className='dict-item';
+      var i2=document.createElement('div'), b2=document.createElement('b'), s2=document.createElement('small');
+      b2.textContent='แปลคำนี้เป็นภาษาไทย'; s2.textContent='ใช้เครื่องมือแปลภาษาของใดๆภาษา'; i2.appendChild(b2); i2.appendChild(s2); row2.appendChild(i2);
+      var tb=document.createElement('button'); tb.type='button'; tb.className='dict-go'; tb.textContent='แปลภาษา →';
+      tb.addEventListener('click',function(){ $('trFrom').value='auto'; $('trTo').value= lang==='th' ? 'en' : 'th'; st.trCache=null; setMode('tr'); });
+      row2.appendChild(tb); box.appendChild(row2);
+    }
+    var note=document.createElement('p'); note.className='dict-note';
+    note.textContent='ทุกลิงก์เป็นเว็บของผู้ทำพจนานุกรมเอง ค้นได้ฟรี ใดๆภาษาไม่ได้คัดลอกข้อมูลคำมาเก็บไว้';
+    box.appendChild(note);
+  }
   function setMode(id, sample){
     st.mode=id; st.reverse=false;
     if(sample){ var m=MODES.filter(function(x){return x.id===id;})[0]; src.value=m.sample; if(id==='slang') st.group='lgbt'; }
@@ -2089,6 +2170,11 @@ footer a{color:#F4F4F0}
     } else if(mode==='tr'){
       var tp=trPair(t); sl=TRN[tp.from]||'ตรวจหาภาษาเอง'; dl=TRN[tp.to]; cls='tr';
       if(!t.trim()){ res=''; } else if(st.trCache && st.trCache.k===tp.from+'|'+tp.to+'|'+t){ res=st.trCache.v; dl=TRN[tp.to]+' · '+st.trCache.by; } else { res='กำลังแปล…'; cls='tr note'; clearTimeout(st.trT); st.trT=setTimeout(function(){ trGo(t); },550); }
+    } else if(mode==='dict'){
+      var dq=t.trim().slice(0,100), dlg=dictLang(dq); cls='note';
+      sl='คำที่จะค้น'; dl='พจนานุกรมภาษา'+DICTS[dlg].n;
+      res = dq ? 'ค้นคำ “'+dq+'” ในพจนานุกรมภาษา'+DICTS[dlg].n+'\nเลือกพจนานุกรมด้านล่าง ทุกเว็บค้นได้ฟรี' : 'พิมพ์คำที่อยากค้นในช่องต้นฉบับ แล้วเลือกพจนานุกรมด้านล่าง';
+      hint = ($('dictLang').value==='auto' && dlg==='en') ? 'คำฝรั่งเศส สเปน อินโดนีเซีย เลือกภาษาที่เมนู' : ''; paintDict(dq, dlg);
     } else if(mode==='sign'){
       if(isThai){ res=''; sl='ภาษาไทย'; dl='ตัวสะกดนิ้วมือไทย'; hint='ตามแบบของสมาคมคนหูหนวกแห่งประเทศไทย'; }
       else { res=t.toUpperCase(); sl='ตัวอักษรอังกฤษ'; dl='ตัวสะกดนิ้ว ASL'; hint='มือขวา หันฝ่ามือออก'; }
@@ -2111,8 +2197,9 @@ footer a{color:#F4F4F0}
     $('count').textContent=Array.from(t).length+' ตัวอักษร';
     $('groupPick').hidden = mode!=='slang';
     $('trPick').hidden = mode!=='tr'; if(mode==='tr') $('hint').textContent='';
+    $('dictPick').hidden = mode!=='dict'; $('dictBox').hidden = mode!=='dict';
     $('hint').hidden = mode==='slang';
-    $('swap').hidden = mode==='lu' || mode==='sign' || mode==='eo';
+    $('swap').hidden = mode==='lu' || mode==='sign' || mode==='eo' || mode==='dict';
     $('aiBtn').hidden = !((mode==='romanize'||mode==='eo') && store.ai); $('aiBtn').textContent = mode==='eo' ? 'ให้ Claude แปลทั้งประโยค' : mode==='sign' ? 'ให้ Claude แปลความหมาย' : 'ให้ Claude ถอดเสียง';
     Array.prototype.forEach.call(document.querySelectorAll('.chip'),function(c){c.setAttribute('aria-pressed', c.dataset.g===st.group?'true':'false');});
     MODES.forEach(function(m){ $('tab-'+m.id).setAttribute('aria-selected', m.id===mode?'true':'false'); });
@@ -2170,6 +2257,7 @@ footer a{color:#F4F4F0}
   $('speak').addEventListener('click',function(){
     if(st.mode==='morse'){ var code=/^[\s.\-\/]+$/.test(src.value)?src.value:out.textContent; beepMorse(code); return; }
     if(st.mode==='braille'){ toast('อักษรเบรลล์ใช้อ่านด้วยการสัมผัส ไม่มีเสียงอ่าน'); return; }
+    if(st.mode==='dict'){ try{ var du=new SpeechSynthesisUtterance(src.value.trim()); du.lang=DICT_TTS[dictLang(src.value)]||'en-US'; speechSynthesis.cancel(); speechSynthesis.speak(du); }catch(e){ toast('เบราว์เซอร์นี้อ่านออกเสียงไม่ได้'); } return; }
     if(st.mode==='sign'){ toast('ภาษามือเป็นภาษาที่ใช้ตาดู ไม่มีเสียงอ่าน'); return; }
     if(st.mode==='tr'){ try{ var tu=new SpeechSynthesisUtterance(out.textContent); tu.lang=trPair(src.value).to.replace('zh-Hans','zh-CN'); speechSynthesis.cancel(); speechSynthesis.speak(tu); }catch(e){ toast('เบราว์เซอร์นี้อ่านออกเสียงไม่ได้'); } return; }
     if(st.mode==='eo'){ try{ var eot=/[฀-๿]/.test(src.value)?out.textContent:src.value; var ue=new SpeechSynthesisUtterance(eoX(eot.replace(/\[[^\]]*\]/g,''))); ue.lang='eo'; speechSynthesis.cancel(); speechSynthesis.speak(ue); }catch(e){ toast('เบราว์เซอร์นี้อ่านออกเสียงไม่ได้'); } return; }
@@ -2196,6 +2284,7 @@ footer a{color:#F4F4F0}
     {go:'lu', hw:'ภาษาลู', say:'/pʰaː.sǎː luː/', pos:'น.', def:'ภาษารหัสของวัยรุ่นไทย เปลี่ยนพยางค์เดียวเป็นสองพยางค์ด้วยเสียง ล และสระอู', ex:'ไม่รู้ → ไล่มู่ ซู้รี้'},
     {go:'braille', hw:'เบรลล์', say:'/breːn/', pos:'น.', def:'แปลงข้อความเป็นอักษรเบรลล์ภาษาอังกฤษเกรด 1 และแปลงกลับเป็นตัวอักษรได้', ex:'book → ⠃⠕⠕⠅'},
     {go:'sign', hw:'สะกดนิ้ว', say:'/sa.kòt níw/', pos:'ก.', def:'พิมพ์ภาษาไทยเพื่อดูตัวสะกดนิ้วมือไทย หรือพิมพ์ภาษาอังกฤษเพื่อดูตัวสะกดนิ้วแบบสากล (ASL) ใช้สะกดชื่อคนหรือคำที่ยังไม่มีท่ามือ', ex:'สมชาย → ส ม ช า ย'},
+    {go:'dict', hw:'พจนานุกรม', say:'/pót.ja.naː.nú.krom/', pos:'น.', def:'พิมพ์คำแล้วเปิดพจนานุกรมทางการที่ค้นได้ฟรีของ 8 ภาษา ทั้งไทย อังกฤษ ฝรั่งเศส สเปน อินโดนีเซีย เกาหลี ญี่ปุ่น และจีน', ex:'casa → RAE'},
     {go:'morse', hw:'มอร์ส', say:'/mɔːt/', pos:'น.', def:'แปลงข้อความเป็นรหัสมอร์สและแปลงกลับ กดฟังเสียงตามจังหวะจริงได้', ex:'hi → .... ..'},
     {go:null, hw:'แปล', say:'/plɛː/', pos:'ก.', def:'แปลมากกว่า 100 ภาษา บอกระดับความสุภาพ และยกตัวอย่างประโยคจริง เปิดให้ใช้เร็ว ๆ นี้', ex:'ขอบคุณ → ありがとう'}
   ];
@@ -6771,7 +6860,7 @@ footer a{color:#F4F4F0}
   // real site: one URL per tool, so each tool can be found in search
   (function(){
     if(!/^https?:$/.test(location.protocol) || (window.claude && window.claude.use)) return;
-    var R=[["/keyboard", "fix", null, "แก้ภาษาลืมสลับแป้น พิมพ์ผิดภาษา แปลง l;ylfu เป็น สวัสดี | ใดๆภาษา.com", "พิมพ์ลืมสลับแป้นภาษาไทย-อังกฤษ? วางข้อความแล้วแปลงกลับเป็นคำที่ตั้งใจพิมพ์ทันที ฟรี ไม่ต้องติดตั้ง เดาทิศทางให้เอง พร้อมแป้นพิมพ์เกษมณี"], ["/romanize", "romanize", null, "ถอดเสียงภาษาไทยเป็นอังกฤษ (RTGS) และคำอ่านภาษาอังกฤษเป็นไทย | ใดๆภาษา.com", "ถอดเสียงชื่อและคำภาษาไทยเป็นอักษรโรมันตามหลักราชบัณฑิตยสถาน และเขียนคำอ่านภาษาไทยของคำภาษาอังกฤษ ฟรี"], ["/translate", "tr", null, "แปลภาษาไทย อังกฤษ จีน ญี่ปุ่น เกาหลี และอีก 20 ภาษา ฟรี | ใดๆภาษา.com", "แปลภาษาไทยกับอีก 20 ภาษา ตรวจหาภาษาเอง ฟังเสียงได้ ใช้ได้ทุกเบราว์เซอร์และมือถือ ฟรี"], ["/slang", "slang", null, "ศัพท์วัยรุ่น ภาษา LGBTQ+ ภาษาในเรือนจำ แปลความหมาย | ใดๆภาษา.com", "ถอดความศัพท์เฉพาะกลุ่ม ภาษาวัยรุ่นและโซเชียล ภาษา LGBTQ+ และภาษาในเรือนจำ พร้อมความหมายและบริบทการใช้"], ["/pasa-lu", "lu", null, "แปลงภาษาลู ภาษาลับของวัยรุ่นไทย ไป-กลับ | ใดๆภาษา.com", "แปลงคำไทยเป็นภาษาลูและแปลงกลับ เช่น รัก → ซักรุก ใช้ได้ทุกคำ ฟรี"], ["/braille", "braille", null, "แปลงข้อความเป็นอักษรเบรลล์ และแปลงกลับ | ใดๆภาษา.com", "แปลงตัวอักษรเป็นอักษรเบรลล์ภาษาอังกฤษเกรด 1 และแปลงอักษรเบรลล์กลับเป็นตัวอักษร ฟรี"], ["/morse", "morse", null, "แปลรหัสมอร์ส ไทย-อังกฤษ พร้อมเสียง | ใดๆภาษา.com", "แปลงข้อความเป็นรหัสมอร์สและแปลงกลับ ฟังเสียงจังหวะจริงได้ ฟรี"], ["/sign-language", "sign", null, "สะกดนิ้วภาษามือไทย ก-ฮ สระ วรรณยุกต์ และ ASL | ใดๆภาษา.com", "พิมพ์ชื่อภาษาไทยแล้วดูท่าสะกดนิ้วมือไทยครบพยัญชนะ สระ วรรณยุกต์ หรือพิมพ์อังกฤษเพื่อดูตัวสะกดนิ้ว ASL"], ["/globe", null, "globe", "ลูกโลกภาษา ภาษาของ 197 ประเทศทั่วโลก | ใดๆภาษา.com", "หมุนลูกโลกแล้วคลิกประเทศเพื่อดูภาษา ประวัติ และคำทักทายของ 197 ประเทศ"], ["/history", null, "history", "ประวัติภาษา จากเสียงแรกถึงภาษาวันนี้ | ใดๆภาษา.com", "เรื่องเล่าประวัติภาษาของมนุษย์ 13 บท ตั้งแต่เสียงแรก อักษรแรก จนถึงภาษาบนโซเชียล"], ["/lexicon", null, "lexicon", "คลังคำศัพท์เฉพาะกลุ่ม พร้อมความหมายและที่มา | ใดๆภาษา.com", "ค้นหาคำศัพท์เฉพาะกลุ่ม ความหมาย และแหล่งที่มา"], ["/learn", null, "learn", "เรียนภาษา วันละคำ ทายความหมาย | ใดๆภาษา.com", "เรียนภาษาวันละคำ ทายความหมาย บันทึกคำ และทบทวนด้วยการ์ดคำศัพท์"]];
+    var R=[["/keyboard", "fix", null, "แก้ภาษาลืมสลับแป้น พิมพ์ผิดภาษา แปลง l;ylfu เป็น สวัสดี | ใดๆภาษา.com", "พิมพ์ลืมสลับแป้นภาษาไทย-อังกฤษ? วางข้อความแล้วแปลงกลับเป็นคำที่ตั้งใจพิมพ์ทันที ฟรี ไม่ต้องติดตั้ง เดาทิศทางให้เอง พร้อมแป้นพิมพ์เกษมณี"], ["/romanize", "romanize", null, "ถอดเสียงภาษาไทยเป็นอังกฤษ (RTGS) และคำอ่านภาษาอังกฤษเป็นไทย | ใดๆภาษา.com", "ถอดเสียงชื่อและคำภาษาไทยเป็นอักษรโรมันตามหลักราชบัณฑิตยสถาน และเขียนคำอ่านภาษาไทยของคำภาษาอังกฤษ ฟรี"], ["/translate", "tr", null, "แปลภาษาไทย อังกฤษ จีน ญี่ปุ่น เกาหลี และอีก 20 ภาษา ฟรี | ใดๆภาษา.com", "แปลภาษาไทยกับอีก 20 ภาษา ตรวจหาภาษาเอง ฟังเสียงได้ ใช้ได้ทุกเบราว์เซอร์และมือถือ ฟรี"], ["/slang", "slang", null, "ศัพท์วัยรุ่น ภาษา LGBTQ+ ภาษาในเรือนจำ แปลความหมาย | ใดๆภาษา.com", "ถอดความศัพท์เฉพาะกลุ่ม ภาษาวัยรุ่นและโซเชียล ภาษา LGBTQ+ และภาษาในเรือนจำ พร้อมความหมายและบริบทการใช้"], ["/pasa-lu", "lu", null, "แปลงภาษาลู ภาษาลับของวัยรุ่นไทย ไป-กลับ | ใดๆภาษา.com", "แปลงคำไทยเป็นภาษาลูและแปลงกลับ เช่น รัก → ซักรุก ใช้ได้ทุกคำ ฟรี"], ["/braille", "braille", null, "แปลงข้อความเป็นอักษรเบรลล์ และแปลงกลับ | ใดๆภาษา.com", "แปลงตัวอักษรเป็นอักษรเบรลล์ภาษาอังกฤษเกรด 1 และแปลงอักษรเบรลล์กลับเป็นตัวอักษร ฟรี"], ["/morse", "morse", null, "แปลรหัสมอร์ส ไทย-อังกฤษ พร้อมเสียง | ใดๆภาษา.com", "แปลงข้อความเป็นรหัสมอร์สและแปลงกลับ ฟังเสียงจังหวะจริงได้ ฟรี"], ["/dictionary", "dict", null, "ค้นพจนานุกรมทางการ ไทย อังกฤษ ฝรั่งเศส สเปน เกาหลี ญี่ปุ่น จีน ฟรี | ใดๆภาษา.com", "พิมพ์คำแล้วเปิดพจนานุกรมอ้างอิงที่ค้นได้ฟรี เช่น พจนานุกรมราชบัณฑิตยสถาน RAE Académie française พจนานุกรมเกาหลี-ไทย และ KBBI"], ["/sign-language", "sign", null, "สะกดนิ้วภาษามือไทย ก-ฮ สระ วรรณยุกต์ และ ASL | ใดๆภาษา.com", "พิมพ์ชื่อภาษาไทยแล้วดูท่าสะกดนิ้วมือไทยครบพยัญชนะ สระ วรรณยุกต์ หรือพิมพ์อังกฤษเพื่อดูตัวสะกดนิ้ว ASL"], ["/globe", null, "globe", "ลูกโลกภาษา ภาษาของ 197 ประเทศทั่วโลก | ใดๆภาษา.com", "หมุนลูกโลกแล้วคลิกประเทศเพื่อดูภาษา ประวัติ และคำทักทายของ 197 ประเทศ"], ["/history", null, "history", "ประวัติภาษา จากเสียงแรกถึงภาษาวันนี้ | ใดๆภาษา.com", "เรื่องเล่าประวัติภาษาของมนุษย์ 13 บท ตั้งแต่เสียงแรก อักษรแรก จนถึงภาษาบนโซเชียล"], ["/lexicon", null, "lexicon", "คลังคำศัพท์เฉพาะกลุ่ม พร้อมความหมายและที่มา | ใดๆภาษา.com", "ค้นหาคำศัพท์เฉพาะกลุ่ม ความหมาย และแหล่งที่มา"], ["/learn", null, "learn", "เรียนภาษา วันละคำ ทายความหมาย | ใดๆภาษา.com", "เรียนภาษาวันละคำ ทายความหมาย บันทึกคำ และทบทวนด้วยการ์ดคำศัพท์"]];
     var path=location.pathname.replace(/\/+$/,'')||'/', hit=null;
     R.forEach(function(r){ if(r[0]===path) hit=r; });
     function meta(sel,attr,val){ var m=document.querySelector(sel); if(m) m.setAttribute(attr,val); }
