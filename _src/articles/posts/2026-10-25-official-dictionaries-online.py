@@ -1,0 +1,70 @@
+ARTICLE = dict(
+slug='official-dictionaries-online',
+date_iso='2026-10-25', date_th='25 ตุลาคม 2569',
+cat='พจนานุกรมและคำ', tool='/translate', tool_name='แปลภาษา',
+cover={'big': 'ค้นคำ', 'small': 'พจนานุกรมอ้างอิง 10 ภาษา', 'bg': '#E4E9E6'},
+title='รวมลิงก์พจนานุกรมทางการของแต่ละภาษา ค้นออนไลน์ได้ที่ไหน ไทย อังกฤษ ฝรั่งเศส สเปน เยอรมัน ญี่ปุ่น เกาหลี จีน อินโดนีเซีย อิตาลี',
+h1='เปิดเล่มที่เจ้าของภาษาเปิด',
+dek='เวลาสงสัยว่าคำไหนสะกดถูกหรือแปลว่าอะไรกันแน่ เว็บแปลภาษาช่วยได้แค่คร่าวๆ คำตอบที่เชื่อถือได้ที่สุดอยู่ในพจนานุกรมที่คนในประเทศนั้นใช้อ้างอิงกันเอง และหลายเล่มก็เปิดให้ค้นฟรี',
+desc='รวมลิงก์พจนานุกรมอ้างอิงที่ค้นออนไลน์ได้ของ 10 ภาษา พจนานุกรมราชบัณฑิตยสถาน คำทับศัพท์ ศัพท์บัญญัติ Académie française RAE Duden Merriam-Webster Oxford Learner\'s โคโตแบงก์ พจนานุกรมภาษาเกาหลีมาตรฐาน พจนานุกรมเกาหลี-ไทย KBBI และ Treccani',
+card='ลิงก์พจนานุกรมที่เจ้าของภาษาใช้อ้างอิงจริง 10 ภาษา บอกด้วยว่าเล่มไหนเป็นของรัฐ เล่มไหนเป็นของสำนักพิมพ์ และเล่มไหนมีภาษาไทย',
+body='''
+<p class="first">สมมติว่าเพื่อนส่งคำภาษาสเปนมาหนึ่งคำ แล้วเว็บแปลภาษาสองเว็บให้ความหมายไม่ตรงกัน หรือกำลังเขียนรายงานแล้วไม่แน่ใจว่าคำทับศัพท์คำหนึ่งต้องสะกดแบบไหน ทางที่แน่นอนที่สุดคือไปเปิดเล่มที่คนในประเทศนั้นใช้อ้างอิงกันเอง หน้านี้รวมลิงก์ไว้ให้ในที่เดียว ทุกลิงก์เป็นเว็บของหน่วยงานหรือสำนักพิมพ์ที่ทำพจนานุกรมเล่มนั้นเอง</p>
+<p>ถ้าอยากรู้ว่าทำไมแต่ละประเทศถึงมีเล่มอ้างอิงคนละแบบ บางประเทศให้รัฐทำ บางประเทศปล่อยให้สำนักพิมพ์ทำ อ่านเรื่องเบื้องหลังได้ใน<a href="/national-dictionaries">ใครเป็นเจ้าของคำว่าถูก</a></p>
+
+<h2>ภาษาไทย</h2>
+<p>สำนักงานราชบัณฑิตยสภามีเว็บค้นคำที่คนไทยควรรู้จักอยู่สามเว็บ เว็บแรกคือพจนานุกรม ใช้ตรวจตัวสะกดและความหมายของคำไทย เว็บที่สองคือระบบค้นคำทับศัพท์ ช่วยตอบคำถามว่าคำภาษาต่างประเทศควรเขียนเป็นภาษาไทยอย่างไร เว็บที่สามคือศัพท์บัญญัติ ใช้หาคำไทยที่บัญญัติขึ้นแทนศัพท์วิชาการภาษาอังกฤษ</p>
+
+<div class="scroll"><table class="spec">
+<thead><tr><th>ใช้ทำอะไร</th><th>ลิงก์</th></tr></thead>
+<tbody>
+<tr><td>ตรวจตัวสะกดและความหมายคำไทย</td><td><a href="https://dictionary.orst.go.th/" rel="noopener">dictionary.orst.go.th</a></td></tr>
+<tr><td>เขียนคำภาษาต่างประเทศเป็นภาษาไทย</td><td><a href="https://transliteration.orst.go.th/search" rel="noopener">transliteration.orst.go.th</a></td></tr>
+<tr><td>หาศัพท์บัญญัติแทนศัพท์วิชาการ</td><td><a href="https://coined-word.orst.go.th/" rel="noopener">coined-word.orst.go.th</a></td></tr>
+</tbody></table></div>
+
+<h2>ภาษายุโรป</h2>
+<p>ฝรั่งเศสและสเปนมีราชบัณฑิตยสถานเป็นผู้ทำพจนานุกรม และเปิดให้ค้นออนไลน์ เว็บของ Académie française มีพจนานุกรมฉบับที่ 9 ที่ทำเสร็จในเดือนพฤศจิกายน 2024 มีบทความของฉบับที่ 10 ที่กำลังทำอยู่บางส่วน และยังเปิดให้อ่านฉบับเก่าทั้งแปดฉบับตั้งแต่ปี 1694 ถึง 1935 ส่วนเว็บของ RAE เป็นพจนานุกรมภาษาสเปนฉบับที่ 23 ในรูปแบบออนไลน์ ซึ่งทำร่วมกับสมาคมราชบัณฑิตภาษาสเปน (ASALE)</p>
+<p>ภาษาเยอรมัน อังกฤษ และอิตาลี ไม่มีหน่วยงานรัฐเป็นผู้ทำพจนานุกรม เล่มที่คนใช้อ้างอิงกันจึงมาจากสำนักพิมพ์ ส่วนใหญ่ค้นคำพื้นฐานได้ แต่มีบริการเสริมแบบเสียเงินหรือมีโฆษณา สำหรับภาษาอังกฤษ ถ้ายังเรียนอยู่ Oxford Learner's Dictionaries ของสำนักพิมพ์มหาวิทยาลัยออกซฟอร์ดจะอธิบายความหมายด้วยภาษาที่อ่านง่ายกว่า ส่วนถ้าอยากรู้ว่าคนอเมริกันใช้คำอย่างไร ให้ดูที่ Merriam-Webster</p>
+
+<div class="scroll"><table class="spec">
+<thead><tr><th>ภาษา</th><th>พจนานุกรม (กดเพื่อเปิด)</th><th>ผู้ทำ</th></tr></thead>
+<tbody>
+<tr><td>ฝรั่งเศส</td><td><a href="https://www.dictionnaire-academie.fr/" rel="noopener">Dictionnaire de l'Académie française</a></td><td>Académie française</td></tr>
+<tr><td>สเปน</td><td><a href="https://dle.rae.es/" rel="noopener">Diccionario de la lengua española</a></td><td>RAE ร่วมกับ ASALE</td></tr>
+<tr><td>เยอรมัน</td><td><a href="https://www.duden.de/woerterbuch" rel="noopener">Duden Online-Wörterbuch</a></td><td>สำนักพิมพ์ Duden</td></tr>
+<tr><td>อังกฤษ (ผู้เรียน)</td><td><a href="https://www.oxfordlearnersdictionaries.com/" rel="noopener">Oxford Learner's Dictionaries</a></td><td>Oxford University Press</td></tr>
+<tr><td>อังกฤษ (อเมริกัน)</td><td><a href="https://www.merriam-webster.com/" rel="noopener">Merriam-Webster</a></td><td>Merriam-Webster</td></tr>
+<tr><td>อิตาลี</td><td><a href="https://www.treccani.it/vocabolario/" rel="noopener">Vocabolario Treccani</a></td><td>Istituto della Enciclopedia Italiana</td></tr>
+</tbody></table></div>
+
+<h2>ภาษาเอเชีย</h2>
+<p>คนไทยที่เรียนภาษาเกาหลีโชคดีกว่าภาษาอื่น เพราะสถาบันภาษาเกาหลีแห่งชาติทำพจนานุกรมพื้นฐานภาษาเกาหลีสำหรับผู้เรียนเป็นฉบับภาษาไทยด้วย แต่ละคำมีคำแปลภาษาไทยกำกับ ถ้าต้องการคำตอบที่ละเอียดกว่านั้น ให้ใช้พจนานุกรมภาษาเกาหลีมาตรฐานของสถาบันเดียวกัน ซึ่งเป็นพจนานุกรมภาษาเกาหลีล้วน</p>
+<p>ภาษาญี่ปุ่นไม่มีพจนานุกรมของรัฐ เว็บที่สะดวกที่สุดคือโคโตแบงก์ (Kotobank) ซึ่งค้นได้หลายเล่มพร้อมกัน รวมถึงพจนานุกรม デジタル大辞泉 สำหรับภาษาจีน พจนานุกรมของกระทรวงศึกษาธิการไต้หวันเปิดให้ค้นฟรี แต่ใช้อักษรจีนตัวเต็ม ไม่ใช่ตัวย่อที่ใช้ในจีนแผ่นดินใหญ่ ฉบับในลิงก์เป็นฉบับเต็มที่ทางกระทรวงบอกว่าทำไว้สำหรับนักวิจัยภาษา ส่วนนักเรียนทางกระทรวงแนะนำให้ใช้ฉบับย่อแทน ส่วนภาษาอินโดนีเซียมีพจนานุกรมของรัฐชื่อ KBBI ที่สำนักงานพัฒนาภาษาของอินโดนีเซียเป็นผู้รวบรวม ฉบับที่ 6 เปิดตัวเมื่อเดือนตุลาคม 2023</p>
+
+<div class="scroll"><table class="spec">
+<thead><tr><th>ภาษา</th><th>พจนานุกรม (กดเพื่อเปิด)</th><th>ผู้ทำ</th></tr></thead>
+<tbody>
+<tr><td>เกาหลี-ไทย</td><td><a href="https://krdict.korean.go.kr/tha/mainAction" rel="noopener">พจนานุกรมพื้นฐานภาษาเกาหลี ฉบับภาษาไทย (한국어기초사전)</a></td><td>สถาบันภาษาเกาหลีแห่งชาติ</td></tr>
+<tr><td>เกาหลี</td><td><a href="https://stdict.korean.go.kr/" rel="noopener">พจนานุกรมภาษาเกาหลีมาตรฐาน (표준국어대사전)</a></td><td>สถาบันภาษาเกาหลีแห่งชาติ</td></tr>
+<tr><td>ญี่ปุ่น</td><td><a href="https://kotobank.jp/" rel="noopener">โคโตแบงก์ (รวม デジタル大辞泉)</a></td><td>C-POT</td></tr>
+<tr><td>จีน (ตัวเต็ม)</td><td><a href="https://dict.revised.moe.edu.tw/" rel="noopener">重編國語辭典修訂本</a></td><td>กระทรวงศึกษาธิการไต้หวัน</td></tr>
+<tr><td>อินโดนีเซีย</td><td><a href="https://kbbi.kemdikbud.go.id/" rel="noopener">Kamus Besar Bahasa Indonesia (KBBI)</a></td><td>Badan Bahasa</td></tr>
+</tbody></table></div>
+
+<h2>ใช้พจนานุกรมภาษาเดียวให้คุ้ม</h2>
+<p>พจนานุกรมในหน้านี้ส่วนใหญ่อธิบายด้วยภาษาเดียวกับคำที่ค้น ตอนแรกอาจรู้สึกยาก ลองใช้คู่กับเครื่องมือแปลภาษา โดยแปลคำอธิบายทั้งประโยคเพื่อให้เข้าใจภาพรวมก่อน แล้วค่อยกลับมาอ่านตัวอย่างประโยคในพจนานุกรม ตัวอย่างประโยคเป็นส่วนที่เว็บแปลภาษาให้ไม่ได้ เพราะมันบอกว่าเจ้าของภาษาใช้คำนั้นกับคำไหน และในสถานการณ์แบบไหน</p>
+<p class="end">หน้านี้เลือกเฉพาะเว็บของผู้ทำพจนานุกรมเอง ไม่รวมเว็บที่คัดลอกข้อมูลมาจากที่อื่น ถ้าลิงก์ไหนเปลี่ยนที่อยู่หรือเปิดไม่ได้ แจ้งเราได้ที่<a href="/contact">หน้าติดต่อ</a></p>
+''',
+sources=[
+    ('สำนักงานราชบัณฑิตยสภา (ลิงก์บริการค้นคำจากหน้าแรก)', 'https://www.orst.go.th/'),
+    ('Dictionnaire de l’Académie française', 'https://www.dictionnaire-academie.fr/'),
+    ('RAE: Diccionario de la lengua española, Modo de cita', 'https://dle.rae.es/contenido/cita'),
+    ('Wikipedia: Diccionario de la lengua española', 'https://en.wikipedia.org/wiki/Diccionario_de_la_lengua_espa%C3%B1ola'),
+    ('National Institute of Korean Language: Korean-Thai Learners’ Dictionary', 'https://krdict.korean.go.kr/tha/mainAction'),
+    ('Wikipedia: Standard Korean Language Dictionary', 'https://en.wikipedia.org/wiki/Standard_Korean_Language_Dictionary'),
+    ('Kotobank', 'https://kotobank.jp/'),
+    ('教育部《重編國語辭典修訂本》', 'https://dict.revised.moe.edu.tw/'),
+    ('Wikipedia: Kamus Besar Bahasa Indonesia', 'https://en.wikipedia.org/wiki/Kamus_Besar_Bahasa_Indonesia'),
+],
+)
