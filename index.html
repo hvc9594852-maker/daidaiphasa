@@ -36,7 +36,7 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2391353056454673" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Bai+Jamjuree:wght@400;500;600&family=Silkscreen:wght@400;700&family=VT323&family=Noto+Serif+Thai:wght@400;600;700&family=Sriracha&display=swap">
-<link rel="stylesheet" href="/rx.css?v=2">
+<link rel="stylesheet" href="/rx.css?v=3">
 <style>
 /* Layout: printed-dictionary page with game type — ruled black frames, one orange signal, wide gutters */
 :root{
@@ -665,7 +665,7 @@ footer a{color:#F4F4F0}
   </div>
 </section>
 
-<section class="wrap tool" id="tool" aria-label="เครื่องแปลง">
+<section class="wrap tool rx-win" data-win="เครื่องแปลง.exe" id="tool" aria-label="เครื่องแปลง">
   <div class="tabs" role="tablist" aria-label="โหมดแปลง" id="tabs"></div>
   <div class="panes">
     <div class="pane src">
@@ -703,7 +703,7 @@ footer a{color:#F4F4F0}
 </section>
 
 <section class="globe-sec" id="globe">
-  <div class="wrap" style="padding-block:56px">
+  <div class="wrap rx-win" data-win="ลูกโลกภาษา" style="padding-block:56px">
     <div class="sec-head">
       <h2>ลูกโลกภาษา</h2>
       <span class="mono sec-sub">หมุนลูกโลกแล้วคลิกประเทศ เพื่อเข้าไปดูภาษาของประเทศนั้น</span>
@@ -725,7 +725,7 @@ footer a{color:#F4F4F0}
 </section>
 
 <section class="history" id="history" aria-label="เรื่องเล่าประวัติภาษา">
-  <div class="wrap" style="padding-block:56px">
+  <div class="wrap rx-win" data-win="ประวัติภาษา" style="padding-block:56px">
     <div class="sec-head">
       <h2>จากเสียงแรก ถึงภาษาวันนี้</h2>
       <span class="mono sec-sub">เรื่องเล่า 13 บท · กดลูกศรหรือปัดเพื่อเปลี่ยนหน้า</span>
@@ -849,7 +849,7 @@ footer a{color:#F4F4F0}
 </section>
 
 <section class="sec" id="tools">
-  <div class="wrap" style="padding-block:56px">
+  <div class="wrap rx-win" data-win="เครื่องมือทั้งหมด" style="padding-block:56px">
     <div class="sec-head">
       <h2>เครื่องมือ</h2>
       <span class="mono" style="color:var(--sub)">กดที่คำเพื่อเปิดเครื่องมือ</span>
@@ -859,7 +859,7 @@ footer a{color:#F4F4F0}
 </section>
 
 <section class="community" id="community">
-  <div class="wrap">
+  <div class="wrap rx-win" data-win="ภาษาของกลุ่มคน">
     <div class="intro">
       <h2>ภาษาของกลุ่มคน ก็คือภาษาจริง</h2>
       <p>ศัพท์ที่ไม่มีในพจนานุกรมฉบับไหน ถอดความพร้อมที่มาและบริบท เขียนและตรวจทานโดยคนในชุมชนเอง</p>
@@ -869,7 +869,7 @@ footer a{color:#F4F4F0}
 </section>
 
 <section class="sec lexicon" id="lexicon">
-  <div class="wrap" style="padding-block:56px">
+  <div class="wrap rx-win" data-win="คลังคำ" style="padding-block:56px">
     <div class="sec-head">
       <h2>คลังคำ</h2>
       <span class="mono" id="lexCount" style="color:var(--sub)"></span>
@@ -897,7 +897,7 @@ footer a{color:#F4F4F0}
 </section>
 
 <section class="learn" id="learn">
-  <div class="wrap">
+  <div class="wrap rx-win" data-win="เรียนภาษา วันละคำ">
     <div class="sec-head"><h2>เรียนภาษา วันละคำ</h2><span class="mono" id="wodStreak" style="color:var(--sub)"></span></div>
     <div class="learn-grid">
       <div class="wod">
@@ -945,7 +945,7 @@ footer a{color:#F4F4F0}
 </section>
 
 <section class="sec contrib" id="contribute">
-  <div class="wrap">
+  <div class="wrap rx-win" data-win="เขียนศัพท์เพิ่ม">
     <div class="lead">
       <h2>รู้ศัพท์ที่เรายังไม่มี? เขียนเพิ่มได้เลย</h2>
       <p>ส่งคำ ความหมาย และตัวอย่างการใช้ คนในชุมชนจะช่วยตรวจทานก่อนเผยแพร่ เพื่อให้ถูกต้องและให้เกียรติเจ้าของภาษา</p>
@@ -967,7 +967,7 @@ footer a{color:#F4F4F0}
 </main>
 
 <section class="sec" id="inbox" hidden>
-  <div class="wrap" style="padding-block:56px">
+  <div class="wrap rx-win" data-win="กล่องข้อความ" style="padding-block:56px">
     <div class="sec-head"><h2>กล่องรายงาน</h2><span class="mono" style="color:var(--sub)">เห็นเฉพาะผู้ดูแลเว็บ</span></div>
     <p id="inboxStatus" class="mono" style="color:var(--sub)"></p>
     <label class="mono" style="display:flex;gap:8px;align-items:center;min-height:44px"><input type="checkbox" id="inboxDone"> แสดงรายการที่เสร็จแล้วด้วย</label>
@@ -1003,7 +1003,7 @@ footer a{color:#F4F4F0}
 </dialog>
 
 <section class="sec feedback" id="feedback">
-  <div class="wrap fb-wrap">
+  <div class="wrap fb-wrap rx-win" data-win="แจ้งปัญหา">
     <div class="fb-intro">
       <h2>พบปัญหา? บอกเรา</h2>
       <p>เจอข้อมูลผิด ปุ่มกดไม่ได้ หน้าแสดงผลแปลก ๆ หรืออยากให้เพิ่มอะไร เขียนมาได้เลย</p>

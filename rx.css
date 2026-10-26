@@ -176,3 +176,130 @@ footer.rx-foot{background:#F3F1EC;color:#111;padding:0;position:relative;overflo
   .rx-bgtext div,.rx-marq{animation:none}
   html.rx-anim .rx-reveal{opacity:1;translate:none}
 }
+
+/* ===================================================================
+   Part 2 — the whole page in the same retro direction
+   desktop bands (teal / violet) + every section as a Win95 window,
+   CRT output screen, beige mechanical keyboard, bevel buttons
+   =================================================================== */
+html.rx-frame{--bev-up:inset -1px -1px #0a0a0a,inset 1px 1px #fff,inset -2px -2px #808080,inset 2px 2px #dfdfdf;--bev-in:inset -1px -1px #fff,inset 1px 1px #0a0a0a,inset -2px -2px #dfdfdf,inset 2px 2px #808080;--bev-field:inset -1px -1px #fff,inset 1px 1px #808080,inset -2px -2px #dfdfdf,inset 2px 2px #0a0a0a;--rx-dotgrid:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.4px) 0 0/22px 22px}
+
+/* top strip -> taskbar */
+html.rx-frame .strip{background:var(--rx-win);color:#111;box-shadow:inset 0 1px #fff,inset 0 -1px #808080;font-family:Tahoma,'Bai Jamjuree',sans-serif}
+html.rx-frame .strip .ui-ctl button{color:#111;border:0;box-shadow:var(--bev-up);background:var(--rx-win);margin-left:2px}
+html.rx-frame .strip .ui-ctl button[aria-pressed="true"]{box-shadow:var(--bev-in);background:#B5B1A8}
+html.rx-frame .strip .ui-ctl button:hover{background:#D4D0C8}
+
+/* desktop bands */
+html.rx-frame #mainView main{background:var(--rx-dotgrid),linear-gradient(180deg,var(--rx-teal-2),#073B35)}
+html.rx-frame :is(#globe,#tools,#lexicon,#contribute){background:var(--rx-dotgrid),radial-gradient(120% 90% at 80% 100%,var(--rx-violet-3) 0%,var(--rx-violet-2) 40%,var(--rx-violet-1) 85%)}
+html.rx-frame :is(#history,#community,#learn,#feedback){background:var(--rx-dotgrid),linear-gradient(180deg,var(--rx-teal-1),var(--rx-teal-2))}
+html.rx-frame :is(#globe,#history,#tools,#community,#lexicon,#learn,#contribute,#feedback,#inbox){border:0;padding-block:clamp(44px,6vw,86px);color:#111}
+
+/* the window */
+html.rx-frame .rx-win{
+  --paper:#FFFDF6;--wash:#F2EDDC;--field:#FFFFFF;--ink:#151515;--ink2:#2C2A26;--sub:#5C5648;--rule:#D3CAB2;--signal:#F06B4E;--on-signal:#1A0D08;
+  position:relative;background:var(--paper);color:var(--ink);
+  border:2px solid;border-color:#fff #404040 #404040 #fff;
+  box-shadow:inset 0 0 0 5px var(--rx-win),inset 0 0 0 6px #808080,1px 1px 0 #000,16px 20px 44px rgba(0,0,0,.38);
+  width:calc(100% - 32px);max-width:1260px;margin-inline:auto;
+  padding:66px clamp(18px,3.2vw,46px) clamp(26px,3vw,42px)!important}
+html.rx-frame[data-theme="dark"] .rx-win{--paper:#17162A;--wash:#211F38;--field:#0F0E1E;--ink:#EDE8DA;--ink2:#D4CFC0;--sub:#A8A398;--rule:#37355A;--on-signal:#1A0D08}
+html.rx-frame .rx-win::before{content:attr(data-win);position:absolute;top:5px;left:5px;right:5px;height:28px;display:flex;align-items:center;padding:0 44px 0 10px;background:linear-gradient(90deg,var(--rx-win-blue),var(--rx-win-blue2));box-shadow:0 4px 0 var(--rx-win);color:#fff;font:700 14px/1 Tahoma,'Bai Jamjuree',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:1}
+html.rx-frame .rx-win::after{content:"×";position:absolute;top:10px;right:11px;width:20px;height:18px;display:grid;place-items:center;background:var(--rx-win);box-shadow:var(--bev-up);color:#111;font:700 14px/1 Tahoma,sans-serif;z-index:2}
+html.rx-frame .rx-win h2{font-family:var(--rx-serif);font-weight:700;letter-spacing:0;color:var(--ink)}
+html.rx-frame .rx-win .sec-sub,html.rx-frame .rx-win .mono{color:var(--sub)}
+html.rx-frame .tool.rx-win{margin-block:0 clamp(44px,6vw,86px)}
+
+/* Win95 buttons */
+html.rx-frame .rx-win :is(.icon-btn,.chip,.dict-go,.deck-ctrl>button,.wod-nav button,.fc-acts button,.quiz button,.out-actions button,.btn-ink,.nocountry button,form button),
+html.rx-frame :is(.cv-btn,.cv-ctrl>button,dialog button){background:var(--rx-win);color:#111;border:0;border-radius:0;box-shadow:var(--bev-up);text-decoration:none}
+html.rx-frame .rx-win :is(.icon-btn,.chip,.dict-go,.deck-ctrl>button,.wod-nav button,.fc-acts button,.quiz button,.out-actions button,.btn-ink,form button):hover:not(:disabled),
+html.rx-frame :is(.cv-btn,.cv-ctrl>button,dialog button):hover:not(:disabled){background:#D9D5CC;color:#111;opacity:1}
+html.rx-frame .rx-win :is(.icon-btn,.chip,.dict-go,.deck-ctrl>button,.wod-nav button,.fc-acts button,.quiz button,.out-actions button,.btn-ink,form button):active,
+html.rx-frame .rx-win .chip[aria-pressed="true"]{box-shadow:var(--bev-in)}
+html.rx-frame .rx-win .chip[aria-pressed="true"]{background:var(--rx-win-blue);color:#fff}
+html.rx-frame .rx-win :is(.out-actions .go,.fc-acts .go,.btn-ink),html.rx-frame .cv-go{background:var(--rx-btn)!important;color:var(--rx-btn-ink)!important;font-weight:700}
+html.rx-frame .rx-win .btn-line{color:var(--ink)}
+html.rx-frame .rx-win .quiz button.right{background:#8FE0A2;color:#0C2914;box-shadow:var(--bev-in)}
+html.rx-frame .rx-win .quiz button.wrong{background:#E8C4BC;color:#3A1510}
+html.rx-frame .rx-win .deck-ctrl>button:disabled{opacity:.45}
+html.rx-frame .rx-win .nocountry button{color:#111}
+html.rx-frame .rx-win .nocountry button small{color:#3A372F}
+html.rx-frame .rx-win .nocountry button:hover{background:var(--rx-win-blue);color:#fff}
+html.rx-frame .rx-win .nocountry button:hover small{color:#DDE6FF}
+html.rx-frame .rx-win .nocountry .new{background:var(--rx-red);color:#fff}
+
+/* sunken fields */
+html.rx-frame .rx-win :is(input:not([type=checkbox]):not([type=radio]),select,form textarea),html.rx-frame dialog :is(input,select,textarea){border:0!important;border-radius:0;background:var(--field);color:var(--ink);box-shadow:var(--bev-field)}
+html.rx-frame .rx-win form,html.rx-frame .rx-win .wod,html.rx-frame .rx-win .flash{border:2px groove #E0DCD2;background:var(--wash)}
+html.rx-frame .rx-win :is(.lex-list,.cty-list){border:0;background:var(--field);box-shadow:var(--bev-field);padding:4px 14px}
+
+/* tabs (tool + lexicon) */
+html.rx-frame .rx-win .tabs{gap:0 2px;border-bottom:2px solid #fff;box-shadow:0 1px 0 #DFDFDF;align-items:flex-end;padding-left:2px}
+html.rx-frame .rx-win .tab{background:var(--rx-win);color:#111;border:2px solid;border-color:#fff #404040 transparent #fff;border-bottom:0;border-radius:6px 6px 0 0;margin:4px 0 0;padding:6px 12px;min-height:38px;font-size:15px;font-family:Tahoma,'Bai Jamjuree',sans-serif}
+html.rx-frame .rx-win .tab .mono{color:#555}
+html.rx-frame .rx-win .tab[aria-selected="true"]{background:var(--paper);color:var(--ink);margin-top:0;padding-bottom:9px;position:relative;top:2px;z-index:1}
+html.rx-frame .rx-win .tab[aria-selected="true"] .mono{color:var(--signal)}
+
+/* converter: sunken panes, CRT output screen */
+html.rx-frame .rx-win .panes{border:2px solid;border-color:#808080 #fff #fff #808080;box-shadow:inset 1px 1px 0 #0a0a0a;background:var(--paper)}
+html.rx-frame .rx-win .pane.src{border-right:4px solid var(--rx-win)}
+html.rx-frame .rx-win .pane-head{background:var(--wash);border-bottom:1px solid var(--rule)}
+html.rx-frame .rx-win .pane.out{--paper:#0B1712;--wash:#10241A;--field:#0B1712;--ink:#B5F7C6;--ink2:#9BE6B0;--sub:#71C08F;--rule:#244634;--hand-fill:#0F2119;--hand-thumb:#2F6B47;--hand-acc:#F06B4E;
+  background:radial-gradient(120% 90% at 50% 35%,#13301F,#07110C);color:var(--ink);position:relative}
+html.rx-frame .rx-win .pane.out::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.2) 0 1px,transparent 1px 3px);box-shadow:inset 0 0 60px rgba(0,0,0,.55)}
+html.rx-frame .rx-win .pane.out output{color:#A6F5BD;text-shadow:0 0 10px rgba(124,242,164,.45)}
+html.rx-frame .rx-win .pane.out .pane-head{background:rgba(0,0,0,.25)}
+html.rx-frame .rx-win .out-actions{gap:6px;padding:8px;background:var(--rx-win);border-top:0;position:relative;z-index:1}
+html.rx-frame .rx-win .out-actions button+button{border-left:0}
+html.rx-frame .rx-win textarea#src{background:var(--paper)}
+html.rx-frame .rx-win textarea#src:focus{background:var(--field)}
+
+/* old beige mechanical keyboard */
+html.rx-frame .kb-rows{position:relative;padding:18px 20px 12px;background:linear-gradient(172deg,#ECE3CC,#D3C7A8);border-radius:12px 12px 20px 20px;box-shadow:inset 0 2px 0 rgba(255,255,255,.7),inset 0 -7px 0 rgba(0,0,0,.12),0 2px 0 #9C9175,0 14px 28px rgba(0,0,0,.28);gap:7px}
+html.rx-frame .kb-rows::after{content:"ใดๆภาษา · KB-2529";align-self:flex-end;font-family:var(--pixel);font-size:10px;letter-spacing:.14em;color:#8A7F63;margin-top:2px}
+html.rx-frame .kb-row{gap:7px}
+html.rx-frame .key{border:1px solid #9C9278;border-radius:6px;background:linear-gradient(180deg,#FCF8EC 0%,#EEE6D1 70%,#E2D8BE 100%);color:#2A2414;box-shadow:inset 0 -5px 0 #CDBF9C,inset 0 1px 0 #fff,0 2px 0 #7C735C,0 3px 4px rgba(0,0,0,.18);transition:transform .08s,box-shadow .08s,background .15s}
+html.rx-frame .key .sm{color:#7A6F55}
+html.rx-frame .key .bg{color:#2A2414}
+html.rx-frame .key.on{background:linear-gradient(180deg,#F7907A,#E9624A);border-color:#9A3A26;color:#fff;transform:translateY(2px);box-shadow:inset 0 -3px 0 #B9442D,inset 0 1px 0 rgba(255,255,255,.5),0 0 0 #7C735C,0 1px 2px rgba(0,0,0,.2)}
+html.rx-frame .key.on .bg{color:#fff}html.rx-frame .key.on .sm{color:#FFE3DA}
+
+/* lists & cards inside windows */
+html.rx-frame .rx-win .entry{border-top:1px dashed var(--rule);padding-inline:8px}
+html.rx-frame .rx-win .entry:hover{background:var(--wash)}
+html.rx-frame .rx-win .entry .ex{background:var(--wash);box-shadow:var(--bev-field);padding:4px 10px}
+html.rx-frame .rx-win .glist{border-top:2px solid var(--ink)}
+html.rx-frame .rx-win .glist li{border-bottom:1px dashed var(--rule)}
+html.rx-frame .rx-win .glist button{color:var(--ink);padding-inline:8px}
+html.rx-frame .rx-win .glist button:hover{background:var(--rx-win-blue);color:#fff}
+html.rx-frame .rx-win .community-intro p,html.rx-frame .rx-win .intro p{color:var(--ink2)}
+html.rx-frame .rx-win .cty-list button{color:var(--ink)}
+html.rx-frame .rx-win .cty-list button:hover,html.rx-frame .rx-win .cty-list button:focus-visible{background:var(--rx-win-blue);color:#fff}
+html.rx-frame .rx-win .cty-list button:hover .cl{color:#DDE6FF}
+html.rx-frame .rx-win .deck{box-shadow:none;border:2px solid;border-color:#808080 #fff #fff #808080}
+html.rx-frame .rx-win .deck-dots{border-top:2px solid var(--rule)}
+html.rx-frame .rx-win .saved-head{border-bottom:2px solid var(--rule)}
+html.rx-frame .rx-win .lex-note,html.rx-frame .rx-win .rep-meaning{border-left-color:var(--signal)}
+
+/* dialogs, toast, country view */
+html.rx-frame dialog{border:2px solid;border-color:#fff #404040 #404040 #fff;box-shadow:inset 0 0 0 4px var(--rx-win),1px 1px 0 #000,16px 20px 44px rgba(0,0,0,.4)}
+html.rx-frame .toast{background:#FFFFE1;color:#111;border:1px solid #111;border-left:6px solid var(--rx-red);box-shadow:3px 3px 0 rgba(0,0,0,.35);font-family:Tahoma,'Bai Jamjuree',sans-serif}
+html.rx-frame .cv-bar{background:linear-gradient(90deg,var(--rx-win-blue),#3A6EA5);color:#fff;box-shadow:0 2px 0 var(--rx-win),0 3px 0 #404040}
+html.rx-frame .cv-bar .cv-back,html.rx-frame .cv-bar .cv-theme{background:var(--rx-win);color:#111;border:0;box-shadow:var(--bev-up)}
+
+@media (max-width:640px){
+  html.rx-frame .rx-win{width:calc(100% - 12px);padding:54px 12px 18px!important;box-shadow:inset 0 0 0 4px var(--rx-win),inset 0 0 0 5px #808080,1px 1px 0 #000,8px 10px 22px rgba(0,0,0,.35)}
+  html.rx-frame .rx-win::before{top:4px;left:4px;right:4px;height:26px;font-size:13px}
+  html.rx-frame .rx-win::after{top:8px;right:9px}
+  html.rx-frame .rx-win .tabs{margin:0;padding:0 2px;gap:0 2px}
+  html.rx-frame .rx-win .tab{font-size:14px;padding:6px 10px;flex:none}
+  html.rx-frame .rx-win .pane.src{border-right:0;border-bottom:4px solid var(--rx-win)}
+  html.rx-frame .kb-rows{padding:10px 8px 8px;gap:4px;border-radius:10px 10px 14px 14px}
+  html.rx-frame .kb-row{gap:3px}
+  html.rx-frame .key{border-radius:4px;box-shadow:inset 0 -3px 0 #CDBF9C,inset 0 1px 0 #fff,0 1px 0 #7C735C}
+  html.rx-frame .kb-rows::after{font-size:8px}
+  html.rx-frame :is(#globe,#history,#tools,#community,#lexicon,#learn,#contribute,#feedback){padding-block:28px}
+  html.rx-frame body.m-pages .tool.rx-win{margin-top:10px}
+}
