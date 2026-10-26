@@ -204,22 +204,26 @@ kbd{border-radius:8px}
 
 /* soft dividers: hairlines become rounded strokes */
 .mast,.hub-head{border-bottom-color:transparent!important;position:relative}
-.mast::after,.hub-head::after{content:"";position:absolute;left:16px;right:16px;bottom:-1px;height:1.5px;border-radius:99px;background:var(--rule)}
-.hub-head::after{background:var(--ink);height:2px}
+.mast::after,.hub-head::after{content:"";position:absolute;left:48px;right:48px;bottom:-1px;height:2.5px;border-radius:99px;background:var(--rule)}
+.hub-head::after{background:var(--ink);height:4px;left:0;right:0}
 .more,.hub-grid,footer.bot{border-top-color:transparent!important;position:relative}
-.more::before,.hub-grid::before,footer.bot::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1.5px;border-radius:99px;background:var(--rule)}
+.more::before,.hub-grid::before,footer.bot::before{content:"";position:absolute;left:24px;right:24px;top:-1px;height:2.5px;border-radius:99px;background:var(--rule)}
 .pq{border-top-color:transparent!important;border-bottom-color:transparent!important;position:relative}
-.pq::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1.5px;border-radius:99px;background:var(--rule)}
-.pq::before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;border-radius:99px;background:var(--ink)}
+.pq::after{content:"";position:absolute;left:30%;right:30%;bottom:-1px;height:2.5px;border-radius:99px;background:var(--rule)}
+.pq::before{content:"";position:absolute;left:30%;right:30%;top:-1px;height:4px;border-radius:99px;background:var(--ink)}
 .place{border-top-color:transparent!important;position:relative}
-.place::before{content:"";position:absolute;left:0;right:0;top:-2px;height:3px;border-radius:99px;background:var(--ink)}
+.place::before{content:"";position:absolute;left:0;width:120px;top:-2px;height:5px;border-radius:99px;background:var(--ink)}
 .place dt,.place dd{border-top-color:transparent!important;position:relative}
-.place dt::before,.place dd::before{content:"";position:absolute;left:0;right:6px;top:-1px;height:1.5px;border-radius:99px;background:var(--rule)}
+.place dt::before,.place dd::before{content:"";position:absolute;left:0;right:10px;top:-1px;height:2px;border-radius:99px;background:var(--rule)}
 .place dd::before{right:0}
 .pairs div{border-bottom-color:transparent!important;position:relative}
-.pairs div::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1.5px;border-radius:99px;background:var(--rule)}
+.pairs div::after{content:"";position:absolute;left:6px;right:6px;bottom:-1px;height:2px;border-radius:99px;background:var(--rule)}
 .pairs .h{border-bottom-color:transparent!important}
 .pairs .h::after{background:var(--ink)}
 .tool a{border:1.5px solid var(--ink)!important;border-radius:18px;padding-inline:20px!important}
+
+/* lighter reading weight */
+body,.story p,.story li,.dek,.figcap,.refs,.credit,.place dl{font-weight:300}
+.story b,.story strong{font-weight:600}
 
 html,body{overflow-x:clip}
