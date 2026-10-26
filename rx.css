@@ -56,7 +56,7 @@ html.rx-frame header .navlinks a:hover{color:#fff}
 .rx-bgtext div:nth-child(even){animation-direction:reverse;animation-duration:85s}
 @keyframes rx-slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .rx-hero .rx-in{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
-.rx-h{margin:0;font-family:var(--rx-dots);font-weight:700;font-size:clamp(46px,7.4vw,108px);line-height:1.08;letter-spacing:.01em;position:relative}
+.rx-h{margin:0;font-family:var(--rx-dots);font-weight:700;font-size:clamp(46px,7.4vw,108px);line-height:1.16;letter-spacing:.01em;position:relative}
 .rx-dots{display:block;width:max-content;max-width:100%;color:transparent;
   background:radial-gradient(circle at 50% 50%, #F4F0E6 0 50%, rgba(244,240,230,.4) 52% 58%, transparent 62%) 0 0/ .062em .062em;
   -webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 14px rgba(255,255,255,.18))}
@@ -165,7 +165,10 @@ footer.rx-foot{background:#F3F1EC;color:#111;padding:0;position:relative;overflo
   .rx-ll .less{justify-self:center;text-align:center}
   .rx-foot .rx-in{grid-template-columns:1fr}
   .rx-copy{text-align:left}
-  .rx-tools .mono{font-size:15px}
+  .rx-tools .mono{font-size:14px}
+  .rx-tools button{flex-wrap:wrap;row-gap:2px}
+  .rx-tools button span:first-child{flex:1 1 auto;min-width:0}
+  .rx-tools .mono{flex-basis:100%;margin-left:36px;white-space:normal}
   /* phones show one section at a time: keep the landing sections on the home screen */
   body.m-pages #mainView main:has(#tool.m-on) > section.rx{display:block!important}
 }
