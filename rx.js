@@ -5,6 +5,8 @@
   var d = document, root = d.documentElement;
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var anim = root.classList.contains('rx-anim') && !reduce;
+  // never leave the page stuck in the intro blur
+  setTimeout(function(){ var mv = d.getElementById('mainView'); if (mv && mv.getAnimations) mv.getAnimations().forEach(function(a){ try { a.finish(); } catch(e){} }); }, 3000);
   var wait = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
   var seg = (window.Intl && Intl.Segmenter) ? new Intl.Segmenter('th', {granularity:'grapheme'}) : null;
   function graphemes(t){ return seg ? Array.from(seg.segment(t), function(x){ return x.segment; }) : Array.from(t); }

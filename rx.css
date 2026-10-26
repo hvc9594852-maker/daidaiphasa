@@ -14,7 +14,7 @@
 
 /* ---------- one typeface everywhere (non-Thai/Latin scripts fall back to their own fonts) ---------- */
 html.rx-frame body, html.rx-frame body *:not(.braille):not(svg):not(svg *){font-family:'Chakra Petch',var(--c-font,system-ui),system-ui,sans-serif}
-html.rx-frame body{font-weight:400}
+html.rx-frame body{font-weight:400;background:#0B0A12}
 
 /* ---------- screen frame (CRT bezel + scanlines) + film grain ---------- */
 html.rx-frame body::before{content:"";position:fixed;inset:0;border-radius:28px;pointer-events:none;z-index:2147483000;
