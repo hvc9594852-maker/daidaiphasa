@@ -44,3 +44,33 @@ header .navlinks a:hover{color:var(--ink)}
   header .navlinks a.m-cur{color:var(--ink)}
 }
 @media (prefers-reduced-motion:reduce){.hero .bgrot>div{animation:none}}
+
+/* ---------- softer shapes: rounded corners everywhere (matches the pill nav) ---------- */
+:root{--r-lg:18px;--r-md:12px;--r-sm:9px}
+/* converter */
+.tabs{border-bottom:0!important;margin-bottom:10px;gap:0 8px!important}
+.tab{border-bottom:0!important;border-radius:999px;padding:8px 16px!important;min-height:42px!important;margin:0!important;transition:background .15s}
+.tab:hover{background:var(--wash)}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.tab[aria-selected="true"] .mono{color:var(--signal)}
+.panes{border:2px solid var(--ink)!important;border-radius:var(--r-lg);overflow:hidden}
+.icon-btn,.dict-go,.chip,.tr-pick select{border-radius:var(--r-sm)!important}
+.chip{border-radius:999px!important}
+.out-actions{border-top:1px solid var(--ink)}
+/* keyboard keys */
+.key{border-radius:var(--r-sm)}
+/* buttons and fields */
+.btn-ink,form button,.deck-ctrl>button,.quiz button,.wod-nav button,.nocountry button,.cv-btn,.lex-rep{border-radius:var(--r-md)!important}
+.btn-ink{border-radius:999px!important;padding-inline:24px}
+.deck-ctrl>button{border-radius:50%!important}
+input,select,textarea:not(#src),.lex-search input,.cty input{border-radius:var(--r-md)!important}
+/* boxes */
+.deck,.wod,.flash,form,dialog,.cv-card,.rep-form{border-radius:var(--r-lg)!important}
+.deck{overflow:hidden}
+.fc-acts{border-radius:var(--r-md);overflow:hidden}
+.lex-list,.cty-list{border-radius:var(--r-md)}
+.entry .ex{border-radius:999px;padding-inline:14px!important}
+.toast{border-radius:var(--r-md)!important}
+.nocountry .new{border-radius:999px}
+.ui-ctl button{border-radius:999px!important}
+@media (max-width:640px){.panes{border-radius:var(--r-md)}.tab{padding:7px 13px!important}}

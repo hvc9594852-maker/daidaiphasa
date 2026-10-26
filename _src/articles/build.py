@@ -36,7 +36,7 @@ def head(title, desc, path, ld, otype='article'):
 {ADS}<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
-<link rel="stylesheet" href="/article.css?v=4">
+<link rel="stylesheet" href="/article.css?v=5">
 <script>try{{var t=localStorage.getItem('lh-theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 </head>
