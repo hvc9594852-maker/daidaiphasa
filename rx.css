@@ -2,19 +2,27 @@
 :root{--display:'Chakra Petch',system-ui,sans-serif;--body:'Chakra Petch',system-ui,sans-serif;--pixel:'Chakra Petch',system-ui,sans-serif;--term:'Chakra Petch',system-ui,sans-serif}
 html{overflow-x:clip}
 
-/* rounded, translucent navigation pill */
+/* rounded, see-through navigation pill (frosted glass that matches the white page) */
 header{position:sticky;top:10px;z-index:60;background:transparent!important;border:0!important;padding-inline:12px;pointer-events:none}
 header nav.wrap{pointer-events:auto;max-width:1240px;margin:10px auto 0;padding:8px 8px 8px 22px;border-radius:999px;
-  background:rgba(20,20,22,.72);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);
-  border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 30px rgba(0,0,0,.18);flex-wrap:nowrap;gap:18px}
-header .brand b{color:#F4F4F0;font-size:22px}
+  background:rgba(255,255,255,.58);-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);
+  border:1px solid rgba(17,17,17,.10);box-shadow:0 8px 28px rgba(17,17,17,.07),inset 0 1px 0 rgba(255,255,255,.7);flex-wrap:nowrap;gap:18px}
+:root[data-theme="dark"] header nav.wrap{background:rgba(26,26,24,.58);border-color:rgba(255,255,255,.10);box-shadow:0 8px 28px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06)}
+header .brand b{color:var(--ink);font-size:22px}
 header .brand .mono{display:none}
 header .navlinks{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:0 18px;flex:1 1 auto;min-width:0;justify-content:flex-end}
 header .navlinks::-webkit-scrollbar{display:none}
-header .navlinks a{color:#DAD8D2;font-size:14.5px;white-space:nowrap;padding:8px 0}
-header .navlinks a:hover{color:#fff;text-decoration-color:var(--signal)}
+header .navlinks a{color:var(--ink2);font-size:14.5px;white-space:nowrap;padding:8px 0}
+header .navlinks a:hover{color:var(--ink)}
 .nav-cta{flex:none;display:inline-flex;align-items:center;background:var(--signal);color:#111!important;font-size:14px;font-weight:600;text-decoration:none;border-radius:999px;padding:8px 16px}
 .nav-cta:hover{filter:brightness(1.06)}
+
+/* top strip: no more black bar, just a light see-through line */
+.strip{background:transparent!important;color:var(--sub)!important;border-bottom:1px solid var(--rule)}
+.strip .ui-ctl button{color:var(--ink);border:1px solid transparent;border-radius:999px}
+.strip .ui-ctl button[aria-pressed="true"]{border-color:var(--ink);background:rgba(255,255,255,.5)}
+:root[data-theme="dark"] .strip .ui-ctl button[aria-pressed="true"]{background:rgba(255,255,255,.06)}
+.strip .ui-ctl button:hover{border-color:var(--rule)}
 
 /* greetings drifting behind the hero */
 .hero{position:relative;isolation:isolate}
@@ -33,6 +41,6 @@ header .navlinks a:hover{color:#fff;text-decoration-color:var(--signal)}
   header nav.wrap{flex-direction:column;align-items:stretch;border-radius:20px;padding:10px 14px 4px;gap:2px}
   .nav-cta{display:none}
   header .navlinks{justify-content:flex-start;margin:0;padding:0;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
-  header .navlinks a.m-cur{color:#fff}
+  header .navlinks a.m-cur{color:var(--ink)}
 }
 @media (prefers-reduced-motion:reduce){.hero .bgrot>div{animation:none}}

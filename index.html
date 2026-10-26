@@ -36,7 +36,7 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2391353056454673" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="/rx.css?v=8">
+<link rel="stylesheet" href="/rx.css?v=9">
 <style>
 /* Layout: printed-dictionary page with game type — ruled black frames, one orange signal, wide gutters */
 :root{
@@ -626,15 +626,15 @@ footer a{color:#F4F4F0}
   <ul class="hero-index" aria-label="ทางลัดเครื่องมือ">
     <li><button data-go="fix"><span>ลืมสลับแป้น</span><span class="mono">l;ylfu → สวัสดี</span></button></li>
     <li><button data-go="romanize"><span>ถอดเสียง ไทย ⇄ อังกฤษ</span><span class="mono">computer → คอมพิวเตอร์</span></button></li>
-    <li><button data-go="tr"><span>แปลภาษา (ใหม่)</span><span class="mono">ไทย ⇄ 20 ภาษา</span></button></li>
-    <li><button type="button" data-open="SGN"><span>ภาษามือ (ใหม่)</span><span class="mono"><i class="mini-hand" data-hand="flat"></i>10 บท</span></button></li>
-    <li><button type="button" data-open="EPO"><span>เอสเปรันโต (ใหม่)</span><span class="mono">Saluton!</span></button></li>
+    <li><button data-go="tr"><span>แปลภาษา</span><span class="mono">ไทย ⇄ 20 ภาษา</span></button></li>
+    <li><button type="button" data-open="SGN"><span>ภาษามือ</span><span class="mono"><i class="mini-hand" data-hand="flat"></i>10 บท</span></button></li>
+    <li><button type="button" data-open="EPO"><span>เอสเปรันโต</span><span class="mono">Saluton!</span></button></li>
     <li><button data-go="slang"><span>ภาษาเฉพาะกลุ่ม</span><span class="mono">มงลง → ชนะแน่</span></button></li>
     <li><button data-go="lu"><span>ภาษาลู</span><span class="mono">รัก → ซักรุก</span></button></li>
     <li><button data-go="sign"><span>สะกดนิ้วภาษามือ</span><span class="mono">hi → <i class="mini-hand" data-hand="h"></i><i class="mini-hand" data-hand="i"></i></span></button></li>
     <li><button data-go="braille"><span>อักษรเบรลล์</span><span class="mono">hi → ⠓⠊</span></button></li>
     <li><button data-go="morse"><span>รหัสมอร์ส</span><span class="mono">sos → ...---...</span></button></li>
-    <li><button data-go="dict"><span>ค้นพจนานุกรม (ใหม่)</span><span class="mono">8 ภาษา · ฟรี</span></button></li>
+    <li><button data-go="dict"><span>ค้นพจนานุกรม</span><span class="mono">8 ภาษา · ฟรี</span></button></li>
   </ul>
 </section>
 
@@ -685,7 +685,7 @@ footer a{color:#F4F4F0}
         <canvas id="globeCanvas" role="img" aria-label="ลูกโลกแสดงจุดประเทศ ลากเพื่อหมุน คลิกจุดเพื่อเปิดหน้าภาษาของประเทศนั้น"></canvas>
       </div>
       <div class="cty">
-        <div class="nocountry"><span class="mono">ภาษาที่ไม่ได้เป็นของประเทศใด</span><button type="button" data-open="SGN"><span class="new">ใหม่</span><b>ภาษามือ</b><small>ภาษาของคนหูหนวก · 10 บท</small></button><button type="button" data-open="EPO"><span class="new">ใหม่</span><b>เอสเปรันโต</b><small>ภาษาสากลที่มีคนสร้าง · 7 บท</small></button></div>
+        <div class="nocountry"><span class="mono">ภาษาที่ไม่ได้เป็นของประเทศใด</span><button type="button" data-open="SGN"><b>ภาษามือ</b><small>ภาษาของคนหูหนวก · 10 บท</small></button><button type="button" data-open="EPO"><b>เอสเปรันโต</b><small>ภาษาสากลที่มีคนสร้าง · 7 บท</small></button></div>
         <label for="ctyQ" class="mono">ค้นหาประเทศหรือภาษา</label>
         <input id="ctyQ" type="search" placeholder="เช่น ญี่ปุ่น หรือ Español" autocomplete="off">
         <span class="mono sec-sub" id="ctyCount"></span>
@@ -6775,7 +6775,7 @@ footer a{color:#F4F4F0}
     ja:[[/^(\d+) จาก (\d+) คำ$/,'$2語中 $1語'],[/^(\d+) ประเทศ$/,'$1か国'],[/^(\d+) คำ$/,'$1語'],[/^ไปสไลด์ที่ (\d+)$/,'スライド $1 へ'],[/^แจ้งความหมายผิดของคำ (.+)$/,'「$1」の意味の誤りを報告'],[/^ภาษา LGBTQ\+ \((\d+)\)$/,'LGBTQ+（$1）'],[/^ภาษาในเรือนจำ \((\d+)\)$/,'刑務所（$1）'],[/^ภาษาวัยรุ่นและโซเชียล \((\d+)\)$/,'若者とSNS（$1）'],[/^เรื่องเล่าของภาษา(.+)$/,'$1の物語'],[/^ทำต่อเนื่อง (\d+) วัน$/,'$1日連続'],[/^อีก (\d+) วัน$/,'$1日後'],[/^ย้อนไป (\d+) วัน$/,'$1日前'],[/^คำประจำวันนี้$/,'今日の単語']],
     ko:[[/^(\d+) จาก (\d+) คำ$/,'$2개 중 $1개 단어'],[/^(\d+) ประเทศ$/,'$1개국'],[/^(\d+) คำ$/,'$1개 단어'],[/^ไปสไลด์ที่ (\d+)$/,'$1번 슬라이드로'],[/^แจ้งความหมายผิดของคำ (.+)$/,'“$1” 뜻 오류 신고'],[/^ภาษา LGBTQ\+ \((\d+)\)$/,'LGBTQ+ ($1)'],[/^ภาษาในเรือนจำ \((\d+)\)$/,'교도소 ($1)'],[/^ภาษาวัยรุ่นและโซเชียล \((\d+)\)$/,'10대·소셜 ($1)'],[/^เรื่องเล่าของภาษา(.+)$/,'$1 이야기'],[/^ทำต่อเนื่อง (\d+) วัน$/,'$1일 연속'],[/^อีก (\d+) วัน$/,'$1일 뒤'],[/^ย้อนไป (\d+) วัน$/,'$1일 전'],[/^คำประจำวันนี้$/,'오늘의 단어']]
   };
-  (function(X){ X.k.forEach(function(k,i){ if(K.indexOf(k)<0){ K.push(k); ['en','zh','ja','ko'].forEach(function(l){ T[l].push(X[l][i]); }); } }); })({"k": ["สะกดนิ้วภาษามือ", "แปลเอสเปรันโต", "ภาษามือ", "เอสเปรันโต", "ภาษามือ (ใหม่)", "เอสเปรันโต (ใหม่)", "ตัวอักษรอังกฤษ", "ตัวสะกดนิ้ว ASL", "มือขวา หันฝ่ามือออก", "ภาษาไทย", "ภาษาเอสเปรันโต", "ภาษาเอสเปรันโต (แปลทีละคำ)", "ภาษาไทย (แปลทีละคำ)", "คำในวงเล็บ [ ] ยังไม่มีในคลัง", "แปลทีละคำ ไม่ใช่ประโยคที่สมบูรณ์", "พิมพ์ cx gx sx ux แทน ĉ ĝ ŝ ŭ ได้", "ให้ Claude แปลทั้งประโยค", "Claude กำลังแปล…", "ภาษาเอสเปรันโต · โดย Claude", "ภาษาไทย · โดย Claude", "ภาษามือเป็นภาษาที่ใช้ตาดู ไม่มีเสียงอ่าน", "ใช้ Claude แปลไม่ได้ตอนนี้", "พิมพ์ตัวอักษรอังกฤษ A–Z เพื่อดูท่ามือ", "ภาษาที่ไม่ได้เป็นของประเทศใด", "ใหม่", "ภาษาของคนหูหนวก · 10 บท", "ภาษาสากลที่มีคนสร้าง · 7 บท", "10 บท"], "en": ["Sign fingerspelling", "Esperanto translator", "Sign language", "Esperanto", "Sign language (new)", "Esperanto (new)", "English letters", "ASL fingerspelling", "Right hand, palm out", "Thai", "Esperanto", "Esperanto (word by word)", "Thai (word by word)", "Words in [ ] are not in the word list yet", "Word by word, not a full sentence", "Type cx gx sx ux for ĉ ĝ ŝ ŭ", "Ask Claude to translate the sentence", "Claude is translating…", "Esperanto · by Claude", "Thai · by Claude", "Sign language is visual, so there is no audio", "Claude translation is unavailable right now", "Type English letters A–Z to see the handshapes", "Languages of no single country", "New", "Language of Deaf people · 10 chapters", "A constructed international language · 7 chapters", "10 chapters"], "zh": ["手语指拼", "世界语翻译", "手语", "世界语", "手语（新）", "世界语（新）", "英文字母", "ASL 指拼字母", "右手，掌心朝外", "泰语", "世界语", "世界语（逐词）", "泰语（逐词）", "[ ] 中的词尚未收录", "逐词翻译，并非完整句子", "可用 cx gx sx ux 输入 ĉ ĝ ŝ ŭ", "让 Claude 翻译整句", "Claude 正在翻译…", "世界语 · 由 Claude 翻译", "泰语 · 由 Claude 翻译", "手语是视觉语言，没有读音", "暂时无法使用 Claude 翻译", "输入英文字母 A–Z 查看手形", "不属于任何国家的语言", "新", "聋人的语言 · 10 章", "人造国际语 · 7 章", "10 章"], "ja": ["指文字", "エスペラント翻訳", "手話", "エスペラント", "手話（新）", "エスペラント（新）", "英字", "ASL 指文字", "右手・手のひらを外へ", "タイ語", "エスペラント", "エスペラント（逐語）", "タイ語（逐語）", "[ ] 内の語は未収録", "逐語訳で、完全な文ではありません", "cx gx sx ux で ĉ ĝ ŝ ŭ を入力できます", "Claude に文全体を翻訳してもらう", "Claude が翻訳中…", "エスペラント · Claude による", "タイ語 · Claude による", "手話は目で見る言語なので音声はありません", "現在 Claude で翻訳できません", "英字 A–Z を入力すると手の形が表示されます", "特定の国に属さない言語", "新", "ろう者の言語 · 10章", "人工の国際語 · 7章", "10章"], "ko": ["수어 지문자", "에스페란토 번역", "수어", "에스페란토", "수어 (신규)", "에스페란토 (신규)", "영문자", "ASL 지문자", "오른손, 손바닥을 바깥으로", "태국어", "에스페란토", "에스페란토 (단어별)", "태국어 (단어별)", "[ ] 안의 단어는 아직 없음", "단어별 번역이며 완전한 문장이 아님", "cx gx sx ux로 ĉ ĝ ŝ ŭ 입력 가능", "Claude에게 문장 전체 번역 요청", "Claude가 번역 중…", "에스페란토 · Claude 번역", "태국어 · Claude 번역", "수어는 눈으로 보는 언어라 소리가 없습니다", "지금은 Claude 번역을 쓸 수 없습니다", "영문자 A–Z를 입력하면 손 모양이 보입니다", "특정 국가에 속하지 않는 언어", "신규", "농인의 언어 · 10장", "만들어진 국제어 · 7장", "10장"]});
+  (function(X){ X.k.forEach(function(k,i){ if(K.indexOf(k)<0){ K.push(k); ['en','zh','ja','ko'].forEach(function(l){ T[l].push(X[l][i]); }); } }); })({"k": ["สะกดนิ้วภาษามือ", "แปลเอสเปรันโต", "ภาษามือ", "เอสเปรันโต", "ภาษามือ", "เอสเปรันโต", "ตัวอักษรอังกฤษ", "ตัวสะกดนิ้ว ASL", "มือขวา หันฝ่ามือออก", "ภาษาไทย", "ภาษาเอสเปรันโต", "ภาษาเอสเปรันโต (แปลทีละคำ)", "ภาษาไทย (แปลทีละคำ)", "คำในวงเล็บ [ ] ยังไม่มีในคลัง", "แปลทีละคำ ไม่ใช่ประโยคที่สมบูรณ์", "พิมพ์ cx gx sx ux แทน ĉ ĝ ŝ ŭ ได้", "ให้ Claude แปลทั้งประโยค", "Claude กำลังแปล…", "ภาษาเอสเปรันโต · โดย Claude", "ภาษาไทย · โดย Claude", "ภาษามือเป็นภาษาที่ใช้ตาดู ไม่มีเสียงอ่าน", "ใช้ Claude แปลไม่ได้ตอนนี้", "พิมพ์ตัวอักษรอังกฤษ A–Z เพื่อดูท่ามือ", "ภาษาที่ไม่ได้เป็นของประเทศใด", "ใหม่", "ภาษาของคนหูหนวก · 10 บท", "ภาษาสากลที่มีคนสร้าง · 7 บท", "10 บท"], "en": ["Sign fingerspelling", "Esperanto translator", "Sign language", "Esperanto", "Sign language", "Esperanto", "English letters", "ASL fingerspelling", "Right hand, palm out", "Thai", "Esperanto", "Esperanto (word by word)", "Thai (word by word)", "Words in [ ] are not in the word list yet", "Word by word, not a full sentence", "Type cx gx sx ux for ĉ ĝ ŝ ŭ", "Ask Claude to translate the sentence", "Claude is translating…", "Esperanto · by Claude", "Thai · by Claude", "Sign language is visual, so there is no audio", "Claude translation is unavailable right now", "Type English letters A–Z to see the handshapes", "Languages of no single country", "New", "Language of Deaf people · 10 chapters", "A constructed international language · 7 chapters", "10 chapters"], "zh": ["手语指拼", "世界语翻译", "手语", "世界语", "手语", "世界语", "英文字母", "ASL 指拼字母", "右手，掌心朝外", "泰语", "世界语", "世界语（逐词）", "泰语（逐词）", "[ ] 中的词尚未收录", "逐词翻译，并非完整句子", "可用 cx gx sx ux 输入 ĉ ĝ ŝ ŭ", "让 Claude 翻译整句", "Claude 正在翻译…", "世界语 · 由 Claude 翻译", "泰语 · 由 Claude 翻译", "手语是视觉语言，没有读音", "暂时无法使用 Claude 翻译", "输入英文字母 A–Z 查看手形", "不属于任何国家的语言", "新", "聋人的语言 · 10 章", "人造国际语 · 7 章", "10 章"], "ja": ["指文字", "エスペラント翻訳", "手話", "エスペラント", "手話", "エスペラント", "英字", "ASL 指文字", "右手・手のひらを外へ", "タイ語", "エスペラント", "エスペラント（逐語）", "タイ語（逐語）", "[ ] 内の語は未収録", "逐語訳で、完全な文ではありません", "cx gx sx ux で ĉ ĝ ŝ ŭ を入力できます", "Claude に文全体を翻訳してもらう", "Claude が翻訳中…", "エスペラント · Claude による", "タイ語 · Claude による", "手話は目で見る言語なので音声はありません", "現在 Claude で翻訳できません", "英字 A–Z を入力すると手の形が表示されます", "特定の国に属さない言語", "新", "ろう者の言語 · 10章", "人工の国際語 · 7章", "10章"], "ko": ["수어 지문자", "에스페란토 번역", "수어", "에스페란토", "수어", "에스페란토", "영문자", "ASL 지문자", "오른손, 손바닥을 바깥으로", "태국어", "에스페란토", "에스페란토 (단어별)", "태국어 (단어별)", "[ ] 안의 단어는 아직 없음", "단어별 번역이며 완전한 문장이 아님", "cx gx sx ux로 ĉ ĝ ŝ ŭ 입력 가능", "Claude에게 문장 전체 번역 요청", "Claude가 번역 중…", "에스페란토 · Claude 번역", "태국어 · Claude 번역", "수어는 눈으로 보는 언어라 소리가 없습니다", "지금은 Claude 번역을 쓸 수 없습니다", "영문자 A–Z를 입력하면 손 모양이 보입니다", "특정 국가에 속하지 않는 언어", "신규", "농인의 언어 · 10장", "만들어진 국제어 · 7장", "10장"]});
   var out = {};
   Object.keys(T).forEach(function(l){
     if (T[l].length !== K.length) throw new Error('i18n length mismatch '+l+' '+T[l].length+' vs '+K.length);
@@ -6904,5 +6904,6 @@ footer a{color:#F4F4F0}
 })();
 </script>
 
+<script src="/bgwords.js?v=2" defer></script>
 </body>
 </html>
