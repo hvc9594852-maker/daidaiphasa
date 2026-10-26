@@ -28,8 +28,8 @@ html.rx-frame #mainView{padding-inline:calc(var(--rx-bezel) - 6px)}
 @media print{ html.rx-frame body::before, html.rx-frame body::after, .rx-grain{display:none} }
 
 /* intro: everything comes into focus, like the CRT warming up */
-html.rx-anim #mainView{animation:rx-focus 1.25s cubic-bezier(.2,.7,.2,1) both}
-@keyframes rx-focus{0%{opacity:0;filter:blur(18px) brightness(1.6);transform:scale(1.025)}55%{opacity:1}100%{opacity:1;filter:none;transform:none}}
+html.rx-anim #mainView{animation:rx-focus 1.25s cubic-bezier(.2,.7,.2,1) backwards}
+@keyframes rx-focus{0%{opacity:0;filter:blur(18px) brightness(1.15);transform:scale(1.025)}55%{opacity:1}100%{opacity:1;filter:blur(0) brightness(1);transform:none}}
 
 /* ---------- pill navigation ---------- */
 html.rx-frame header{position:sticky;top:calc(var(--rx-bezel) + 8px);z-index:60;background:transparent;border:0;padding-inline:12px;pointer-events:none}
