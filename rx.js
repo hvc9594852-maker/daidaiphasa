@@ -83,35 +83,45 @@
   }
 
   // ---------- scroll-pinned story ----------
-  var story = d.getElementById('rxStory'), track = story && story.querySelector('.rx-track');
+  var story = d.getElementById('rxStory');
   var wins = story ? Array.from(story.querySelectorAll('.rx-s')) : [];
   var ghost = story && story.querySelector('.rx-ghost');
   var eclipse = d.querySelector('.rx-eclipse');
-  var steps = 6, lastStep = -2;
-  if (track && wins.length && anim && window.CSS && CSS.supports('position', 'sticky')) {
-    root.classList.add('rx-scrolly');
+  // ---------- story plays by itself (no scroll needed): windows pop one by one, old ones pile up ----------
+  var stage = story && story.querySelector('.rx-stage');
+  var steps = 6, storyVisible = false;
+  function setStep(step){
+    wins.forEach(function(w){
+      var s = +w.dataset.step;
+      w.classList.toggle('now', s === step);
+      w.classList.toggle('past', step >= 0 && s < step);
+      w.style.transitionDelay = (s === step) ? (getComputedStyle(w).getPropertyValue('--d') || '0s') : '0s';
+    });
+  }
+  async function untilVisible(){ while (!storyVisible || d.hidden) await wait(250); }
+  if (stage && wins.length && anim) {
+    root.classList.add('rx-auto');
     showTyped(0);
+    if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ storyVisible = es[0].isIntersecting; }, {threshold:.35}).observe(stage);
+    else storyVisible = true;
+    var HOLD = [2600, 2600, 3000, 1900, 2400];
+    (async function play(){
+      while (true) {
+        await untilVisible(); await wait(350);
+        for (var st = 0; st < steps; st++) {
+          await untilVisible();
+          setStep(st);
+          if (st < steps - 1) { await wait(HOLD[st]); continue; }
+          await wait(500);
+          for (var f = 0; f <= 1.0001; f += .025) { showTyped(Math.min(1, f)); await wait(55); }
+          await wait(4200);
+        }
+        stage.classList.add('rx-reset'); setStep(-1); await wait(700); showTyped(0); stage.classList.remove('rx-reset'); await wait(300);
+      }
+    })();
   }
   function onScroll(){
     var vh = innerHeight;
-    if (root.classList.contains('rx-scrolly') && track.offsetParent !== null) {
-      var r = track.getBoundingClientRect(), total = r.height - vh;
-      if (r.bottom > -vh && r.top < vh * 2) {
-        var p = Math.min(1, Math.max(0, -r.top / total));
-        var x = p * steps, step = Math.min(steps - 1, Math.floor(x));
-        if (step !== lastStep) {
-          wins.forEach(function(w){
-            var s = +w.dataset.step;
-            w.classList.toggle('now', s === step);
-            w.classList.toggle('past', s < step);
-            w.style.transitionDelay = (s === step) ? (getComputedStyle(w).getPropertyValue('--d') || '0s') : '0s';
-          });
-          lastStep = step;
-        }
-        if (step === steps - 1) showTyped(Math.min(1, (x - step) * 1.7 + .04)); else showTyped(0);
-        if (ghost) ghost.style.setProperty('--g', p.toFixed(3));
-      }
-    }
     if (eclipse && anim) {
       var er = eclipse.getBoundingClientRect();
       var e = Math.min(1, Math.max(0, (vh - er.top) / (vh * .85)));
@@ -160,5 +170,15 @@
     rows.appendChild(head); rows.appendChild(well);
     function led(){ var en = fig && fig.classList.contains('en-kb'); head.querySelector('[data-l="en"]').classList.toggle('lit', !!en); head.querySelector('[data-l="th"]').classList.toggle('lit', !en); }
     led(); if (fig && 'MutationObserver' in window) new MutationObserver(led).observe(fig, {attributes:true, attributeFilter:['class']});
+    var box = rows.parentNode, lastW = -1;
+    function fit(){
+      if (box.clientWidth === lastW) return; lastW = box.clientWidth;
+      rows.style.zoom = '';
+      if (innerWidth <= 640 || !box.clientWidth) return;
+      var z = Math.min(1, (box.clientWidth - 8) / rows.offsetWidth);
+      if (z < 1) rows.style.zoom = z.toFixed(3);
+    }
+    fit(); addEventListener('resize', fit);
+    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(box);
   })();
 })();
