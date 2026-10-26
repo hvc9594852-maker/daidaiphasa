@@ -1,9 +1,9 @@
 /* ใดๆภาษา.com — บทความ (editorial) */
 :root{
   --paper:#FBFAF7;--ink:#1A1A18;--sub:#6A665E;--faint:#9A958B;--rule:#E3DFD6;--plate:#F2EFE8;--accent:#FF5A1F;--accent-ink:#C2410C;
-  --serif:'Chakra Petch',system-ui,sans-serif;
-  --sans:'Chakra Petch',system-ui,sans-serif;
-  --mono:'Chakra Petch',ui-monospace,monospace;
+  --serif:'Sarabun',system-ui,sans-serif;
+  --sans:'Sarabun',system-ui,sans-serif;
+  --mono:'Sarabun',ui-monospace,monospace;
   --brand:'Chakra Petch',system-ui,sans-serif;--head:'Chakra Petch',system-ui,sans-serif;
   --col:660px;--wide:1040px;
   color-scheme:light}
@@ -201,3 +201,23 @@ body{font-weight:400;line-height:1.9}
 .place .pnote{border-radius:12px}
 kbd{border-radius:8px}
 @media (max-width:720px){.cover{border-radius:0 0 18px 18px}}
+
+/* soft dividers: hairlines become rounded strokes */
+.mast,.hub-head{border-bottom-color:transparent!important;position:relative}
+.mast::after,.hub-head::after{content:"";position:absolute;left:16px;right:16px;bottom:-1px;height:1.5px;border-radius:99px;background:var(--rule)}
+.hub-head::after{background:var(--ink);height:2px}
+.more,.hub-grid,footer.bot{border-top-color:transparent!important;position:relative}
+.more::before,.hub-grid::before,footer.bot::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1.5px;border-radius:99px;background:var(--rule)}
+.pq{border-top-color:transparent!important;border-bottom-color:transparent!important;position:relative}
+.pq::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1.5px;border-radius:99px;background:var(--rule)}
+.pq::before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;border-radius:99px;background:var(--ink)}
+.place{border-top-color:transparent!important;position:relative}
+.place::before{content:"";position:absolute;left:0;right:0;top:-2px;height:3px;border-radius:99px;background:var(--ink)}
+.place dt,.place dd{border-top-color:transparent!important;position:relative}
+.place dt::before,.place dd::before{content:"";position:absolute;left:0;right:6px;top:-1px;height:1.5px;border-radius:99px;background:var(--rule)}
+.place dd::before{right:0}
+.pairs div{border-bottom-color:transparent!important;position:relative}
+.pairs div::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1.5px;border-radius:99px;background:var(--rule)}
+.pairs .h{border-bottom-color:transparent!important}
+.pairs .h::after{background:var(--ink)}
+.tool a{border:1.5px solid var(--ink)!important;border-radius:18px;padding-inline:20px!important}
