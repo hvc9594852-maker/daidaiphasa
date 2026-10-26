@@ -1,10 +1,10 @@
 /* ใดๆภาษา.com — บทความ (editorial) */
 :root{
   --paper:#FBFAF7;--ink:#1A1A18;--sub:#6A665E;--faint:#9A958B;--rule:#E3DFD6;--plate:#F2EFE8;--accent:#FF5A1F;--accent-ink:#C2410C;
-  --serif:'Noto Serif Thai','FreeSerif',Georgia,serif;
-  --sans:'IBM Plex Sans Thai Looped','IBM Plex Sans Thai','Loma',system-ui,sans-serif;
-  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
-  --brand:'Chakra Petch','Bai Jamjuree',system-ui,sans-serif;--head:'Chakra Petch','Noto Serif Thai',system-ui,sans-serif;
+  --serif:'Chakra Petch',system-ui,sans-serif;
+  --sans:'Chakra Petch',system-ui,sans-serif;
+  --mono:'Chakra Petch',ui-monospace,monospace;
+  --brand:'Chakra Petch',system-ui,sans-serif;--head:'Chakra Petch',system-ui,sans-serif;
   --col:660px;--wide:1040px;
   color-scheme:light}
 :root[data-theme="dark"]{--paper:#141413;--ink:#ECE9E2;--sub:#A9A49A;--faint:#7C786F;--rule:#2E2C29;--plate:#1D1C1A;--accent-ink:#FF8A5B;color-scheme:dark}
@@ -185,5 +185,13 @@ footer.bot a:hover{color:var(--ink)}
 .place .psrc a{color:var(--sub)}
 .checked{font-family:var(--sans);font-size:14.5px;color:var(--sub);border-left:3px solid var(--accent);padding:4px 0 4px 14px;margin-top:2em}
 @media (max-width:600px){.place dl{grid-template-columns:1fr}.place dt{padding-bottom:0;border-top:1px solid var(--rule)}.place dd{border-top:0;padding-top:2px}}
+
+/* printed feel: film grain over the illustrations so they read as print, not render */
+.cover,.cards .pic,.lead-story .pic{position:relative}
+.cover::after,.cards .pic::after,.lead-story .pic::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .18 0 0 0 0 .15 0 0 0 1.2 -.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/200px 200px;
+  opacity:.5;mix-blend-mode:multiply}
+.cover::before,.cards .pic::before,.lead-story .pic::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;box-shadow:inset 0 0 80px rgba(60,40,10,.18)}
+body{font-weight:400;line-height:1.9}
 
 html,body{overflow-x:clip}

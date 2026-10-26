@@ -7,7 +7,7 @@ from guides import GUIDES
 OUT = os.path.abspath(os.path.join(HERE, '..', '..')); os.makedirs(OUT, exist_ok=True)  # writes straight into the site root
 DATE_ISO = '2026-10-18'; DATE_TH = '18 ตุลาคม 2569'
 ADS = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2391353056454673" crossorigin="anonymous"></script>\n'
-FONTS = 'https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;600;700&family=IBM+Plex+Sans+Thai+Looped:wght@400;600&family=Chakra+Petch:wght@700&display=swap'
+FONTS = 'https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap'
 
 def head(title, desc, path, ld, otype='article'):
     url = 'https://daidaiphasa.com' + path
@@ -36,7 +36,7 @@ def head(title, desc, path, ld, otype='article'):
 {ADS}<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
-<link rel="stylesheet" href="/article.css?v=3">
+<link rel="stylesheet" href="/article.css?v=4">
 <script>try{{var t=localStorage.getItem('lh-theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark')}}catch(e){{}}</script>
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 </head>
