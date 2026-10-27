@@ -1,7 +1,7 @@
 /* ใดๆภาษา.com — KeySwap download panel (shown on the ลืมสลับแป้น tool) */
 (function(){
   // ---- settings: change these when files/links are ready ----
-  var WINDOWS_EXE_URL = '/downloads/KeySwap-Windows.exe';   // 11 MB, Windows 10/11 (64-bit)
+  var WINDOWS_EXE_URL = '/downloads/KeySwap-Windows.exe';   // 1.2 MB, Windows 10/11 (64-bit)
   var ICLOUD_SHORTCUT_LINK = '';                            // e.g. 'https://www.icloud.com/shortcuts/xxxxxxxx' — empty = Mac "coming soon"
   // ------------------------------------------------------------
 
