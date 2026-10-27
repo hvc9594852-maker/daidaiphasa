@@ -2,7 +2,7 @@
 (function(){
   // ---- settings: change these when files/links are ready ----
   var WINDOWS_EXE_URL = '/downloads/KeySwap-Windows.exe';   // 1.2 MB, Windows 10/11 (64-bit)
-  var ICLOUD_SHORTCUT_LINK = '';                            // e.g. 'https://www.icloud.com/shortcuts/xxxxxxxx' — empty = Mac "coming soon"
+  var MAC_URL = '/downloads/KeySwap-Mac.zip';               // Quick Action (Automator workflow), 8 KB
   // ------------------------------------------------------------
 
   var d = document, box = d.getElementById('keyswap'); if (!box) return;
@@ -18,8 +18,7 @@
   var win = box.querySelector('[data-os="win"]'), mac = box.querySelector('[data-os="mac"]');
   var wb = d.getElementById('ksWinBtn'), mb = d.getElementById('ksMacBtn');
   wb.href = WINDOWS_EXE_URL;
-  if (ICLOUD_SHORTCUT_LINK) { mb.href = ICLOUD_SHORTCUT_LINK; mb.removeAttribute('aria-disabled'); mb.classList.remove('off'); mb.textContent = 'เพิ่มคำสั่งลัดใน Shortcuts'; }
-  else { mb.removeAttribute('href'); }
+  mb.href = MAC_URL;
   if (os === 'mac') { mac.classList.add('mine'); mac.parentNode.insertBefore(mac, win); }
   else if (os === 'win') win.classList.add('mine');
   if (os === 'mobile') box.classList.add('ks-mobile');
