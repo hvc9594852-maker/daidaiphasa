@@ -28,12 +28,12 @@ header .navlinks a:hover{color:var(--ink)}
 .strip .ui-ctl button:hover{border-color:var(--rule)}
 
 /* greetings drifting behind the hero */
-.hero{position:relative;isolation:isolate}
-.hero>*{position:relative;z-index:1}
-.hero .bgtext{position:absolute;z-index:0;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;overflow:hidden;pointer-events:none;display:flex;flex-direction:column;justify-content:center}
-.hero .bgrot{display:flex;flex-direction:column;gap:4px;transform:rotate(-2deg)}
-.hero .bgrot>div{white-space:nowrap;font-family:var(--display);font-weight:700;font-size:clamp(44px,6.5vw,92px);line-height:1.1;color:var(--ink);opacity:.045;animation:bg-slide 80s linear infinite}
-.hero .bgrot>div:nth-child(even){animation-direction:reverse;animation-duration:95s}
+.hero,.globe-sec,.community,footer{position:relative;isolation:isolate}
+.hero>*,.globe-sec>*,.community>*,footer>*{position:relative;z-index:1}
+.bgtext{position:absolute!important;z-index:0!important;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;overflow:hidden;pointer-events:none;display:flex;flex-direction:column;justify-content:center}
+.bgrot{display:flex;flex-direction:column;gap:4px;transform:rotate(-2deg)}
+.bgrot>div{white-space:nowrap;font-family:var(--display);font-weight:700;font-size:clamp(44px,6.5vw,92px);line-height:1.1;color:var(--ink);opacity:.045;animation:bg-slide 80s linear infinite}
+.bgrot>div:nth-child(even){animation-direction:reverse;animation-duration:95s}
 @keyframes bg-slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* descriptions removed: keyboard caption (its text is still set by the converter, just not shown) */
@@ -46,7 +46,7 @@ header .navlinks a:hover{color:var(--ink)}
   header .navlinks{justify-content:flex-start;margin:0;padding:0;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
   header .navlinks a.m-cur{color:var(--ink)}
 }
-@media (prefers-reduced-motion:reduce){.hero .bgrot>div{animation:none}}
+@media (prefers-reduced-motion:reduce){.bgrot>div{animation:none}}
 
 /* ---------- softer shapes: rounded corners everywhere (matches the pill nav) ---------- */
 :root{--r-lg:18px;--r-md:12px;--r-sm:9px}
@@ -127,3 +127,8 @@ header.nav-mini .brand{justify-content:center;width:100%}
 header.nav-mini nav.wrap{cursor:pointer}
 @media (max-width:640px){header.nav-mini nav.wrap{max-width:180px;border-radius:999px;padding:9px 20px}}
 @media (prefers-reduced-motion:reduce){header nav.wrap,header .navlinks,header .nav-cta{transition:none}}
+
+/* same drifting greetings behind the globe, community and footer bands */
+.globe-sec .bgrot>div,.community .bgrot>div{color:#111;opacity:.07}
+footer .bgrot>div{color:#F4F4F0;opacity:.06}
+footer .bgtext,.globe-sec .bgtext,.community .bgtext{left:0;width:100%}
