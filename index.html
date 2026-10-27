@@ -36,7 +36,7 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2391353056454673" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap">
-<link rel="stylesheet" href="/rx.css?v=17">
+<link rel="stylesheet" href="/rx.css?v=18">
 <style>
 /* Layout: printed-dictionary page with game type — ruled black frames, one orange signal, wide gutters */
 :root{
@@ -676,31 +676,38 @@ footer a{color:#F4F4F0}
 
   <aside class="ks" id="keyswap" aria-labelledby="ksTitle" hidden>
     <div class="ks-head">
-      <h3 id="ksTitle">KeySwap แก้ลืมสลับแป้นได้ในทุกโปรแกรม</h3>
-      <p>คลุมดำข้อความที่พิมพ์ผิดภาษา แล้วกดคีย์ลัด ข้อความจะสลับเป็นภาษาที่ถูกทันที ไม่ต้องคัดลอกมาวางที่เว็บ ใช้ได้ทั้งในแชต อีเมล เอกสาร และเบราว์เซอร์</p>
+      <h3 id="ksTitle">KeySwap ใช้เครื่องมือภาษาได้ในทุกโปรแกรม</h3>
+      <p>คลุมดำข้อความในแอปไหนก็ได้ ทั้ง LINE แชต อีเมล เอกสาร หรือเบราว์เซอร์ แล้วกดคีย์ลัด ข้อความจะถูกแทนที่ทันที ไม่ต้องคัดลอกมาวางที่เว็บ</p>
       <p class="ks-os" id="ksOs"></p>
+    </div>
+    <div class="ks-keys" role="table" aria-label="คีย์ลัดของ KeySwap">
+      <div class="ks-row ks-row-h" role="row"><span role="columnheader">ทำอะไร</span><span role="columnheader">Windows</span><span role="columnheader">Mac</span></div>
+      <div class="ks-row" role="row"><span role="cell">สลับแป้น ไทย ⇄ อังกฤษ <small>l;ylfu → สวัสดี</small></span><span role="cell"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>T</kbd></span><span role="cell"><kbd>⌃</kbd><kbd>⇧</kbd><kbd>T</kbd></span></div>
+      <div class="ks-row" role="row"><span role="cell">ถอดเสียง <small>สวัสดี → sawatdi · computer → คอมพิวเตอร์</small></span><span role="cell"><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>R</kbd></span><span role="cell"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>R</kbd></span></div>
+      <div class="ks-row" role="row"><span role="cell">อักษรเบรลล์ <small>hello → ⠓⠑⠇⠇⠕ และกลับ</small></span><span role="cell"><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>B</kbd></span><span role="cell"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>B</kbd></span></div>
+      <div class="ks-row" role="row"><span role="cell">รหัสมอร์ส <small>sos → ... --- ... และกลับ</small></span><span role="cell"><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd></span><span role="cell"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>M</kbd></span></div>
+      <div class="ks-row" role="row"><span role="cell">แปลภาษา <small>ไทย → อังกฤษ · ภาษาอื่น → ไทย · ต้องต่อเน็ต</small></span><span role="cell"><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>L</kbd></span><span role="cell"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>L</kbd></span></div>
     </div>
     <div class="ks-cards">
       <div class="ks-card" data-os="win">
-        <div class="ks-top"><b>Windows</b><span>Windows 10 / 11 · 64-bit · 1.2 MB</span></div>
+        <div class="ks-top"><b>Windows</b><span>Windows 10 / 11 · 64-bit · 14 MB</span></div>
         <ol>
-          <li>ดาวน์โหลดแล้วดับเบิลคลิกเปิด โปรแกรมจะทำงานอยู่เบื้องหลัง</li>
-          <li>คลุมดำข้อความที่พิมพ์ผิดภาษา</li>
-          <li>กด <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>T</kbd></li>
+          <li>ดาวน์โหลดแล้วดับเบิลคลิกเปิด จะมีไอคอน KeySwap ที่มุมขวาล่างของจอ</li>
+          <li>คลุมดำข้อความ แล้วกดคีย์ลัดตามตาราง</li>
+          <li>ดูคีย์ลัดหรือปิดโปรแกรม: คลิกที่ไอคอน KeySwap</li>
         </ol>
         <a class="ks-btn" id="ksWinBtn" href="/downloads/KeySwap-Windows.exe" download>ดาวน์โหลดสำหรับ Windows</a>
-        <p class="ks-fine">ต้องการปิดโปรแกรม: เปิด KeySwap อีกครั้งแล้วกด Yes · <a href="/_src/keyswap/main_windows.go">ดูซอร์สโค้ด</a></p>
-        <p class="ks-fine">ถ้า Windows ขึ้นหน้าต่าง "Windows protected your PC" เป็นเพราะโปรแกรมยังไม่มีลายเซ็นดิจิทัล กด More info แล้ว Run anyway</p>
+        <p class="ks-fine">ถ้า Windows ขึ้นหน้าต่าง "Windows protected your PC" เป็นเพราะโปรแกรมยังไม่มีลายเซ็นดิจิทัล กด More info แล้ว Run anyway · <a href="/_src/keyswap/main_windows.go">ดูซอร์สโค้ด</a></p>
       </div>
       <div class="ks-card" data-os="mac">
-        <div class="ks-top"><b>Mac</b><span>Quick Action · macOS 12 ขึ้นไป · 8 KB</span></div>
+        <div class="ks-top"><b>Mac</b><span>macOS 11 ขึ้นไป · Apple Silicon และ Intel · 10 MB</span></div>
         <ol>
-          <li>ดาวน์โหลด แล้วดับเบิลคลิก KeySwap.workflow กด Install</li>
-          <li>ตั้งคีย์ลัด: System Settings › Keyboard › Keyboard Shortcuts › Services › Text › KeySwap แล้วกำหนดปุ่ม เช่น <kbd>Ctrl</kbd> + <kbd>⌘</kbd> + <kbd>T</kbd></li>
-          <li>คลุมดำข้อความที่พิมพ์ผิดภาษา แล้วกดคีย์ลัด (หรือคลิกขวา › Services › KeySwap)</li>
+          <li>ดาวน์โหลด แตกไฟล์ แล้วลาก KeySwap ไปไว้ใน Applications แล้วเปิด</li>
+          <li>อนุญาตครั้งแรกครั้งเดียว: System Settings › Privacy &amp; Security › Accessibility (macOS ใหม่ชื่อ Device Control and Data Access) › เปิดสวิตช์ KeySwap</li>
+          <li>คลุมดำข้อความ แล้วกดคีย์ลัดตามตาราง · ดูคีย์ลัดหรือปิดโปรแกรมได้จากไอคอน ๆ ที่แถบเมนูด้านบน</li>
         </ol>
         <a class="ks-btn" id="ksMacBtn" href="/downloads/KeySwap-Mac.zip" download>ดาวน์โหลดสำหรับ Mac</a>
-        <p class="ks-fine">ถ้า Mac บอกว่าเปิดไม่ได้เพราะมาจากอินเทอร์เน็ต ให้คลิกขวาที่ไฟล์แล้วเลือก Open</p>
+        <p class="ks-fine">ถ้า Mac บอกว่าเปิดไม่ได้เพราะยังไม่ได้ตรวจสอบผู้พัฒนา ให้ไปที่ System Settings › Privacy &amp; Security แล้วกด Open Anyway</p>
       </div>
     </div>
   </aside>
@@ -6942,6 +6949,6 @@ footer a{color:#F4F4F0}
 
 <script src="/bgwords.js?v=4" defer></script>
 <script src="/nav.js?v=2" defer></script>
-<script src="/keyswap.js?v=4" defer></script>
+<script src="/keyswap.js?v=5" defer></script>
 </body>
 </html>

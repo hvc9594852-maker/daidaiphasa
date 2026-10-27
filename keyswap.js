@@ -1,8 +1,8 @@
 /* ใดๆภาษา.com — KeySwap download panel (shown on the ลืมสลับแป้น tool) */
 (function(){
   // ---- settings: change these when files/links are ready ----
-  var WINDOWS_EXE_URL = '/downloads/KeySwap-Windows.exe';   // 1.2 MB, Windows 10/11 (64-bit)
-  var MAC_URL = '/downloads/KeySwap-Mac.zip';               // Quick Action (Automator workflow), 8 KB
+  var WINDOWS_EXE_URL = '/downloads/KeySwap-Windows.exe';   // ~14 MB, Windows 10/11 (64-bit)
+  var MAC_URL = '/downloads/KeySwap-Mac.zip';               // KeySwap.app, universal, ~10 MB
   // ------------------------------------------------------------
 
   var d = document, box = d.getElementById('keyswap'); if (!box) return;
@@ -31,8 +31,9 @@
     c.addEventListener('animationend', function(e){ if (e.animationName === 'ks-boing') c.classList.remove('ks-boing'); });
   });
 
-  // show only on the "ลืมสลับแป้น" tool
-  var tab = d.getElementById('tab-fix');
-  function sync(){ box.hidden = !(tab && tab.getAttribute('aria-selected') === 'true'); }
-  if (tab) { sync(); new MutationObserver(sync).observe(tab, {attributes:true, attributeFilter:['aria-selected']}); }
+  
+  // shown on every tool KeySwap can do: swap, romanize, braille, morse, translate
+  var tabs = ['tab-fix','tab-romanize','tab-braille','tab-morse','tab-tr'].map(function(id){ return d.getElementById(id); }).filter(Boolean);
+  function sync(){ box.hidden = !tabs.some(function(t){ return t.getAttribute('aria-selected') === 'true'; }); }
+  sync(); tabs.forEach(function(t){ new MutationObserver(sync).observe(t, {attributes:true, attributeFilter:['aria-selected']}); });
 })();
