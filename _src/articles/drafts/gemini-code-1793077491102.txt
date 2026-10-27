@@ -1,0 +1,15 @@
+Act as an expert UI/UX designer and frontend developer. Create a single-page landing page for a product called "The InnerWebs" using a "90s/Y2K retro-minimalist OS" aesthetic. 
+
+Key visual requirements:
+- Theme: Classic Mac OS / Windows 95 UI mixed with modern minimalism.
+- Background: Deep CRT-style dark blue/green with a subtle vignette.
+- Typography: Use a mix of pixelated fonts for subheadings/accents and large, elegant Serif fonts for the main body/headings.
+- Buttons: Retro 3D beveled style. The main CTA should say "Reserve your spot" in a gold/yellow color.
+
+Sections to include:
+1. Header: Fixed at the top. Logo on the left, "Reserve your spot" CTA on the right.
+2. Hero Section: Large headline saying "Maximize your Productivity" (with 'Productivity' crossed out in red and replaced with 'SANITY' as if written by hand). Include a graphic of a retro 80s/90s computer monitor.
+3. Content/Scroll Section: As the user scrolls, display content inside retro OS popup windows (complete with old-school title bars, minimize/maximize/close buttons, and drop shadows). Make these windows stack or cascade over each other dynamically.
+4. Footer: A large marquee text of the logo scrolling in the background, with simple retro-styled links (Home, FAQ, Team, Careers, Contact) on top.
+
+Please generate the HTML, CSS, and necessary JavaScript (using Tailwind CSS and a framework like React or pure HTML/JS for the scroll animations) to achieve this parallax popup window effect and retro vibe.
