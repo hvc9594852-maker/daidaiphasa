@@ -25,6 +25,12 @@
   var note = d.getElementById('ksOs');
   note.textContent = os === 'win' ? 'ตรวจพบว่าคุณใช้ Windows' : os === 'mac' ? 'ตรวจพบว่าคุณใช้ Mac' : os === 'mobile' ? 'KeySwap ใช้บนคอมพิวเตอร์ เปิดหน้านี้บนคอมเพื่อดาวน์โหลด' : '';
 
+  // a little bounce when a card is pressed
+  box.querySelectorAll('.ks-card').forEach(function(c){
+    c.addEventListener('pointerdown', function(){ c.classList.remove('ks-boing'); void c.offsetWidth; c.classList.add('ks-boing'); });
+    c.addEventListener('animationend', function(e){ if (e.animationName === 'ks-boing') c.classList.remove('ks-boing'); });
+  });
+
   // show only on the "ลืมสลับแป้น" tool
   var tab = d.getElementById('tab-fix');
   function sync(){ box.hidden = !(tab && tab.getAttribute('aria-selected') === 'true'); }

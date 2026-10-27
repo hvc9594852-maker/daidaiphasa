@@ -162,3 +162,26 @@ footer .bgtext,.globe-sec .bgtext,.community .bgtext{left:0;width:100%}
 .wod .word{font-size:clamp(44px,5.6vw,72px)!important;line-height:1.45!important;margin-top:6px;overflow-wrap:anywhere}
 /* keyboard: faint base for Thai vowels / tone marks */
 .kb-base{font-style:normal;opacity:.22;font-weight:400}
+
+/* background greetings: softer white on orange, same soft white on the black footer */
+.globe-sec .bgrot>div,.community .bgrot>div{color:#fff;opacity:.11}
+footer .bgrot>div{color:#fff;opacity:.11}
+/* ภาษาเฉพาะกลุ่ม: heading sits in the middle beside the list */
+.community .wrap{align-items:center}
+.community .intro{align-self:center}
+@media (max-width:640px){.community .intro{text-align:center}}
+
+/* KeySwap: no outer frame; the orange frame follows the card under the pointer, with a wobble */
+.ks{border:0!important}
+.ks-card{transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease;cursor:default;will-change:transform}
+.ks-cards:hover .ks-card.mine:not(:hover){border-color:color-mix(in srgb,var(--ink) 12%,transparent);box-shadow:none}
+.ks-cards:hover .ks-card.mine:not(:hover) .ks-btn:not(.off){background:var(--ink);color:var(--paper)}
+.ks-card:hover{border-color:var(--signal);box-shadow:0 0 0 3px color-mix(in srgb,var(--signal) 18%,transparent),0 12px 28px rgba(0,0,0,.08);animation:ks-wiggle .55s ease}
+.ks-card:hover .ks-btn:not(.off){background:var(--signal);color:#111}
+.ks-card.ks-boing{animation:ks-boing .45s cubic-bezier(.3,1.6,.5,1)}
+.ks-btn{transition:transform .15s ease}
+.ks-btn:active{transform:scale(.94)}
+@keyframes ks-wiggle{0%{transform:rotate(0)}20%{transform:rotate(-1.2deg) scale(1.015)}45%{transform:rotate(1deg) scale(1.02)}70%{transform:rotate(-.5deg) scale(1.015)}100%{transform:rotate(0) scale(1.01)}}
+@keyframes ks-boing{0%{transform:scale(1.01)}30%{transform:scale(.96,.98) rotate(-.6deg)}60%{transform:scale(1.03,1.02) rotate(.5deg)}100%{transform:scale(1.01)}}
+.ks-card:hover{transform:scale(1.01)}
+@media (prefers-reduced-motion:reduce){.ks-card:hover,.ks-card.ks-boing{animation:none}}
