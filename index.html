@@ -36,7 +36,7 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2391353056454673" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap">
-<link rel="stylesheet" href="/rx.css?v=14">
+<link rel="stylesheet" href="/rx.css?v=15">
 <style>
 /* Layout: printed-dictionary page with game type — ruled black frames, one orange signal, wide gutters */
 :root{
@@ -673,6 +673,35 @@ footer a{color:#F4F4F0}
     <figcaption class="mono"><span id="kbCap">แป้นไทย (เกษมณี)</span> · ช่องสีส้มคือแป้นที่อยู่ในข้อความของคุณ</figcaption>
     <div class="kb-scroll"><div class="kb-rows" id="kbRows"></div></div>
   </figure>
+
+  <aside class="ks" id="keyswap" aria-labelledby="ksTitle" hidden>
+    <div class="ks-head">
+      <h3 id="ksTitle">KeySwap แก้ลืมสลับแป้นได้ในทุกโปรแกรม</h3>
+      <p>คลุมดำข้อความที่พิมพ์ผิดภาษา แล้วกดคีย์ลัด ข้อความจะสลับเป็นภาษาที่ถูกทันที ไม่ต้องคัดลอกมาวางที่เว็บ ใช้ได้ทั้งในแชต อีเมล เอกสาร และเบราว์เซอร์</p>
+      <p class="ks-os" id="ksOs"></p>
+    </div>
+    <div class="ks-cards">
+      <div class="ks-card" data-os="win">
+        <div class="ks-top"><b>Windows</b><span>Windows 10 / 11 · 64-bit · 11 MB</span></div>
+        <ol>
+          <li>ดาวน์โหลดแล้วดับเบิลคลิกเปิด โปรแกรมจะทำงานอยู่เบื้องหลัง</li>
+          <li>คลุมดำข้อความที่พิมพ์ผิดภาษา</li>
+          <li>กด <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>T</kbd></li>
+        </ol>
+        <a class="ks-btn" id="ksWinBtn" href="/downloads/KeySwap-Windows.exe" download>ดาวน์โหลดสำหรับ Windows</a>
+        <p class="ks-fine">ถ้า Windows ขึ้นหน้าต่าง "Windows protected your PC" เป็นเพราะโปรแกรมยังไม่มีลายเซ็นดิจิทัล กด More info แล้ว Run anyway</p>
+      </div>
+      <div class="ks-card" data-os="mac">
+        <div class="ks-top"><b>Mac</b><span>ผ่านแอป Shortcuts (คำสั่งลัด)</span></div>
+        <ol>
+          <li>กดปุ่มด้านล่าง แอป Shortcuts จะเปิดขึ้น แล้วกด Add Shortcut</li>
+          <li>ตั้งคีย์ลัดให้คำสั่ง KeySwap เช่น <kbd>Ctrl</kbd> + <kbd>⌘</kbd> + <kbd>T</kbd></li>
+          <li>คลุมดำข้อความที่พิมพ์ผิดภาษา แล้วกดคีย์ลัด</li>
+        </ol>
+        <a class="ks-btn off" id="ksMacBtn" aria-disabled="true">เวอร์ชัน Mac เร็วๆ นี้</a>
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="globe-sec" id="globe">
@@ -6909,5 +6938,6 @@ footer a{color:#F4F4F0}
 
 <script src="/bgwords.js?v=4" defer></script>
 <script src="/nav.js?v=2" defer></script>
+<script src="/keyswap.js?v=1" defer></script>
 </body>
 </html>
