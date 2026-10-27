@@ -155,3 +155,10 @@ footer .bgtext,.globe-sec .bgtext,.community .bgtext{left:0;width:100%}
 .ks-fine{margin:0;font-size:13px;color:var(--sub)}
 .ks-mobile .ks-btn{display:none}
 .ks-card.mine .ks-btn.off{background:transparent;color:var(--sub)}
+
+/* background greetings: white on the orange bands */
+.globe-sec .bgrot>div,.community .bgrot>div{color:#fff;opacity:.16}
+/* word of the day: smaller so tall Thai marks don't run into the line above */
+.wod .word{font-size:clamp(44px,5.6vw,72px)!important;line-height:1.45!important;margin-top:6px;overflow-wrap:anywhere}
+/* keyboard: faint base for Thai vowels / tone marks */
+.kb-base{font-style:normal;opacity:.22;font-weight:400}
