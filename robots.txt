@@ -2,5 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /.netlify/
 Disallow: /_src/
+Disallow: /admin
+Disallow: /api/
 
 Sitemap: https://daidaiphasa.com/sitemap.xml

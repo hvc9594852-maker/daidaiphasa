@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>หลังบ้าน ใดๆภาษา</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F1EA;--card:#FFFFFF;--ink:#1A1A18;--sub:#6B675E;--line:#E2DDD2;--acc:#FF5A1F;--acc2:#1A1A18;--ok:#2E7D4F;--r:16px}
+@media (prefers-color-scheme:dark){:root{--bg:#141412;--card:#1E1E1B;--ink:#F2EFE8;--sub:#A29D92;--line:#33312C;--acc2:#F2EFE8;--ok:#5FBF86}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:300 16px/1.6 Sarabun,system-ui,sans-serif}
+h1,h2,.num,.tab,.btn{font-family:'Chakra Petch',Sarabun,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+header h1{font-size:22px;margin:0;font-weight:700}
+header h1 b{color:var(--acc)}
+header .sp{flex:1}
+select,.btn{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer}
+.btn:hover{border-color:var(--acc)}
+.muted{color:var(--sub);font-size:14px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.kpi .lbl{color:var(--sub);font-size:14px}
+.kpi .num{font-size:32px;font-weight:700;line-height:1.2;margin-top:2px}
+.kpi .d{font-size:13px;color:var(--sub)}
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+h2{font-size:17px;margin:0 0 10px;font-weight:600}
+.chart svg{width:100%;height:220px;display:block}
+.legend{display:flex;gap:14px;font-size:13px;color:var(--sub);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td{padding:6px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
+.bar{height:6px;border-radius:9px;background:var(--acc);opacity:.75;margin-top:3px}
+.empty{color:var(--sub);font-size:14px;padding:8px 0}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tab{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer;font-size:14px}
+.tab[aria-selected=true]{background:var(--acc2);color:var(--bg);border-color:var(--acc2)}
+.tab small{opacity:.7;margin-left:4px}
+.entry{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start}
+.entry.done{opacity:.55}
+.entry .body{flex:1;min-width:0}
+.entry .t{font-weight:600;font-family:'Chakra Petch'}
+.entry .meta{font-size:13px;color:var(--sub)}
+.entry dl{margin:6px 0 0;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:15px}
+.entry dt{color:var(--sub)}
+.entry dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.entry .acts{display:flex;flex-direction:column;gap:6px}
+.entry .acts .btn{font-size:13px;padding:5px 12px;white-space:nowrap}
+.pill{display:inline-block;font-size:12px;border-radius:999px;padding:1px 9px;background:var(--acc);color:#fff;margin-left:6px;vertical-align:2px}
+.pill.ok{background:var(--ok)}
+.err{background:var(--card);border:1px solid var(--acc);border-radius:var(--r);padding:16px 18px;margin-bottom:12px}
+@media (max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}.grid,.grid3{grid-template-columns:1fr}.entry{flex-direction:column}.entry .acts{flex-direction:row}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>หลังบ้าน <b>ใดๆภาษา</b></h1>
+    <span class="sp"></span>
+    <span class="muted" id="upd"></span>
+    <select id="days" aria-label="ช่วงเวลา"><option value="1">วันนี้</option><option value="7">7 วัน</option><option value="30" selected>30 วัน</option><option value="90">90 วัน</option><option value="365">1 ปี</option></select>
+    <button class="btn" id="reload">รีเฟรช</button>
+  </header>
+  <div id="err" class="err" hidden></div>
+
+  <section class="kpis">
+    <div class="card kpi"><div class="lbl">ผู้เข้าชม (ไม่ซ้ำต่อวัน)</div><div class="num" id="kVis">–</div><div class="d" id="kVisD"></div></div>
+    <div class="card kpi"><div class="lbl">การเปิดหน้า</div><div class="num" id="kPv">–</div><div class="d" id="kPvD"></div></div>
+    <div class="card kpi"><div class="lbl">ครั้งที่ใช้เครื่องมือ</div><div class="num" id="kTool">–</div><div class="d">นับเมื่อพิมพ์ในเครื่องมือ</div></div>
+    <div class="card kpi"><div class="lbl">ดาวน์โหลด KeySwap</div><div class="num" id="kDl">–</div><div class="d" id="kDlD"></div></div>
+  </section>
+
+  <section class="grid">
+    <div class="card chart"><h2>รายวัน</h2><div id="chart"></div>
+      <div class="legend"><span><i style="background:var(--acc)"></i>ผู้เข้าชม</span><span><i style="background:var(--sub)"></i>การเปิดหน้า</span></div></div>
+    <div class="card"><h2>เครื่องมือที่ใช้</h2><table id="tTools"></table></div>
+  </section>
+  <section class="grid3">
+    <div class="card" style="grid-column:span 2"><h2>หน้าที่คนเปิด</h2><table id="tPages"></table></div>
+    <div class="card"><h2>ดาวน์โหลด</h2><table id="tDl"></table></div>
+  </section>
+
+  <section class="card">
+    <h2>ข้อความจากผู้ใช้</h2>
+    <div class="tabs" id="eTabs" role="tablist"></div>
+    <div id="eList"></div>
+  </section>
+</div>
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  var TOOLS={fix:'ลืมสลับแป้น',romanize:'ถอดเสียง',tr:'แปลภาษา',slang:'ภาษาเฉพาะกลุ่ม',lu:'ภาษาลู',braille:'อักษรเบรลล์',morse:'รหัสมอร์ส',sign:'ภาษามือ',dict:'พจนานุกรม'};
+  var FIELD={word:'คำ',group:'กลุ่ม',type:'ประเภท',detail:'รายละเอียด',fix:'ควรแก้เป็น',contact:'ติดต่อกลับ',meaning:'ความหมาย',example:'ตัวอย่าง'};
+  var KIND=[{id:'feedback',label:'ความเห็นทั้งเว็บ'},{id:'reports',label:'แจ้งคำผิด'},{id:'submissions',label:'เสนอคำใหม่'},{id:'done',label:'จัดการแล้ว'}];
+  var data=null, curTab='feedback';
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function fmt(n){return (n||0).toLocaleString('th-TH');}
+  function kindOf(e){ if(e.status==='done') return 'done'; if(e.kind==='reports'&&e.data.group==='site') return 'feedback'; return e.kind; }
+  function rows(el, list, labelFn){
+    if(!list.length){ el.innerHTML='<tr><td class="empty">ยังไม่มีข้อมูล</td></tr>'; return; }
+    var max=list[0].n||1;
+    el.innerHTML=list.slice(0,15).map(function(r){ return '<tr><td>'+esc(labelFn(r.k))+'<div class="bar" style="width:'+Math.max(2,r.n/max*100)+'%"></div></td><td class="n">'+fmt(r.n)+'</td></tr>'; }).join('');
+  }
+  function chart(daily, days, since){
+    var map={}, list=[]; daily.forEach(function(r){ var d=map[r.day]||(map[r.day]={v:0,p:0}); if(r.k==='visitors') d.v+=r.n; else d.p+=r.n; });
+    var start=new Date(since+'T00:00:00Z');
+    for(var i=0;i<days;i++){ var d=new Date(start.getTime()+i*864e5).toISOString().slice(0,10); list.push({d:d,v:(map[d]||{}).v||0,p:(map[d]||{}).p||0}); }
+    var W=700,H=220,pl=34,pb=22,max=Math.max(4,Math.max.apply(null,list.map(function(x){return x.p;})));
+    var bw=(W-pl)/list.length, s='';
+    for(var g=0;g<=4;g++){ var y=H-pb-(H-pb-8)*g/4; s+='<line x1="'+pl+'" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text x="'+(pl-6)+'" y="'+(y+4)+'" text-anchor="end" font-size="11" fill="var(--sub)">'+Math.round(max*g/4)+'</text>'; }
+    var pts=[];
+    list.forEach(function(x,i){
+      var x0=pl+i*bw, h=(H-pb-8)*x.v/max;
+      s+='<rect x="'+(x0+bw*.18)+'" y="'+(H-pb-h)+'" width="'+Math.max(1,bw*.64)+'" height="'+h+'" rx="'+Math.min(4,bw*.3)+'" fill="var(--acc)"><title>'+x.d+' · ผู้เข้าชม '+x.v+' · เปิดหน้า '+x.p+'</title></rect>';
+      pts.push((x0+bw/2).toFixed(1)+','+(H-pb-(H-pb-8)*x.p/max).toFixed(1));
+      if(list.length<=14 || i%Math.ceil(list.length/7)===0) s+='<text x="'+(x0+bw/2)+'" y="'+(H-6)+'" text-anchor="middle" font-size="11" fill="var(--sub)">'+x.d.slice(5).replace('-','/')+'</text>';
+    });
+    s+='<polyline points="'+pts.join(' ')+'" fill="none" stroke="var(--sub)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+    $('chart').innerHTML='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="กราฟผู้เข้าชมรายวัน">'+s+'</svg>';
+  }
+  function paintEntries(){
+    var counts={}; data.entries.forEach(function(e){ var k=kindOf(e); counts[k]=(counts[k]||0)+1; });
+    $('eTabs').innerHTML=KIND.map(function(k){ return '<button class="tab" role="tab" data-k="'+k.id+'" aria-selected="'+(k.id===curTab)+'">'+k.label+'<small>'+(counts[k.id]||0)+'</small></button>'; }).join('');
+    var list=data.entries.filter(function(e){ return kindOf(e)===curTab; });
+    if(!list.length){ $('eList').innerHTML='<div class="empty">ยังไม่มีข้อความในหมวดนี้</div>'; return; }
+    $('eList').innerHTML=list.map(function(e){
+      var d=e.data, title=d.word||'(ไม่ระบุ)';
+      var dl=Object.keys(FIELD).filter(function(k){ return d[k] && k!=='word' && !(k==='group'&&d[k]==='site'); }).map(function(k){ return '<dt>'+FIELD[k]+'</dt><dd>'+esc(d[k])+'</dd>'; }).join('');
+      var when=new Date((e.created_at||'').replace(' ','T')+'Z').toLocaleString('th-TH',{dateStyle:'medium',timeStyle:'short'});
+      return '<div class="entry'+(e.status==='done'?' done':'')+'"><div class="body"><div class="t">'+esc(title)+(e.status==='new'?'<span class="pill">ใหม่</span>':'<span class="pill ok">จัดการแล้ว</span>')+'</div><div class="meta">#'+e.id+' · '+when+'</div><dl>'+dl+'</dl></div>'+
+        '<div class="acts">'+(e.status==='done'?'<button class="btn" data-id="'+e.id+'" data-s="new">ย้ายกลับ</button>':'<button class="btn" data-id="'+e.id+'" data-s="done">จัดการแล้ว</button>')+'<button class="btn" data-id="'+e.id+'" data-s="hidden">ซ่อน</button></div></div>';
+    }).join('');
+  }
+  function paint(){
+    var T={}; data.totals.forEach(function(r){ T[r.k]=r.n; });
+    var sum=function(p){ return data.totals.filter(function(r){return r.k.indexOf(p)===0;}).reduce(function(a,r){return a+r.n;},0); };
+    var td=data.daily.filter(function(r){return r.day===data.today;});
+    var tv=td.filter(function(r){return r.k==='visitors';}).reduce(function(a,r){return a+r.n;},0), tp=td.filter(function(r){return r.k!=='visitors';}).reduce(function(a,r){return a+r.n;},0);
+    $('kVis').textContent=fmt(T.visitors); $('kVisD').textContent='วันนี้ '+fmt(tv);
+    $('kPv').textContent=fmt(sum('page:')); $('kPvD').textContent='วันนี้ '+fmt(tp);
+    $('kTool').textContent=fmt(sum('tool:'));
+    $('kDl').textContent=fmt(sum('dl:'));
+    var win=T['dl:keyswap-windows.exe']||0, mac=T['dl:keyswap-mac.zip']||0; $('kDlD').textContent='Windows '+fmt(win)+' · Mac '+fmt(mac);
+    var pick=function(p){ return data.totals.filter(function(r){return r.k.indexOf(p)===0;}); };
+    rows($('tTools'), pick('tool:'), function(k){ k=k.slice(5); return TOOLS[k]||k; });
+    rows($('tPages'), pick('page:'), function(k){ return k.slice(5); });
+    rows($('tDl'), pick('dl:'), function(k){ return k.slice(3); });
+    chart(data.daily, data.days, data.since);
+    paintEntries();
+    $('upd').textContent='อัปเดต '+new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
+  }
+  function load(){
+    $('err').hidden=true;
+    fetch('/api/admin?days='+$('days').value,{credentials:'same-origin',cache:'no-store'}).then(function(r){
+      if(r.status===503) throw new Error('ยังไม่ได้เชื่อมฐานข้อมูล D1 (ตั้ง binding ชื่อ DB ใน Cloudflare Pages)');
+      if(!r.ok) throw new Error('โหลดข้อมูลไม่ได้ ('+r.status+')');
+      return r.json();
+    }).then(function(j){ data=j; paint(); }).catch(function(e){ $('err').textContent=e.message; $('err').hidden=false; });
+  }
+  $('eTabs').addEventListener('click',function(ev){ var b=ev.target.closest('.tab'); if(!b) return; curTab=b.dataset.k; paintEntries(); });
+  $('eList').addEventListener('click',function(ev){
+    var b=ev.target.closest('button[data-id]'); if(!b) return; b.disabled=true;
+    fetch('/api/admin',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:+b.dataset.id,status:b.dataset.s})})
+      .then(function(r){ if(!r.ok) throw 0; data.entries.forEach(function(e){ if(e.id===+b.dataset.id) e.status=b.dataset.s; }); data.entries=data.entries.filter(function(e){return e.status!=='hidden';}); paintEntries(); })
+      .catch(function(){ b.disabled=false; alert('บันทึกไม่ได้ ลองใหม่อีกครั้ง'); });
+  });
+  $('days').addEventListener('change',load); $('reload').addEventListener('click',load);
+  load(); setInterval(load,5*60e3);
+})();
+</script>
+</body>
+</html>

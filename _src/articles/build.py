@@ -52,6 +52,7 @@ FOOT = '''<footer class="bot"><div class="in">
 <nav aria-label="ลิงก์ท้ายเว็บ"><a href="/articles">บทความ</a><a href="/about">เกี่ยวกับเรา</a><a href="/privacy">นโยบายความเป็นส่วนตัว</a><a href="/contact">ติดต่อ</a></nav>
 </div></footer>
 <script src="/bgwords.js?v=4" defer></script>
+<script src="/hit.js?v=1" defer></script>
 </body>
 </html>
 '''

@@ -2391,6 +2391,7 @@ footer a{color:#F4F4F0}
   }
 
   src.addEventListener('input',render);
+  src.addEventListener('input',function(){ if(src.value.trim() && window.dHit) dHit('tool:'+st.mode); });
   $('clear').addEventListener('click',function(){src.value='';render();src.focus();});
   $('swap').addEventListener('click',function(){
     if(st.mode==='slang'){ st.reverse=!st.reverse; render(); return; }
@@ -2670,8 +2671,7 @@ footer a{color:#F4F4F0}
   var SITE_MODE = !(window.claude && window.claude.use) && /^https?:$/.test(location.protocol);
   function appendTo(coll, item){
     if(SITE_MODE){
-      var body=['form-name='+encodeURIComponent(coll)].concat(Object.keys(item).map(function(k){ return encodeURIComponent(k)+'='+encodeURIComponent(item[k]); })).join('&');
-      return fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body}).then(function(r){ if(!r.ok) throw new Error('http '+r.status); });
+      return fetch('/api/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind:coll,item:item,hp:''})}).then(function(r){ if(!r.ok) throw new Error('http '+r.status); });
     }
     // each viewer writes only their own document: <coll>/<their id>
     writeChain = writeChain.then(function(){
@@ -7080,5 +7080,6 @@ footer a{color:#F4F4F0}
 <script src="/bgwords.js?v=4" defer></script>
 <script src="/nav.js?v=2" defer></script>
 <script src="/keyswap.js?v=5" defer></script>
+<script src="/hit.js?v=1" defer></script>
 </body>
 </html>
