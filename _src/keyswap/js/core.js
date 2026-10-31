@@ -14,6 +14,126 @@ var KS = (function(){
   var BR = {a:'⠁',b:'⠃',c:'⠉',d:'⠙',e:'⠑',f:'⠋',g:'⠛',h:'⠓',i:'⠊',j:'⠚',k:'⠅',l:'⠇',m:'⠍',n:'⠝',o:'⠕',p:'⠏',q:'⠟',r:'⠗',s:'⠎',t:'⠞',u:'⠥',v:'⠧',w:'⠺',x:'⠭',y:'⠽',z:'⠵',',':'⠂','.':'⠲','?':'⠦','!':'⠖',"'":'⠄','-':'⠤',' ':' ','\n':'\n'};
   var NUM = {'1':'⠁','2':'⠃','3':'⠉','4':'⠙','5':'⠑','6':'⠋','7':'⠛','8':'⠓','9':'⠊','0':'⠚'};
   var BR_REV = {}; Object.keys(BR).forEach(function(k){ if(k!==' '&&k!=='\n') BR_REV[BR[k]]=k; });
+  // อักษรเบรลล์ไทย (ระบบปัจจุบัน) อ้างอิงตาราง liblouis th-g1 โดยกองทุนอักษรเบรลล์ไทย/มูลนิธิช่วยคนตาบอดแห่งประเทศไทยฯ
+  var TBR=(function(){
+    function cell(d){ var b=0; String(d).split('').forEach(function(n){ b|=1<<(n-1); }); return String.fromCharCode(0x2800+b); }
+    function cells(s){ return s.split('-').map(cell).join(''); }
+    var raw={'ก':'1245','ข':'13','ฃ':'356-13','ค':'136','ฅ':'36-136','ฆ':'6-136','ง':'12456','จ':'245','ฉ':'34','ช':'346','ซ':'2346','ฌ':'6-346','ญ':'6-13456','ฎ':'6-145','ฏ':'6-1256','ฐ':'6-2345','ฑ':'6-23456','ฒ':'36-23456','ณ':'6-1345','ด':'145','ต':'1256','ถ':'2345','ท':'23456','ธ':'356-23456','น':'1345','บ':'1236','ป':'12346','ผ':'1234','ฝ':'1346','พ':'1456','ฟ':'1246','ภ':'6-1456','ม':'134','ย':'13456','ร':'1235','ล':'123','ว':'2456','ศ':'6-234','ษ':'36-234','ส':'234','ห':'125','ฬ':'6-123','อ':'135','ฮ':'123456',
+      'ะ':'1','ั':'345','็':'3','า':'16','ิ':'12','ี':'23','ุ':'14','ู':'25','ึ':'246','ื':'26','เ':'124','แ':'126','โ':'24','ำ':'1356','ไ':'156','ใ':'156-2','ฤ':'1235-2','ฦ':'123-2',
+      '่':'35','้':'256','๊':'2356','๋':'236','ๆ':'2','์':'356','ํ':'5','ฺ':'3','ฯ':'56-23','฿':'4-12','ๅ':'5-16','๎':'4-15','๏':'4-14','๚':'4-256','๛':'4-23',
+      '๑':'1','๒':'12','๓':'14','๔':'145','๕':'15','๖':'124','๗':'1245','๘':'125','๙':'24','๐':'245'};
+    var M={}; Object.keys(raw).forEach(function(k){ M[k]=cells(raw[k]); });
+    var CONS='กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮ', TONE='่้๊๋', TDIG='๐๑๒๓๔๕๖๗๘๙';
+    function isC(c){ return !!c&&CONS.indexOf(c)>=0; }
+    function isT(c){ return !!c&&TONE.indexOf(c)>=0; }
+    // คำยกเว้นจากตาราง
+    var EXC={'ฯลฯ':'56-123','เทอม':'124-23456-135-134','เทอญ':'124-23456-135-6-13456','เคอย':'124-136-135-13456','เสมอง':'124-234-134-135-12456','เทรา':'23456-1235-235','เหรา':'124-125-1235-16','แกวะ':'126-1245-2456-1','แสยะ':'234-13456-126-1','เตมีย':'124-1256-134-23-13456','เสรีย':'124-234-1235-23-13456','เสถีย':'234-2345-12356','เผอิญ':'1234-135-146-6-13456','เตชิน':'124-1256-346-12-1345','ทะเลอะไร':'23456-1-124-123-135-1-156-1235','เพลาคำ่':'124-1456-123-16-136-1356-35','เพลานี้':'124-1456-123-16-1345-23-256'};
+    var EXK=Object.keys(EXC).sort(function(a,b){return b.length-a.length;});
+    // สระประสม: [สระนำ, รูปหลังพยัญชนะ (T=วรรณยุกต์), จุด, อักษรนำของควบ, ตัวควบ, ควบใส่วรรณยุกต์ได้]
+    var PAT=[
+      ['เ','ีTย','12356','กคจฉตปพสห','วรลศษบงนมย',1],
+      ['เ','ืTอ','12345','กขคมปพสห','งรลมยน',1],
+      ['เ','Tาะ','135-1','กคฉทปพสห','รลยมพน',1],
+      ['เ','Tา','235','กขคศฉปพห','รลยมงนว',1],
+      ['เ','Tะ','124-1','ขผพห','ล',0],
+      ['เ','ิ','146','กขคจทฉถตผพสห','รลชอย',0],
+      ['เ','Tอ','146','กขปบผสห','รลยนม',1],
+      ['แ','ะ','126-1','กขคผห','รลวมย',0],
+      ['โ','Tะ','24-1','บผพ','รลย',0]];
+    function tryPat(s,j,p,toneOk){
+      var k=j, tone='';
+      for(var x=0;x<p.length;x++){
+        var ch=p[x];
+        if(ch==='T'){ if(isT(s[k])){ if(!toneOk) return null; tone=s[k]; k++; } continue; }
+        if(s[k]!==ch) return null; k++;
+      }
+      return [k-j,tone];
+    }
+    function sara(s,i,lead){
+      for(var b=0;b<PAT.length;b++){
+        var P=PAT[b]; if(P[0]!==lead) continue;
+        var opts=[[1,1]];
+        if(P[3].indexOf(s[i+1])>=0&&P[4].indexOf(s[i+2])>=0) opts.push([2,P[5]]);
+        for(var a=0;a<opts.length;a++){
+          var n=opts[a][0]; if(!isC(s[i+1])) continue;
+          var j=i+1+n, r=tryPat(s,j,P[1],opts[a][1]); if(!r) continue;
+          var after=s.substr(j+r[0]);
+          if(P[1]==='Tอ' && /^(ย่|ยู่|ยาก|อก)/.test(after)) continue;
+          if(P[1]==='ีTย' && n===2 && !r[1] && (after===''||after[0]==='์')) continue;
+          var out=conv(s.substr(i+1,n))+cells(P[2]), len=1+n+r[0];
+          if(P[2]==='146' && after[0]==='ะ'){ out+=M['ะ']; len++; }
+          return [len, out+(r[1]?M[r[1]]:'')];
+        }
+      }
+      return null;
+    }
+    function conv(s){
+      var out='', i=0, inNum=0;
+      while(i<s.length){
+        var c=s[i];
+        if(TDIG.indexOf(c)>=0){ if(inNum!==1) out+=cells('6-3456'); inNum=1; out+=M[c]; i++; continue; }
+        if(/[0-9]/.test(c)){ if(inNum!==2) out+=cells('3456'); inNum=2; out+=NUM[c]; i++; continue; }
+        if(c==='.'||c===',') { if(inNum&&/[0-9๐-๙]/.test(s[i+1]||'')){ out+=c==='.'?cells('256'):cells('2'); i++; continue; } }
+        inNum=0;
+        var ex=null; for(var e=0;e<EXK.length;e++){ if(s.substr(i,EXK[e].length)===EXK[e]){ ex=EXK[e]; break; } }
+        if(ex){ out+=cells(EXC[ex]); i+=ex.length; continue; }
+        if(c==='เ'||c==='แ'||c==='โ'){ var r=sara(s,i,c); if(r){ out+=r[1]; i+=r[0]; continue; } }
+        if(c==='ั'){ if(s[i+1]==='ว'){ out+=cells('15'); i+=2; continue; } if(isT(s[i+1])&&s[i+2]==='ว'){ out+=cells('15')+M[s[i+1]]; i+=3; continue; } }
+        if(isC(c)&&s[i+1]==='ํ'){ out+=M['ํ']+M[c]; i+=2; continue; }
+        if(isT(c)&&(s[i+1]==='ะ'||s[i+1]==='ำ')){ out+=M[s[i+1]]+M[c]; i+=2; continue; }
+        if(M[c]){ out+=M[c]; i++; continue; }
+        var l=c.toLowerCase();
+        out+= BR[l]!==undefined ? BR[l] : c; i++;
+      }
+      return out;
+    }
+    var REV=null, RK=[];
+    function back(t){ // เบรลล์ → ไทย
+      if(!REV){ REV={};
+        Object.keys(M).forEach(function(k){ if(TDIG.indexOf(k)<0 && k!=='ฃ' && k!=='ฺ' && k!=='ๅ') REV[M[k]]=k; });
+        REV[cells('146')]='#อ'; REV[cells('12356')]='#ีย'; REV[cells('12345')]='#ือ'; REV[cells('235')]='#า'; REV[cells('15')]='ัว';
+        RK=Object.keys(REV).sort(function(x,y){return y.length-x.length;}); }
+      var tk=[], i=0, num=0, T6=cells('6-3456'), T3=cells('3456');
+      while(i<t.length){
+        if(t.substr(i,2)===T6){ num=1; i+=2; continue; }
+        if(t[i]===T3){ num=2; i++; continue; }
+        if(num){ var d=null; for(var k in NUM){ if(NUM[k]===t[i]) d=k; } if(d!==null){ tk.push(num===1?TDIG[+d]:d); i++; continue; } if(t[i]===cells('256')||t[i]===cells('2')){ if(/[⠁-⠚]/.test(t[i+1]||'')){ tk.push(t[i]===cells('256')?'.':','); i++; continue; } } num=0; }
+        var hit=null; for(var r=0;r<RK.length;r++){ if(t.substr(i,RK[r].length)===RK[r]){ hit=RK[r]; break; } }
+        if(hit){ tk.push(REV[hit]); i+=hit.length; continue; }
+        tk.push(t[i]===' '?' ':t[i]); i++;
+      }
+      var out=[];
+      var CL={'ีย':2,'ือ':1,'าะ':2,'า':3,'ะเ':4,'ิ':5,'อ':6,'ะแ':7,'ะโ':8};
+      function cluster(v){ // จำนวนพยัญชนะท้าย out ที่จะใส่สระนำหน้า (เดาอักษรควบตามตาราง)
+        var n=out.length, a1=out[n-2], a2=out[n-1]; if(!isC(a2)) return 0;
+        var P=PAT[CL[v]-1]||PAT[CL[v]];
+        P=PAT.filter(function(q){ return q[0]+q[1].replace('T','')===({'ีย':'เีย','ือ':'เือ','าะ':'เาะ','า':'เา','ะเ':'เะ','ิ':'เิ','อ':'เอ','ะแ':'แะ','ะโ':'โะ'})[v]; })[0];
+        if(P && isC(a1) && P[3].indexOf(a1)>=0 && P[4].indexOf(a2)>=0 && !(out[n-3]&&'เแโไใ'.indexOf(out[n-3])>=0) && (('รลว'.indexOf(a2)>=0&&'กขคปพผบดตทฟสศจซ'.indexOf(a1)>=0) || a1==='ห')) return 2;
+        return 1;
+      }
+      for(var x=0;x<tk.length;x++){
+        var c=tk[x], nx=tk[x+1];
+        if(c[0]==='#'){ var vb=c.slice(1); if(vb==='า'&&tk[x+1+(isT(nx)?1:0)]==='ะ') vb='าะ'; if(vb==='อ'&&isC(tk[x+1+(isT(nx)?1:0)])&&tk[x+1+(isT(nx)?1:0)]!=='ร'&&tk[x+2+(isT(nx)?1:0)]!=='์'&&tk[x+1+(isT(nx)?1:0)]!=='ย') vb='ิ'; var n=cluster(vb); if(!n){ out.push(c.slice(1)); continue; }
+          var tone=isT(nx)?nx:''; if(tone) x++;
+          var ah=out.splice(out.length-n,n), body=c.slice(1);
+          if(body==='า'&&tk[x+1]==='ะ'){ body='าะ'; x++; }
+          if(body==='อ'&&tk[x+1]==='ะ'){ body='อะ'; x++; if(!tone&&isT(tk[x+1])){ tone=tk[x+1]; x++; } }
+          if(vb==='ิ') body='ิ';
+          var s2 = (body==='ีย'||body==='ือ'||body==='ิ') ? body[0]+tone+body.slice(1) : tone+body;
+          out.push('เ'); out=out.concat(ah); out.push(s2); continue; }
+        if(c==='ธ'&&nx!=='์'&&!(nx==='ร'&&tk[x+2]==='ร')&&'ทคตรสดษณฑกปพมลฟ'.indexOf(out[out.length-1]||'_')>=0&&isC(out[out.length-2])||c==='ธ'&&nx!=='์'&&!(nx==='ร'&&tk[x+2]==='ร')&&out[out.length-2]==='ั'&&isC(out[out.length-1])){ out.push('์','ท'); continue; }
+        if(c==='อ'&&nx==='ะ'&&isC(out[out.length-1])&&tk[x+2]!=='ไ'){ var n3=cluster('าะ'); var ah3=out.splice(out.length-n3,n3); x++; var t3=isT(tk[x+1])?tk[++x]:''; out.push('เ'); out=out.concat(ah3); out.push(t3+'าะ'); continue; }
+        if('เแโ'.indexOf(c)>=0 && nx==='ะ' && isC(out[out.length-1])){ var n2=cluster('ะ'+c); var ah2=out.splice(out.length-n2,n2); x++; var t2=isT(tk[x+1])?tk[++x]:''; out.push(c); out=out.concat(ah2); out.push(t2+'ะ'); continue; }
+        if((c==='ะ'||c==='ำ')&&isT(nx)){ out.push(nx+c); x++; continue; }
+        if(c==='ัว'&&isT(nx)){ out.push('ั'+nx+'ว'); x++; continue; }
+        if(c==='ํ'&&isC(nx)){ out.push(nx+'ํ'); x++; continue; }
+        out.push(c);
+      }
+      return out.join('');
+    }
+    function score(t){ var u=0; Array.from(t).forEach(function(c){ if(/[⠀-⣿]/.test(c)&&c!=='⠀') u++; }); return u; }
+    return {fwd:conv, back:back, unk:score};
+  })();
   var MO = {a:'.-',b:'-...',c:'-.-.',d:'-..',e:'.',f:'..-.',g:'--.',h:'....',i:'..',j:'.---',k:'-.-',l:'.-..',m:'--',n:'-.',o:'---',p:'.--.',q:'--.-',r:'.-.',s:'...',t:'-',u:'..-',v:'...-',w:'.--',x:'-..-',y:'-.--',z:'--..','0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.','.':'.-.-.-',',':'--..--','?':'..--..'};
   var MO_REV = {}; Object.keys(MO).forEach(function(k){ MO_REV[MO[k]]=k; });
 
@@ -391,7 +511,13 @@ var KS = (function(){
     return Array.from(t).map(function(c){return fwd[c]||c;}).join('');
   }
   function braille(t){
-    if(/[⠀-⣿]/.test(t)) return Array.from(t).map(function(c){return BR_REV[c]||c;}).join('');
+    if(/[⠀-⣿]/.test(t)){
+      var enOk=Array.from(t).every(function(c){ return !/[⠁-⣿]/.test(c)||BR_REV[c]||c==='⠼'; });
+      if(!enOk || /⠠⠼/.test(t)) return TBR.back(t);
+      var n2=false;
+      return Array.from(t).map(function(c){ if(c==='⠼'){ n2=true; return ''; } if(n2){ for(var k in NUM){ if(NUM[k]===c) return k; } } n2=false; return BR_REV[c]||c; }).join('');
+    }
+    if(/[฀-๿]/.test(t)) return TBR.fwd(t);
     var num=false;
     return Array.from(t.toLowerCase()).map(function(c){
       if(NUM[c]){ var p=num?'':'⠼'; num=true; return p+NUM[c]; }
