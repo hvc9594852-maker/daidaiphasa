@@ -36,7 +36,7 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2391353056454673" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap">
-<link rel="stylesheet" href="/rx.css?v=18">
+<link rel="stylesheet" href="/rx.css?v=19">
 <style>
 /* Layout: printed-dictionary page with game type — ruled black frames, one orange signal, wide gutters */
 :root{
@@ -2282,7 +2282,9 @@ footer a{color:#F4F4F0}
   }
   function setMode(id, sample){
     st.mode=id; st.reverse=false;
-    if(sample){ var m=MODES.filter(function(x){return x.id===id;})[0]; src.value=m.sample; if(id==='slang') st.group='lgbt'; }
+    var m=MODES.filter(function(x){return x.id===id;})[0];
+    if(sample){ src.value=''; if(id==='slang') st.group='lgbt'; }
+    if(m&&m.sample) src.placeholder='พิมพ์ข้อความ เช่น '+m.sample;
     try{ localStorage.setItem('lh-mode', id); }catch(e){}
     render();
     var tbs=$('tabs'), tb=$('tab-'+id); if(tbs&&tb&&tbs.scrollWidth>tbs.clientWidth) tbs.scrollLeft=tb.offsetLeft-tbs.offsetLeft-(tbs.clientWidth-tb.offsetWidth)/2;

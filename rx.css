@@ -194,3 +194,35 @@ footer .bgrot>div{color:#fff;opacity:.11}
 .ks-row small{display:block;color:var(--sub);font-size:13px}
 .ks-row kbd{display:inline-block;min-width:1.9em;text-align:center;margin-right:4px;font-family:var(--body);font-size:.88em;border:1.5px solid color-mix(in srgb,var(--ink) 30%,transparent);border-bottom-width:3px;border-radius:7px;padding:0 6px;background:var(--paper)}
 @media (max-width:640px){.ks-row{grid-template-columns:1fr 1fr;}.ks-row>span:first-child{grid-column:1/-1}.ks-row-h>span:first-child{display:none}}
+
+/* ---------- v19: rounder everything ---------- */
+/* thicker, softer strokes so the rounded ends read clearly */
+.hero-index li::after,.dict-item::after,.glist li::after,.lex-item::after,.cty-list button::after,.ib-item::after,.clist li::after,.cv-facts div::after{height:3.5px;left:18px;right:18px}
+.entry::before,.wod .def::before,.wod-nav::before,.fc-def::before{height:3.5px;left:18px;right:18px}
+.hero-index::before,.glist::before,.ib-list::before,.clist::before,.slide .era::before,.saved-head::after{height:6px;left:12px;right:12px}
+.sec::before,.history::before,.feedback::before,.hero::after{height:6px}
+footer .bottom::before,.strip .wrap::after{height:3.5px}
+.ks-row+.ks-row::before{height:3px}
+.typo::after{border-radius:99px}
+/* inside the converter: rounded strokes instead of edge-to-edge hairlines */
+.pane-head,.pane-foot{border-color:transparent!important;position:relative}
+.pane-head::after,.pane-foot::before{content:"";position:absolute;left:18px;right:18px;height:3px;border-radius:99px;background:currentColor;opacity:.1;pointer-events:none}
+.pane-head::after{bottom:-2px}.pane-foot::before{top:-2px}
+.out-actions{border-top:0!important;gap:8px;padding:10px;position:relative}
+.out-actions::before{content:"";position:absolute;left:18px;right:18px;top:-1px;height:3px;border-radius:99px;background:currentColor;opacity:.1}
+.out-actions button{border-radius:999px!important;border:1.5px solid color-mix(in srgb,var(--ink) 18%,transparent)!important;min-height:46px!important}
+.out-actions .go{border-color:transparent!important}
+.panes{border-radius:28px!important}
+.key{border-radius:13px!important}
+/* orange bands and the black footer become big rounded cards */
+.globe-sec,.community,footer{border-radius:40px;margin-inline:12px;overflow:clip}
+footer{margin-bottom:12px}
+.globe-sec,.community{margin-block:12px}
+@media (max-width:640px){.globe-sec,.community,footer{border-radius:26px;margin-inline:8px}.panes{border-radius:20px!important}}
+/* hover underlines: a rounded bar that grows in, instead of a square text underline */
+.navlinks a,.hero-index button span:first-child,.entry .hw{text-decoration:none!important;position:relative}
+.navlinks a::after,.hero-index button span:first-child::after,.entry .hw::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:4px;border-radius:99px;background:var(--signal);transform:scaleX(0);transform-origin:left;transition:transform .22s ease;pointer-events:none}
+.navlinks a::after{bottom:2px}
+.entry .hw::after{bottom:-4px;height:5px}
+.navlinks a:hover::after,.hero-index button:hover span:first-child::after,.entry:hover .hw::after,.hero-index button:focus-visible span:first-child::after,.entry:focus-visible .hw::after{transform:scaleX(1)}
+#src::placeholder{color:color-mix(in srgb,var(--ink) 28%,transparent);font-weight:400}
