@@ -6,8 +6,11 @@
   var TOPIC={'/where-to-learn-japanese':'japanese','/where-to-learn-chinese':'chinese','/where-to-learn-english':'english','/where-to-learn-korean':'korean','/where-to-learn-french':'french','/where-to-learn-german':'german','/where-to-learn-thai-sign-language':'sign','/thai-fingerspelling-chart':'sign','/fix-wrong-keyboard-language':'keyboard','/braille-alphabet':'braille','/national-dictionaries':'dictionary','/official-dictionaries-online':'dictionary','/forgetting-curve-vocabulary':'vocab','/hangul-origin':'korean'};
   var isHome = page==='/' || !!document.getElementById('learn');
   var want = isHome ? 'home' : (TOPIC[page]||'');
-  var list = items.filter(function(x){ return (x.tags||[]).indexOf(want)>=0; });
-  if(!list.length && !isHome) list = items.filter(function(x){ return (x.tags||[]).indexOf('home')>=0; });
+  var slug = page.replace(/^\//,'');
+  function has(t){ return function(x){ return (x.tags||[]).indexOf(t)>=0; }; }
+  var list = isHome ? items.filter(has('home')) : items.filter(has('post:'+slug)).concat(want?items.filter(has(want)):[]);
+  if(!list.length && !isHome) list = items.filter(has('home'));
+  var seen={}; list=list.filter(function(x){ if(seen[x.id]) return false; seen[x.id]=1; return true; });
   if(!list.length) return;
   list=list.slice(0, isHome?6:3);
   function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }

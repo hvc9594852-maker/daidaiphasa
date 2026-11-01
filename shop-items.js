@@ -1,6 +1,7 @@
 /* ใดๆภาษา.com — Shopee Affiliate items.
    วิธีเพิ่มสินค้า: ใส่ลิงก์จาก Shopee Affiliate (Custom Link / เอาลิงก์ เช่น https://s.shopee.co.th/xxxx) ที่ url
    tags บอกว่าจะโชว์ที่ไหน: 'home' = หน้าแรก (สูงสุด 6 ชิ้น), หัวข้อบทความ: 'japanese','chinese','english','korean','french','german','keyboard','braille','sign','dictionary','vocab'
+   'post:<slug>' = โชว์ท้ายบทความนั้นก่อนอย่างอื่น (เช่น 'post:emoji-origin') — งานตั้งเวลาเพิ่มสินค้าแบบนี้ให้บทความใหม่ทุกวัน
    สินค้าที่ยังไม่มี url จะไม่แสดง */
 window.SHOP_ITEMS = [
   {id:'kb-sticker-th', title:'สติกเกอร์คีย์บอร์ดภาษาไทย', note:'แปะแป้นที่ไม่มีตัวไทย ขายแล้วกว่า 3 หมื่นชิ้น', url:'https://s.shopee.co.th/5VWYaRFMQa', tags:['home','keyboard']},

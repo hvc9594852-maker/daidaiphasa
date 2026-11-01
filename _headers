@@ -1,3 +1,6 @@
 /downloads/*
   Content-Disposition: attachment
   X-Content-Type-Options: nosniff
+
+/shop-items.js
+  Cache-Control: no-cache
