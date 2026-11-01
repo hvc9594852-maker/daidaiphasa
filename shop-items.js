@@ -12,4 +12,6 @@ window.SHOP_ITEMS = [
   {id:'vocab-book', title:'สมุดจดศัพท์ ORDBOOK แบบเปิดปิดคำ', note:'พับซ่อนคำแปลไว้ท่องทบทวน ขนาดพกพา', url:'https://s.shopee.co.th/1BNZQdpBvk', tags:['home','vocab','japanese','chinese','korean','english']},
   {id:'vocab-cards', title:'บัตรคำเปล่าพร้อมห่วง 100 แผ่น', note:'ทำแฟลชการ์ดคำศัพท์เอง', url:'https://s.shopee.co.th/9pfXkYS1Jb', tags:['vocab','french','german']},
   {id:'kb-sticker-kr', title:'สติกเกอร์คีย์บอร์ดภาษาเกาหลี', note:'พิมพ์ฮันกึลได้ง่ายขึ้น', url:'https://s.shopee.co.th/5VWYaS7bKQ', tags:['korean','keyboard']},
+  {id:'fan-word-roots', title:'เทคนิคจดจำคำศัพท์อังกฤษ-ไทยจากรากศัพท์', note:'แบบ fan ที่ย่อมาจาก fanatic เข้าใจรากศัพท์แล้วจำคำได้ง่ายขึ้น', url:'https://s.shopee.co.th/7VHd67BlnB', tags:['post:fan-word-origin','english','vocab']},
+  {id:'fan-word-dict', title:'พจนานุกรมเพื่อการแต่งประโยคไทย-อังกฤษ', note:'คำไทยอย่าง "แฟน" ภาษาอังกฤษพูดว่าอะไร เปิดดูพร้อมตัวอย่างประโยค', url:'https://s.shopee.co.th/5q9P76gXpo', tags:['post:fan-word-origin','english','dictionary']},
 ];
