@@ -84,7 +84,7 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
   </section>
   <section class="grid3">
     <div class="card" style="grid-column:span 2"><h2>หน้าที่คนเปิด</h2><table id="tPages"></table></div>
-    <div class="card"><h2>ดาวน์โหลด</h2><table id="tDl"></table></div>
+    <div class="card"><h2>ดาวน์โหลด</h2><table id="tDl"></table><h2 style="margin-top:18px">คลิก Shopee</h2><table id="tShop"></table></div>
   </section>
 
   <section class="card">
@@ -152,6 +152,7 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
     rows($('tTools'), pick('tool:'), function(k){ k=k.slice(5); return TOOLS[k]||k; });
     rows($('tPages'), pick('page:'), function(k){ return k.slice(5); });
     rows($('tDl'), pick('dl:'), function(k){ return k.slice(3); });
+    rows($('tShop'), pick('ev:shop-'), function(k){ return k.slice(8); });
     chart(data.daily, data.days, data.since);
     paintEntries();
     $('upd').textContent='อัปเดต '+new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
