@@ -1,7 +1,14 @@
 /* ใดๆภาษา.com — Shopee Affiliate items.
-   วิธีเพิ่มสินค้า: ใส่ลิงก์จาก Shopee Affiliate (Custom Link, เช่น https://s.shopee.co.th/xxxx) ที่ url
-   tags บอกว่าจะโชว์ที่ไหน: 'home' = หน้าแรก, ชื่อหัวข้อบทความ เช่น 'japanese','chinese','english','korean','french','german','keyboard','braille','sign','dictionary'
+   วิธีเพิ่มสินค้า: ใส่ลิงก์จาก Shopee Affiliate (Custom Link / เอาลิงก์ เช่น https://s.shopee.co.th/xxxx) ที่ url
+   tags บอกว่าจะโชว์ที่ไหน: 'home' = หน้าแรก (สูงสุด 6 ชิ้น), หัวข้อบทความ: 'japanese','chinese','english','korean','french','german','keyboard','braille','sign','dictionary','vocab'
    สินค้าที่ยังไม่มี url จะไม่แสดง */
 window.SHOP_ITEMS = [
-  // {id:'kb-sticker', title:'สติกเกอร์แป้นพิมพ์ ไทย-อังกฤษ', note:'ติดคีย์บอร์ดที่ไม่มีตัวไทย', url:'', tags:['home','keyboard']},
+  {id:'kb-sticker-th', title:'สติกเกอร์คีย์บอร์ดภาษาไทย', note:'แปะแป้นที่ไม่มีตัวไทย ขายแล้วกว่า 3 หมื่นชิ้น', url:'https://s.shopee.co.th/5VWYaRFMQa', tags:['home','keyboard']},
+  {id:'jp-kana', title:'หัดเขียน เรียนอ่าน ฮิระงะนะ และคะตะคะนะ', note:'หนังสือเริ่มต้นภาษาญี่ปุ่นจากตัวอักษร', url:'https://s.shopee.co.th/1BNZQY0YIp', tags:['home','japanese']},
+  {id:'cn-hsk', title:'แบบเรียน HSK Standard Course 1–6', note:'ชุดเตรียมสอบภาษาจีนที่คนใช้มากที่สุด แถมเฉลย', url:'https://s.shopee.co.th/3qOKbTBihM', tags:['home','chinese']},
+  {id:'kr-basic', title:'คัด เขียน อ่าน ภาษาเกาหลีเบื้องต้น', note:'แบบฝึกหัดฮันกึลสำหรับมือใหม่', url:'https://s.shopee.co.th/AKboLQZeAG', tags:['home','korean']},
+  {id:'en-office', title:'English at Office ภาษาอังกฤษฉบับออฟฟิศ', note:'ศัพท์และประโยคที่ใช้ในที่ทำงาน', url:'https://s.shopee.co.th/gRIpg67mz', tags:['home','english']},
+  {id:'vocab-book', title:'สมุดจดศัพท์ ORDBOOK แบบเปิดปิดคำ', note:'พับซ่อนคำแปลไว้ท่องทบทวน ขนาดพกพา', url:'https://s.shopee.co.th/1BNZQdpBvk', tags:['home','vocab','japanese','chinese','korean','english']},
+  {id:'vocab-cards', title:'บัตรคำเปล่าพร้อมห่วง 100 แผ่น', note:'ทำแฟลชการ์ดคำศัพท์เอง', url:'https://s.shopee.co.th/9pfXkYS1Jb', tags:['vocab','french','german']},
+  {id:'kb-sticker-kr', title:'สติกเกอร์คีย์บอร์ดภาษาเกาหลี', note:'พิมพ์ฮันกึลได้ง่ายขึ้น', url:'https://s.shopee.co.th/5VWYaS7bKQ', tags:['korean','keyboard']},
 ];
