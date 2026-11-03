@@ -16,4 +16,6 @@ window.SHOP_ITEMS = [
   {id:'fan-word-dict', title:'พจนานุกรมเพื่อการแต่งประโยคไทย-อังกฤษ', note:'คำไทยอย่าง "แฟน" ภาษาอังกฤษพูดว่าอะไร เปิดดูพร้อมตัวอย่างประโยค', url:'https://s.shopee.co.th/5q9P76gXpo', tags:['post:fan-word-origin','english','dictionary']},
   {id:'name-titles-book', title:'หนังสือคู่มือตั้งชื่อ เปลี่ยนชื่อ', note:'ต่อยอดจากเรื่องคำนำหน้าชื่อ มาดูหลักการตั้งชื่อและเปลี่ยนชื่อแบบไทย', url:'https://s.shopee.co.th/2LZYvqk39T', tags:['post:origin-of-thai-name-titles']},
   {id:'name-titles-stamp', title:'ตรายางชื่อ-นามสกุล สั่งทำได้', note:'ประทับ นาย นาง นางสาว พร้อมชื่อ-สกุล บนเอกสารและแบบฟอร์ม', url:'https://s.shopee.co.th/LoUY7xLPU', tags:['post:origin-of-thai-name-titles']},
+  {id:'thai-space-proverbs', title:'2,000 สำนวน สุภาษิต คำพังเพยไทย คำที่มักเขียนผิด', note:'เขียนไทยติดกันอยู่แล้ว ยิ่งต้องสะกดให้ถูก รวมคำที่คนไทยมักเขียนผิด', url:'https://s.shopee.co.th/2qVqqImsyA', tags:['post:thai-no-spaces-between-words','dictionary']},
+  {id:'thai-space-rbs-dict', title:'พจนานุกรมสร้างชาติ (มติชน)', note:'เบื้องหลังพจนานุกรมฉบับราชบัณฑิตยสถาน หน่วยงานเดียวกับที่วางหลักการเว้นวรรค', url:'https://s.shopee.co.th/5q9SPriz44', tags:['post:thai-no-spaces-between-words','dictionary']},
 ];
