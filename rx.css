@@ -261,3 +261,9 @@ footer{margin-bottom:12px}
 .navlinks a.nav-ebook{padding:4px 12px!important;gap:5px}
 .nav-ebook-new{display:none}
 @media (max-width:900px){.navlinks a.nav-ebook{order:-1;margin-right:4px}}
+/* give the glowing ebook pill room inside the scrolling nav so the glow isn't clipped into a box */
+header .navlinks{padding-block:12px!important;margin-block:-12px!important;max-height:none}
+.navlinks a.nav-ebook{animation:ebkGlow 2.4s ease-in-out infinite,ebkWiggle 4.8s ease-in-out infinite}
+@keyframes ebkGlow{0%,100%{box-shadow:0 0 6px 1px rgba(255,90,31,.45)}50%{box-shadow:0 0 12px 4px rgba(255,90,31,.6)}}
+@media (max-width:640px){header .navlinks{-webkit-mask-image:none;mask-image:none}}
+header nav.wrap > a:first-child{white-space:nowrap;flex:none}

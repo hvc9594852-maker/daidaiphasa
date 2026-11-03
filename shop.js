@@ -5,7 +5,8 @@
   var page=(location.pathname.replace(/\.html$/,'').replace(/\/+$/,'')||'/').toLowerCase();
   var TOPIC={'/where-to-learn-japanese':'japanese','/where-to-learn-chinese':'chinese','/where-to-learn-english':'english','/where-to-learn-korean':'korean','/where-to-learn-french':'french','/where-to-learn-german':'german','/where-to-learn-thai-sign-language':'sign','/thai-fingerspelling-chart':'sign','/fix-wrong-keyboard-language':'keyboard','/braille-alphabet':'braille','/national-dictionaries':'dictionary','/official-dictionaries-online':'dictionary','/forgetting-curve-vocabulary':'vocab','/hangul-origin':'korean'};
   var isHome = page==='/' || !!document.getElementById('learn');
-  var want = isHome ? 'home' : (TOPIC[page]||'');
+  if (isHome) return;   // no shop box on the home page (kept tidy for the ebook)
+  var want = TOPIC[page]||'';
   var slug = page.replace(/^\//,'');
   function has(t){ return function(x){ return (x.tags||[]).indexOf(t)>=0; }; }
   var list = isHome ? items.filter(has('home')) : items.filter(has('post:'+slug)).concat(want?items.filter(has(want)):[]);

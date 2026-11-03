@@ -54,7 +54,7 @@ FOOT = '''<footer class="bot"><div class="in">
 <script src="/bgwords.js?v=4" defer></script>
 <script src="/hit.js?v=1" defer></script>
 <script src="/shop-items.js?v=2" defer></script>
-<script src="/shop.js?v=2" defer></script>
+<script src="/shop.js?v=3" defer></script>
 </body>
 </html>
 '''
