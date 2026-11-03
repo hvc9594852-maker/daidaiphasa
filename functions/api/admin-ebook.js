@@ -4,7 +4,7 @@
 // POST /api/admin-ebook {id, action:'approve'|'reject'|'pending', note}
 // PUT  /api/admin-ebook?file=pdf|epub  (body = file bytes) → stores the private book file in D1, 1 MB per row
 import { json, isAdmin, askLogin } from '../_lib/db.js';
-import { edb, PRODUCT, promptpayPayload, maskId } from '../_lib/ebook.js';
+import { edb, PRODUCT, promptpayPayload, maskId, payConfig, idFromPayload } from '../_lib/ebook.js';
 const CHUNK = 1000000;
 
 export async function onRequestGet({ request, env }) {
@@ -19,13 +19,14 @@ export async function onRequestGet({ request, env }) {
     const bin = Uint8Array.from(atob(m[2]), c => c.charCodeAt(0));
     return new Response(bin, { headers: { 'content-type': m[1], 'cache-control': 'private, no-store' } });
   }
+  const pc = await payConfig(env, DB);
   const [orders, files] = await DB.batch([
     DB.prepare(`SELECT id,email,name,amount,status,note,downloads,created_at,slip_at,decided_at,(slip IS NOT NULL) AS has_slip FROM ebook_orders ORDER BY created_at DESC LIMIT 500`),
     DB.prepare(`SELECT name, COUNT(*) AS parts, SUM(LENGTH(data)) AS bytes FROM ebook_files GROUP BY name`)
   ]);
   return json(200, {
     product: { title: PRODUCT.title, price: PRODUCT.price, files: PRODUCT.files },
-    payment: { ready: !!promptpayPayload(env.PROMPTPAY_ID, 100), payee: maskId(env.PROMPTPAY_ID), name: env.PROMPTPAY_NAME || '',
+    payment: { ready: !!pc, payee: pc ? maskId(pc.id) : '', name: pc ? pc.name || '' : '', bank: pc ? pc.bank || '' : '',
       qrImage: (files.results || []).some(f => f.name === 'promptpay-qr') },
     orders: orders.results, files: files.results
   });
@@ -36,6 +37,15 @@ export async function onRequestPost({ request, env }) {
   const DB = await edb(env).catch(() => null);
   if (!DB) return json(503, { error: 'storage not configured' });
   let b; try { b = await request.json(); } catch (e) { return json(400, { error: 'json' }); }
+  if (b.action === 'paycfg') {
+    // b.payload = text inside the shop's PromptPay QR (or b.id = PromptPay ID); b.name, b.bank shown to buyers
+    const id = b.payload ? idFromPayload(b.payload) : String(b.id || '').replace(/\D/g, '');
+    if (!promptpayPayload(id, 100)) return json(400, { error: 'อ่าน PromptPay จาก QR ไม่ได้' });
+    const cfg = JSON.stringify({ id, name: String(b.name || '').slice(0, 80), bank: String(b.bank || '').slice(0, 40) });
+    await DB.prepare(`DELETE FROM ebook_files WHERE name='pay-config'`).run();
+    await DB.prepare(`INSERT INTO ebook_files(name,part,data) VALUES('pay-config',0,?1)`).bind(new TextEncoder().encode(cfg)).run();
+    return json(200, { ok: true, payee: maskId(id) });
+  }
   const map = { approve: 'approved', reject: 'rejected', pending: 'review' };
   const st = map[b.action]; if (!st) return json(400, { error: 'action' });
   await DB.prepare(`UPDATE ebook_orders SET status=?1, note=?2, decided_at=datetime('now') WHERE id=?3`)

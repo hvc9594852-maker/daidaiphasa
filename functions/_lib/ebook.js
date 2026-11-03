@@ -37,7 +37,7 @@ export function rid(bytes) {
 
 // ---- PromptPay (EMVCo QR) ----
 function tlv(id, v) { return id + String(v.length).padStart(2, '0') + v; }
-function crc16(s) {
+export function crc16(s) {
   let crc = 0xFFFF;
   for (let i = 0; i < s.length; i++) {
     crc ^= s.charCodeAt(i) << 8;
@@ -60,4 +60,26 @@ export function promptpayPayload(id, satang) {
 export function maskId(id) {
   const d = String(id || '').replace(/\D/g, '');
   return d.length >= 4 ? d.slice(0, 3) + 'x'.repeat(Math.max(0, d.length - 6)) + d.slice(-3) : '';
+}
+
+// ---- shop payment config stored privately in D1 (set from /admin; keeps the PromptPay ID out of the public repo) ----
+export function parseTLV(s) {
+  const out = {}; let i = 0;
+  while (i + 4 <= s.length) { const t = s.slice(i, i + 2), n = parseInt(s.slice(i + 2, i + 4), 10); if (isNaN(n)) break; out[t] = s.slice(i + 4, i + 4 + n); i += 4 + n; }
+  return out;
+}
+export function idFromPayload(payload) {
+  const p = String(payload || '').trim();
+  if (!/^000201/.test(p) || crc16(p.slice(0, -4)) !== p.slice(-4).toUpperCase()) return '';
+  const m = parseTLV(parseTLV(p)['29'] || '');
+  if (m['00'] !== 'A000000677010111') return '';
+  if (m['01']) return '0' + m['01'].replace(/^0*66/, '');   // phone 0066xxxxxxxxx → 0xxxxxxxxx
+  return m['02'] || m['03'] || '';
+}
+export async function payConfig(env, DB) {
+  if (promptpayPayload(env.PROMPTPAY_ID, 100)) return { id: env.PROMPTPAY_ID, name: env.PROMPTPAY_NAME || '', bank: env.PROMPTPAY_BANK || '' };
+  if (!DB) return null;
+  const r = await DB.prepare(`SELECT data FROM ebook_files WHERE name='pay-config' AND part=0`).first();
+  if (!r) return null;
+  try { const c = JSON.parse(new TextDecoder().decode(new Uint8Array(r.data))); return c.id ? c : null; } catch (e) { return null; }
 }

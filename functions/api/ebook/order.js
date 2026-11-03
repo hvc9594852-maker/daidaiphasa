@@ -1,15 +1,15 @@
 // POST /api/ebook/order {email, name, hp}  → new order with a unique satang amount + PromptPay QR payload
 // GET  /api/ebook/order?id=&k=              → order status (and download links once approved)
 import { json, who } from '../../_lib/db.js';
-import { edb, rid, PRODUCT, promptpayPayload, maskId } from '../../_lib/ebook.js';
+import { edb, rid, PRODUCT, promptpayPayload, maskId, payConfig } from '../../_lib/ebook.js';
 
-function view(o, env) {
+function view(o, env, pc) {
   const out = { id: o.id, status: o.status, amount: o.amount, email: o.email, created_at: o.created_at, downloads: o.downloads, maxDownloads: PRODUCT.maxDownloads };
   if (o.status === 'pending' || o.status === 'review') {
-    out.qr = promptpayPayload(env.PROMPTPAY_ID, o.amount);
-    if (!out.qr) out.qrImage = '/api/ebook/qr';
-    out.payee = maskId(env.PROMPTPAY_ID);
-    out.payeeName = env.PROMPTPAY_NAME || '';
+    out.qr = pc ? promptpayPayload(pc.id, o.amount) : null;
+    if (!out.qr) out.qrImage = '/api/ebook/qr?id=' + encodeURIComponent(o.id) + '&k=' + encodeURIComponent(o.k);
+    out.payeeName = pc ? pc.name || '' : '';
+    out.bank = pc ? pc.bank || '' : '';
   }
   if (o.status === 'approved') out.files = Object.keys(PRODUCT.files);
   if (o.status === 'rejected') out.note = o.note || '';
@@ -24,7 +24,8 @@ export async function onRequestPost({ request, env }) {
   const name = String(b.name || '').trim().slice(0, 80);
   const DB = await edb(env).catch(() => null);
   if (!DB) return json(503, { error: 'storage not configured' });
-  if (!promptpayPayload(env.PROMPTPAY_ID, 100) && !(await DB.prepare(`SELECT 1 AS x FROM ebook_files WHERE name='promptpay-qr' LIMIT 1`).first()))
+  const pc = await payConfig(env, DB);
+  if (!pc && !(await DB.prepare(`SELECT 1 AS x FROM ebook_files WHERE name='promptpay-qr' LIMIT 1`).first()))
     return json(503, { error: 'ร้านยังไม่เปิดรับชำระเงิน' });
   const w = await who(request);
   const recent = await DB.prepare(`SELECT COUNT(*) AS c FROM ebook_orders WHERE who=?1 AND created_at > datetime('now','-1 hour')`).bind(w).first();
@@ -38,7 +39,7 @@ export async function onRequestPost({ request, env }) {
   const o = { id: rid(6), k: rid(16), product: PRODUCT.id, email, name, amount, status: 'pending', downloads: 0, created_at: new Date().toISOString() };
   await DB.prepare(`INSERT INTO ebook_orders(id,k,product,email,name,amount,who) VALUES(?1,?2,?3,?4,?5,?6,?7)`)
     .bind(o.id, o.k, o.product, email, name, amount, w).run();
-  return json(200, Object.assign(view(o, env), { k: o.k }));
+  return json(200, Object.assign(view(o, env, pc), { k: o.k }));
 }
 
 export async function onRequestGet({ request, env }) {
@@ -47,5 +48,5 @@ export async function onRequestGet({ request, env }) {
   if (!DB) return json(503, { error: 'storage not configured' });
   const o = await DB.prepare(`SELECT * FROM ebook_orders WHERE id=?1 AND k=?2`).bind(id, k).first();
   if (!o) return json(404, { error: 'ไม่พบคำสั่งซื้อ' });
-  return json(200, view(o, env));
+  return json(200, view(o, env, await payConfig(env, DB)));
 }

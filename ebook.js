@@ -27,10 +27,23 @@
     order = Object.assign(order || {}, o);
     clearTimeout(pollT);
     if (o.status === 'pending'){
-      $('amt').innerHTML = baht(o.amount);
-      $('payee').textContent = (o.payeeName ? o.payeeName + ' · ' : '') + (o.payee || '');
-      if (o.qr && window.qrcode){ var q = qrcode(0, 'M'); q.addData(o.qr); q.make(); $('qr').innerHTML = q.createSvgTag({cellSize:6, margin:2, scalable:true}); $('typeamt').hidden = true; }
-      else if (o.qrImage){ $('qr').innerHTML = '<img src="' + o.qrImage + '" alt="QR PromptPay ของร้าน">'; $('typeamt').hidden = false; }
+      $('amt').textContent = baht(o.amount); $('amt2').textContent = baht(o.amount);
+      if (o.payeeName){ $('payname').textContent = o.payeeName; $('payname2').textContent = o.payeeName; }
+      $('paybank').textContent = o.bank ? 'ธนาคาร' + o.bank.replace(/^ธนาคาร/, '') : '';
+      $('amtOn').textContent = '';
+      if (o.qr && window.qrcode){
+        var q = qrcode(0, 'M'); q.addData(o.qr); q.make();
+        $('qr').innerHTML = q.createSvgTag({cellSize:6, margin:1, scalable:true});
+        $('amtOn').textContent = baht(o.amount);
+        $('typeamt').innerHTML = 'ยอด <b>' + baht(o.amount) + '</b> ใส่มาใน QR ให้แล้ว ตรวจให้ตรงก่อนกดโอน';
+        try{ var c = document.createElement('canvas'), n = q.getModuleCount(), cs = 10, m = 4; c.width = c.height = (n + m*2) * cs;
+          var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0,0,c.width,c.height); g.fillStyle = '#000';
+          for (var r=0;r<n;r++) for (var cc=0;cc<n;cc++) if (q.isDark(r,cc)) g.fillRect((cc+m)*cs,(r+m)*cs,cs,cs);
+          $('saveqr').href = c.toDataURL('image/png'); $('saveqr').hidden = false; }catch(e){}
+      } else if (o.qrImage){
+        $('qr').innerHTML = '<img src="' + o.qrImage + '" alt="QR PromptPay ของร้าน">';
+        $('saveqr').href = o.qrImage; $('saveqr').hidden = false;
+      }
       step(2);
     } else if (o.status === 'review'){
       step(3); pollT = setTimeout(refresh, 20000);
@@ -95,6 +108,7 @@
       .then(function(x){ if (!x.ok){ $('b2').disabled = false; $('e2').textContent = x.j.error || 'ส่งสลิปไม่สำเร็จ'; return; } track('slip'); show({status:x.j.status}); })
       .catch(function(){ $('b2').disabled = false; $('e2').textContent = 'เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง'; });
   });
+  $('copyAmt').addEventListener('click', function(){ if (!order || !order.amount) return; var t = (order.amount/100).toFixed(2); try{ navigator.clipboard.writeText(t); this.textContent = 'คัดลอกแล้ว'; var me = this; setTimeout(function(){ me.textContent = 'คัดลอกยอด'; }, 1500); }catch(e){} });
   $('again').addEventListener('click', function(){ order = null; try{ localStorage.removeItem(KEY); }catch(e){} history.replaceState(null,'','/ebook#buy'); step(1); });
   document.addEventListener('click', function(e){ var a = e.target.closest('#dpdf,#depub'); if (a) setTimeout(refresh, 2500); });
 
