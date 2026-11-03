@@ -93,6 +93,7 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
     <div id="eList"></div>
   </section>
 </div>
+<script src="/shop-items.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id);};
@@ -152,7 +153,8 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
     rows($('tTools'), pick('tool:'), function(k){ k=k.slice(5); return TOOLS[k]||k; });
     rows($('tPages'), pick('page:'), function(k){ return k.slice(5); });
     rows($('tDl'), pick('dl:'), function(k){ return k.slice(3); });
-    rows($('tShop'), pick('ev:shop-'), function(k){ return k.slice(8); });
+    var SN={}; (window.SHOP_ITEMS||[]).forEach(function(x){ SN[String(x.id).toLowerCase()]=x.title; });
+    rows($('tShop'), pick('ev:shop-'), function(k){ k=k.slice(8); return SN[k]||k; });
     chart(data.daily, data.days, data.since);
     paintEntries();
     $('upd').textContent='อัปเดต '+new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
