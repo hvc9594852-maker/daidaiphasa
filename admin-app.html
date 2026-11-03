@@ -57,6 +57,22 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
 .pill.ok{background:var(--ok)}
 .err{background:var(--card);border:1px solid var(--acc);border-radius:var(--r);padding:16px 18px;margin-bottom:12px}
 @media (max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}.grid,.grid3{grid-template-columns:1fr}.entry{flex-direction:column}.entry .acts{flex-direction:row}}
+.eb-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.eb-pay{font-size:14px;border-radius:999px;padding:4px 12px;background:var(--bg)}
+.eb-pay.bad{background:var(--acc);color:#fff}
+.eb-files{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.eb-file{border:1px dashed var(--line);border-radius:12px;padding:10px 14px;font-size:14px;display:flex;gap:10px;align-items:center}
+.eb-file input{display:none}
+.eb-file label{cursor:pointer;color:var(--acc);font-weight:600}
+.eb-o{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;gap:14px;align-items:flex-start}
+.eb-o .slip{width:84px;height:110px;border-radius:10px;object-fit:cover;background:var(--bg);flex:none;cursor:zoom-in}
+.eb-o .noslip{width:84px;height:110px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--sub);flex:none;text-align:center}
+.eb-o .body{flex:1;min-width:0}
+.eb-o .amt{font-family:'Chakra Petch';font-weight:700;font-size:20px}
+.eb-o .acts{display:flex;flex-direction:column;gap:6px}
+.eb-o.approved,.eb-o.rejected{opacity:.6}
+.eb-big{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:9;cursor:zoom-out}
+.eb-big img{max-width:92vw;max-height:92vh;border-radius:12px}
 </style>
 </head>
 <body>
@@ -85,6 +101,13 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
   <section class="grid3">
     <div class="card" style="grid-column:span 2"><h2>หน้าที่คนเปิด</h2><table id="tPages"></table></div>
     <div class="card"><h2>ดาวน์โหลด</h2><table id="tDl"></table><h2 style="margin-top:18px">คลิก Shopee</h2><table id="tShop"></table></div>
+  </section>
+
+  <section class="card" id="ebook" style="margin-bottom:12px">
+    <div class="eb-head"><h2 style="margin:0">ขาย ebook</h2><span class="eb-pay" id="ebPay">กำลังโหลด…</span></div>
+    <div class="eb-files" id="ebFiles"></div>
+    <div class="tabs" id="ebTabs" role="tablist"></div>
+    <div id="ebList"></div>
   </section>
 
   <section class="card">
@@ -176,6 +199,50 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
   });
   $('days').addEventListener('change',load); $('reload').addEventListener('click',load);
   load(); setInterval(load,5*60e3);
+  // ---------- ebook store ----------
+  var eb=null, ebTab='review';
+  var EBT=[{id:'review',label:'รอตรวจสลิป'},{id:'pending',label:'ยังไม่แนบสลิป'},{id:'approved',label:'อนุมัติแล้ว'},{id:'rejected',label:'ไม่ผ่าน'}];
+  function fmtB(n){ return n>1048576?(n/1048576).toFixed(1)+' MB':Math.round(n/1024)+' KB'; }
+  function ebPaint(){
+    var p=eb.payment; $('ebPay').textContent=p.ready?('PromptPay '+(p.name?p.name+' · ':'')+p.payee):'ยังไม่ได้ตั้ง PROMPTPAY_ID — ลูกค้ายังซื้อไม่ได้'; $('ebPay').className='eb-pay'+(p.ready?'':' bad');
+    var have={}; (eb.files||[]).forEach(function(f){ have[f.name]=f; });
+    $('ebFiles').innerHTML=Object.keys(eb.product.files).map(function(k){ var f=eb.product.files[k], h=have[f.name];
+      return '<div class="eb-file"><b>'+k.toUpperCase()+'</b><span>'+(h?'อัปโหลดแล้ว '+fmtB(h.bytes):'ยังไม่มีไฟล์')+'</span><label>'+(h?'เปลี่ยนไฟล์':'อัปโหลด')+'<input type="file" data-up="'+k+'" accept="'+(k==='pdf'?'.pdf,application/pdf':'.epub,application/epub+zip')+'"></label></div>'; }).join('');
+    var c={}; eb.orders.forEach(function(o){ c[o.status]=(c[o.status]||0)+1; });
+    var earned=eb.orders.filter(function(o){return o.status==='approved';}).reduce(function(a,o){return a+o.amount;},0);
+    $('ebTabs').innerHTML=EBT.map(function(t){ return '<button class="tab" data-k="'+t.id+'" aria-selected="'+(t.id===ebTab)+'">'+t.label+'<small>'+(c[t.id]||0)+'</small></button>'; }).join('')+'<span class="muted" style="align-self:center;margin-left:auto">ยอดขายที่อนุมัติ ฿'+(earned/100).toLocaleString('th-TH',{minimumFractionDigits:2})+'</span>';
+    var list=eb.orders.filter(function(o){ return o.status===ebTab; });
+    if(!list.length){ $('ebList').innerHTML='<div class="empty">ไม่มีคำสั่งซื้อในหมวดนี้</div>'; return; }
+    $('ebList').innerHTML=list.map(function(o){
+      var when=new Date((o.slip_at||o.created_at||'').replace(' ','T')+'Z').toLocaleString('th-TH',{dateStyle:'medium',timeStyle:'short'});
+      var sl=o.has_slip?'<img class="slip" loading="lazy" data-big="/api/admin-ebook?slip='+o.id+'" src="/api/admin-ebook?slip='+o.id+'" alt="สลิป">':'<div class="noslip">ยังไม่มีสลิป</div>';
+      var acts=o.status==='approved'?'<button class="btn" data-eid="'+o.id+'" data-a="reject">ยกเลิกสิทธิ์</button>':
+        '<button class="btn" data-eid="'+o.id+'" data-a="approve">อนุมัติ</button><button class="btn" data-eid="'+o.id+'" data-a="reject">ไม่ผ่าน</button>';
+      return '<div class="eb-o '+o.status+'">'+sl+'<div class="body"><div class="amt">฿'+(o.amount/100).toFixed(2)+'</div><div>'+esc(o.email)+(o.name?' · '+esc(o.name):'')+'</div><div class="meta">#'+o.id+' · '+when+(o.status==='approved'?' · โหลดแล้ว '+o.downloads+' ครั้ง':'')+(o.note?' · '+esc(o.note):'')+'</div></div><div class="acts">'+acts+'</div></div>';
+    }).join('');
+  }
+  function ebLoad(){
+    fetch('/api/admin-ebook',{credentials:'same-origin',cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(j){ eb=j; ebPaint(); }).catch(function(){ $('ebPay').textContent='โหลดข้อมูล ebook ไม่ได้'; });
+  }
+  $('ebTabs').addEventListener('click',function(ev){ var b=ev.target.closest('.tab'); if(!b) return; ebTab=b.dataset.k; ebPaint(); });
+  $('ebList').addEventListener('click',function(ev){
+    var im=ev.target.closest('img[data-big]'); if(im){ var d=document.createElement('div'); d.className='eb-big'; d.innerHTML='<img src="'+im.dataset.big+'" alt="สลิป">'; d.onclick=function(){d.remove();}; document.body.appendChild(d); return; }
+    var b=ev.target.closest('button[data-eid]'); if(!b) return;
+    var note=''; if(b.dataset.a==='reject'){ note=prompt('เหตุผล (ลูกค้าจะเห็นข้อความนี้)','ไม่พบยอดโอนตามสลิป'); if(note===null) return; }
+    b.disabled=true;
+    fetch('/api/admin-ebook',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:b.dataset.eid,action:b.dataset.a,note:note})})
+      .then(function(r){ if(!r.ok) throw 0; ebLoad(); }).catch(function(){ b.disabled=false; alert('บันทึกไม่ได้ ลองใหม่อีกครั้ง'); });
+  });
+  $('ebFiles').addEventListener('change',function(ev){
+    var inp=ev.target.closest('input[data-up]'); if(!inp||!inp.files[0]) return;
+    var lab=inp.parentNode; lab.firstChild.textContent='กำลังอัปโหลด…';
+    fetch('/api/admin-ebook?file='+inp.dataset.up,{method:'PUT',credentials:'same-origin',body:inp.files[0]})
+      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||r.status); }); })
+      .then(ebLoad).catch(function(e){ alert('อัปโหลดไม่สำเร็จ: '+e.message); ebLoad(); });
+  });
+  ebLoad(); setInterval(ebLoad,2*60e3);
+
 })();
 </script>
 </body>
