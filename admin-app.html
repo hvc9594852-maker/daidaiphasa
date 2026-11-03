@@ -185,6 +185,7 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
   function load(){
     $('err').hidden=true;
     fetch('/api/admin?days='+$('days').value,{credentials:'same-origin',cache:'no-store'}).then(function(r){
+      if(r.status===401){ location.href='/admin'; throw new Error('กรุณาเข้าสู่ระบบอีกครั้ง'); }
       if(r.status===503) throw new Error('ยังไม่ได้เชื่อมฐานข้อมูล D1 (ตั้ง binding ชื่อ DB ใน Cloudflare Pages)');
       if(!r.ok) throw new Error('โหลดข้อมูลไม่ได้ ('+r.status+')');
       return r.json();

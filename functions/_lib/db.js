@@ -48,20 +48,34 @@ export async function bump(DB, k, by) {
     .bind(today(), k, by || 1).run();
 }
 
-// Basic auth for /admin. Set ADMIN_PASSWORD (type: Secret) in the Pages project. Any user name works.
-export function isAdmin(request, env) {
-  const pass = env.ADMIN_PASSWORD;
-  if (!pass) return false;
+// Admin login for /admin. Set ADMIN_PASSWORD (type: Secret) in the Pages project.
+// Accepts either a signed login cookie (from the /admin login form) or HTTP Basic auth (any user name).
+function sameText(a, b) {
+  if (a.length !== b.length) return false;
+  let d = 0; for (let i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return d === 0;
+}
+async function sign(env, msg) {
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode('dd-admin|' + env.ADMIN_PASSWORD), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(sig), b => b.toString(16).padStart(2, '0')).join('');
+}
+export async function loginCookie(env) {
+  const exp = Date.now() + 30 * 864e5;
+  return `dd_admin=${exp}.${await sign(env, String(exp))}; Path=/; Max-Age=${30 * 86400}; HttpOnly; Secure; SameSite=Lax`;
+}
+export function checkPassword(env, given) { return !!env.ADMIN_PASSWORD && sameText(String(given || ''), env.ADMIN_PASSWORD); }
+export async function isAdmin(request, env) {
+  if (!env.ADMIN_PASSWORD) return false;
+  const m = /(?:^|;\s*)dd_admin=(\d+)\.([0-9a-f]{64})/.exec(request.headers.get('cookie') || '');
+  if (m && +m[1] > Date.now() && sameText(m[2], await sign(env, m[1]))) return true;
   const h = request.headers.get('authorization') || '';
   if (!h.startsWith('Basic ')) return false;
   let dec = '';
   try { dec = atob(h.slice(6)); } catch (e) { return false; }
-  const given = dec.slice(dec.indexOf(':') + 1);
-  if (given.length !== pass.length) return false;
-  let diff = 0;
-  for (let i = 0; i < pass.length; i++) diff |= given.charCodeAt(i) ^ pass.charCodeAt(i);
-  return diff === 0;
+  return sameText(dec.slice(dec.indexOf(':') + 1), env.ADMIN_PASSWORD);
 }
-export const askLogin = () => new Response('ต้องเข้าสู่ระบบ', {
-  status: 401, headers: { 'www-authenticate': 'Basic realm="daidaiphasa admin", charset="UTF-8"', 'cache-control': 'no-store' }
+// API answer when not logged in (no browser password pop-up; the /admin page shows its own login form)
+export const askLogin = () => new Response(JSON.stringify({ error: 'login' }), {
+  status: 401, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }
 });

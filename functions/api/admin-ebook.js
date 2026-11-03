@@ -8,7 +8,7 @@ import { edb, PRODUCT, promptpayPayload, maskId, payConfig, idFromPayload } from
 const CHUNK = 1000000;
 
 export async function onRequestGet({ request, env }) {
-  if (!isAdmin(request, env)) return askLogin();
+  if (!(await isAdmin(request, env))) return askLogin();
   const DB = await edb(env).catch(() => null);
   if (!DB) return json(503, { error: 'storage not configured' });
   const u = new URL(request.url), sid = u.searchParams.get('slip');
@@ -33,7 +33,7 @@ export async function onRequestGet({ request, env }) {
 }
 
 export async function onRequestPost({ request, env }) {
-  if (!isAdmin(request, env)) return askLogin();
+  if (!(await isAdmin(request, env))) return askLogin();
   const DB = await edb(env).catch(() => null);
   if (!DB) return json(503, { error: 'storage not configured' });
   let b; try { b = await request.json(); } catch (e) { return json(400, { error: 'json' }); }
@@ -54,7 +54,7 @@ export async function onRequestPost({ request, env }) {
 }
 
 export async function onRequestPut({ request, env }) {
-  if (!isAdmin(request, env)) return askLogin();
+  if (!(await isAdmin(request, env))) return askLogin();
   const DB = await edb(env).catch(() => null);
   if (!DB) return json(503, { error: 'storage not configured' });
   const which = new URL(request.url).searchParams.get('file') || '';

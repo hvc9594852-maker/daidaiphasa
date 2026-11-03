@@ -3,7 +3,7 @@
 import { json, db, isAdmin, askLogin, today } from '../_lib/db.js';
 
 export async function onRequestGet({ request, env }) {
-  if (!isAdmin(request, env)) return askLogin();
+  if (!(await isAdmin(request, env))) return askLogin();
   const DB = await db(env).catch(() => null);
   if (!DB) return json(503, { error: 'storage not configured' });
   const days = Math.min(365, Math.max(1, parseInt(new URL(request.url).searchParams.get('days') || '30', 10) || 30));
@@ -23,7 +23,7 @@ export async function onRequestGet({ request, env }) {
 }
 
 export async function onRequestPost({ request, env }) {
-  if (!isAdmin(request, env)) return askLogin();
+  if (!(await isAdmin(request, env))) return askLogin();
   const DB = await db(env).catch(() => null);
   if (!DB) return json(503, { error: 'storage not configured' });
   let b; try { b = await request.json(); } catch (e) { return json(400, { error: 'json' }); }

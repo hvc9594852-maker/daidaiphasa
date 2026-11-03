@@ -6,7 +6,7 @@ export async function onRequestGet({ request, env }) {
   const DB = await edb(env).catch(() => null);
   const u = new URL(request.url);
   const o = DB && await DB.prepare(`SELECT status FROM ebook_orders WHERE id=?1 AND k=?2`).bind(u.searchParams.get('id') || '', u.searchParams.get('k') || '').first();
-  const admin = isAdmin(request, env);
+  const admin = await isAdmin(request, env);
   if (!admin && (!o || !['pending', 'review'].includes(o.status))) return new Response('forbidden', { status: 403 });
   const r = DB && await DB.prepare(`SELECT data FROM ebook_files WHERE name='promptpay-qr' AND part=0`).first();
   if (!r) return new Response('no qr', { status: 404 });
