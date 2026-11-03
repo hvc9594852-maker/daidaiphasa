@@ -226,3 +226,6 @@ footer{margin-bottom:12px}
 .entry .hw::after{bottom:-4px;height:5px}
 .navlinks a:hover::after,.hero-index button:hover span:first-child::after,.entry:hover .hw::after,.hero-index button:focus-visible span:first-child::after,.entry:focus-visible .hw::after{transform:scaleX(1)}
 #src::placeholder{color:color-mix(in srgb,var(--ink) 28%,transparent);font-weight:400}
+.ks-count{display:inline-flex;align-items:baseline;gap:6px;margin:10px 0 0;padding:6px 14px;border-radius:999px;background:color-mix(in srgb,var(--signal) 14%,transparent);font-size:14px}
+.ks-count b{font-family:var(--display);font-size:18px;color:var(--ink)}
+.ks-count span{opacity:.6;font-size:12px}

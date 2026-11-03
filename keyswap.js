@@ -31,7 +31,14 @@
     c.addEventListener('animationend', function(e){ if (e.animationName === 'ks-boing') c.classList.remove('ks-boing'); });
   });
 
-  
+  // download counter (updated once a day at midnight Bangkok time)
+  fetch('/api/stats').then(function(r){ return r.ok ? r.json() : null; }).then(function(j){
+    if (!j || !j.downloads || j.downloads < 10) return;   // hide tiny numbers
+    var p = d.createElement('p'); p.className = 'ks-count';
+    p.innerHTML = '<b>' + j.downloads.toLocaleString('th-TH') + '</b> ครั้ง ที่ดาวน์โหลด KeySwap ไปแล้ว <span>· อัปเดตทุกเที่ยงคืน</span>';
+    var head = box.querySelector('.ks-head'); if (head) head.appendChild(p);
+  }).catch(function(){});
+
   // shown on every tool KeySwap can do: swap, romanize, braille, morse, translate
   var tabs = ['tab-fix','tab-romanize','tab-braille','tab-morse','tab-tr'].map(function(id){ return d.getElementById(id); }).filter(Boolean);
   function sync(){ box.hidden = !tabs.some(function(t){ return t.getAttribute('aria-selected') === 'true'; }); }
