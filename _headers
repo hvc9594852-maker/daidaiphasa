@@ -4,7 +4,3 @@
 
 /shop-items.js
   Cache-Control: no-cache
-
-/xfer-*
-  X-Robots-Tag: noindex
-  Cache-Control: no-store
