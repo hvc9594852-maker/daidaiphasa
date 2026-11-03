@@ -249,3 +249,15 @@ footer{margin-bottom:12px}
 .ebk-go span{display:inline-block;transition:transform .2s}
 .ebk:hover .ebk-go span{transform:translateX(4px)}
 @media (max-width:640px){.ebk{gap:14px;padding:14px}.ebk-cover{width:76px}.ebk-title{font-size:19px}}
+/* nav: glowing, wiggling ebook link */
+.navlinks a.nav-ebook{position:relative;display:inline-flex;align-items:center;gap:6px;color:#111!important;font-weight:600;background:var(--signal);border-radius:999px;padding:6px 14px!important;text-decoration:none!important;box-shadow:0 0 0 0 rgba(255,90,31,.55),0 0 18px rgba(255,90,31,.55);animation:ebkGlow 2.4s ease-in-out infinite,ebkWiggle 4.8s ease-in-out infinite;transform-origin:50% 60%}
+.navlinks a.nav-ebook::after{display:none!important}
+.navlinks a.nav-ebook:hover{animation:ebkGlow 2.4s ease-in-out infinite,ebkBoing .5s ease;transform:scale(1.06)}
+.nav-ebook-new{font-size:10px;font-weight:700;line-height:1;background:#111;color:#fff;border-radius:999px;padding:3px 6px;letter-spacing:.02em}
+@keyframes ebkGlow{0%,100%{box-shadow:0 0 0 0 rgba(255,90,31,.5),0 0 14px rgba(255,90,31,.45)}50%{box-shadow:0 0 0 7px rgba(255,90,31,0),0 0 26px rgba(255,90,31,.8)}}
+@keyframes ebkWiggle{0%,78%,100%{transform:rotate(0)}81%{transform:rotate(-7deg) scale(1.06)}84%{transform:rotate(6deg) scale(1.06)}87%{transform:rotate(-4deg)}90%{transform:rotate(3deg)}93%{transform:rotate(-1deg)}}
+@keyframes ebkBoing{0%{transform:scale(1)}40%{transform:scale(1.14) rotate(-3deg)}70%{transform:scale(.97) rotate(2deg)}100%{transform:scale(1.06)}}
+@media (prefers-reduced-motion:reduce){.navlinks a.nav-ebook{animation:none}}
+.navlinks a.nav-ebook{padding:4px 12px!important;gap:5px}
+.nav-ebook-new{display:none}
+@media (max-width:900px){.navlinks a.nav-ebook{order:-1;margin-right:4px}}
