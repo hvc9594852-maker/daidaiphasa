@@ -204,10 +204,11 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
   var EBT=[{id:'review',label:'รอตรวจสลิป'},{id:'pending',label:'ยังไม่แนบสลิป'},{id:'approved',label:'อนุมัติแล้ว'},{id:'rejected',label:'ไม่ผ่าน'}];
   function fmtB(n){ return n>1048576?(n/1048576).toFixed(1)+' MB':Math.round(n/1024)+' KB'; }
   function ebPaint(){
-    var p=eb.payment; $('ebPay').textContent=p.ready?('PromptPay '+(p.name?p.name+' · ':'')+p.payee):'ยังไม่ได้ตั้ง PROMPTPAY_ID — ลูกค้ายังซื้อไม่ได้'; $('ebPay').className='eb-pay'+(p.ready?'':' bad');
+    var p=eb.payment, ok=p.ready||p.qrImage; $('ebPay').textContent=p.ready?('PromptPay '+(p.name?p.name+' · ':'')+p.payee):(p.qrImage?'ใช้รูป QR ของร้าน (ลูกค้าพิมพ์ยอดเอง)':'ยังไม่มีช่องทางรับเงิน — อัปโหลดรูป QR หรือตั้ง PROMPTPAY_ID'); $('ebPay').className='eb-pay'+(ok?'':' bad');
     var have={}; (eb.files||[]).forEach(function(f){ have[f.name]=f; });
     $('ebFiles').innerHTML=Object.keys(eb.product.files).map(function(k){ var f=eb.product.files[k], h=have[f.name];
-      return '<div class="eb-file"><b>'+k.toUpperCase()+'</b><span>'+(h?'อัปโหลดแล้ว '+fmtB(h.bytes):'ยังไม่มีไฟล์')+'</span><label>'+(h?'เปลี่ยนไฟล์':'อัปโหลด')+'<input type="file" data-up="'+k+'" accept="'+(k==='pdf'?'.pdf,application/pdf':'.epub,application/epub+zip')+'"></label></div>'; }).join('');
+      return '<div class="eb-file"><b>'+k.toUpperCase()+'</b><span>'+(h?'อัปโหลดแล้ว '+fmtB(h.bytes):'ยังไม่มีไฟล์')+'</span><label>'+(h?'เปลี่ยนไฟล์':'อัปโหลด')+'<input type="file" data-up="'+k+'" accept="'+(k==='pdf'?'.pdf,application/pdf':'.epub,application/epub+zip')+'"></label></div>'; }).join('')+
+      '<div class="eb-file"><b>QR รับเงิน</b><span>'+(p.qrImage?'<img src="/api/ebook/qr?'+Date.now()+'" alt="" style="width:44px;height:44px;border-radius:6px;object-fit:cover;vertical-align:middle">':'ยังไม่มีรูป')+'</span><label>'+(p.qrImage?'เปลี่ยนรูป':'อัปโหลด')+'<input type="file" data-up="qr" accept="image/png,image/jpeg"></label></div>';
     var c={}; eb.orders.forEach(function(o){ c[o.status]=(c[o.status]||0)+1; });
     var earned=eb.orders.filter(function(o){return o.status==='approved';}).reduce(function(a,o){return a+o.amount;},0);
     $('ebTabs').innerHTML=EBT.map(function(t){ return '<button class="tab" data-k="'+t.id+'" aria-selected="'+(t.id===ebTab)+'">'+t.label+'<small>'+(c[t.id]||0)+'</small></button>'; }).join('')+'<span class="muted" style="align-self:center;margin-left:auto">ยอดขายที่อนุมัติ ฿'+(earned/100).toLocaleString('th-TH',{minimumFractionDigits:2})+'</span>';

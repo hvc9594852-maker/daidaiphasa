@@ -29,7 +29,8 @@
     if (o.status === 'pending'){
       $('amt').innerHTML = baht(o.amount);
       $('payee').textContent = (o.payeeName ? o.payeeName + ' · ' : '') + (o.payee || '');
-      if (o.qr && window.qrcode){ var q = qrcode(0, 'M'); q.addData(o.qr); q.make(); $('qr').innerHTML = q.createSvgTag({cellSize:6, margin:2, scalable:true}); }
+      if (o.qr && window.qrcode){ var q = qrcode(0, 'M'); q.addData(o.qr); q.make(); $('qr').innerHTML = q.createSvgTag({cellSize:6, margin:2, scalable:true}); $('typeamt').hidden = true; }
+      else if (o.qrImage){ $('qr').innerHTML = '<img src="' + o.qrImage + '" alt="QR PromptPay ของร้าน">'; $('typeamt').hidden = false; }
       step(2);
     } else if (o.status === 'review'){
       step(3); pollT = setTimeout(refresh, 20000);

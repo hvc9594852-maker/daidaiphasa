@@ -7,6 +7,7 @@ function view(o, env) {
   const out = { id: o.id, status: o.status, amount: o.amount, email: o.email, created_at: o.created_at, downloads: o.downloads, maxDownloads: PRODUCT.maxDownloads };
   if (o.status === 'pending' || o.status === 'review') {
     out.qr = promptpayPayload(env.PROMPTPAY_ID, o.amount);
+    if (!out.qr) out.qrImage = '/api/ebook/qr';
     out.payee = maskId(env.PROMPTPAY_ID);
     out.payeeName = env.PROMPTPAY_NAME || '';
   }
@@ -18,12 +19,13 @@ function view(o, env) {
 export async function onRequestPost({ request, env }) {
   let b; try { b = await request.json(); } catch (e) { return json(400, { error: 'json' }); }
   if (b.hp) return json(200, { ok: true });
-  if (!promptpayPayload(env.PROMPTPAY_ID, 100)) return json(503, { error: 'ร้านยังไม่เปิดรับชำระเงิน' });
   const email = String(b.email || '').trim().toLowerCase().slice(0, 120);
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return json(400, { error: 'อีเมลไม่ถูกต้อง' });
   const name = String(b.name || '').trim().slice(0, 80);
   const DB = await edb(env).catch(() => null);
   if (!DB) return json(503, { error: 'storage not configured' });
+  if (!promptpayPayload(env.PROMPTPAY_ID, 100) && !(await DB.prepare(`SELECT 1 AS x FROM ebook_files WHERE name='promptpay-qr' LIMIT 1`).first()))
+    return json(503, { error: 'ร้านยังไม่เปิดรับชำระเงิน' });
   const w = await who(request);
   const recent = await DB.prepare(`SELECT COUNT(*) AS c FROM ebook_orders WHERE who=?1 AND created_at > datetime('now','-1 hour')`).bind(w).first();
   if (recent && recent.c >= 6) return json(429, { error: 'สร้างคำสั่งซื้อบ่อยเกินไป ลองใหม่ภายหลัง' });

@@ -86,7 +86,7 @@ body{font-family:var(--body);font-weight:300;font-size:17px;line-height:1.7}
 .pay{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start}
 .qrbox{background:#fff;border-radius:var(--r-md);padding:18px;text-align:center;box-shadow:0 0 0 1px rgba(17,17,17,.06)}
 .qrbox .pp{font-family:var(--display);font-weight:700;color:#0E3D69;font-size:15px;letter-spacing:.04em}
-.qrbox svg{width:236px;height:236px;display:block;margin:8px auto}
+.qrbox svg,.qrbox img{width:236px;height:auto;display:block;margin:8px auto;border-radius:10px}
 .amt{font-family:var(--display);font-weight:700;font-size:40px;line-height:1}
 .amt small{font-size:15px;color:var(--sub);font-weight:500}
 .hint{font-size:14px;color:var(--sub)}
@@ -175,6 +175,7 @@ body{font-family:var(--body);font-weight:300;font-size:17px;line-height:1.7}
             <p class="hint">ยอดที่ต้องโอน</p>
             <div class="amt" id="amt">฿149.00</div>
             <p class="warn">โอน <b>ยอดนี้ตรงทุกสตางค์</b> เศษสตางค์ช่วยให้เราจับคู่ยอดโอนกับคำสั่งซื้อของคุณได้</p>
+            <p class="warn" id="typeamt" hidden>สแกนแล้ว <b>พิมพ์ยอดเองตามตัวเลขด้านบน</b> ให้ตรงทุกสตางค์</p>
             <p class="hint">สแกน QR ด้วยแอปธนาคารใดก็ได้ แล้วแนบสลิปด้านล่าง</p>
             <label class="drop" id="drop"><input type="file" id="slip" accept="image/*" hidden><span id="dropt">แตะเพื่อเลือกรูปสลิป</span></label>
             <p class="err" id="e2"></p>
@@ -221,7 +222,7 @@ body{font-family:var(--body);font-weight:300;font-size:17px;line-height:1.7}
 <nav aria-label="ลิงก์ท้ายเว็บ"><a href="/articles">บทความ</a><a href="/about">เกี่ยวกับเรา</a><a href="/privacy">นโยบายความเป็นส่วนตัว</a><a href="/contact">ติดต่อ</a></nav>
 </div></footer>
 <script src="/qrcode.js?v=1"></script>
-<script src="/ebook.js?v=1"></script>
+<script src="/ebook.js?v=2"></script>
 <script src="/bgwords.js?v=4" defer></script>
 <script src="/hit.js?v=1" defer></script>
 </body>

@@ -25,7 +25,8 @@ export async function onRequestGet({ request, env }) {
   ]);
   return json(200, {
     product: { title: PRODUCT.title, price: PRODUCT.price, files: PRODUCT.files },
-    payment: { ready: !!promptpayPayload(env.PROMPTPAY_ID, 100), payee: maskId(env.PROMPTPAY_ID), name: env.PROMPTPAY_NAME || '' },
+    payment: { ready: !!promptpayPayload(env.PROMPTPAY_ID, 100), payee: maskId(env.PROMPTPAY_ID), name: env.PROMPTPAY_NAME || '',
+      qrImage: (files.results || []).some(f => f.name === 'promptpay-qr') },
     orders: orders.results, files: files.results
   });
 }
@@ -46,7 +47,16 @@ export async function onRequestPut({ request, env }) {
   if (!isAdmin(request, env)) return askLogin();
   const DB = await edb(env).catch(() => null);
   if (!DB) return json(503, { error: 'storage not configured' });
-  const f = PRODUCT.files[new URL(request.url).searchParams.get('file') || ''];
+  const which = new URL(request.url).searchParams.get('file') || '';
+  if (which === 'qr') {
+    const img = new Uint8Array(await request.arrayBuffer());
+    const ok = (img[0] === 0x89 && img[1] === 0x50) || (img[0] === 0xFF && img[1] === 0xD8) || (img[8] === 0x57 && img[9] === 0x45);
+    if (!ok || img.length > 1500000) return json(400, { error: 'ใช้รูป PNG หรือ JPG ขนาดไม่เกิน 1.5 MB' });
+    await DB.prepare(`DELETE FROM ebook_files WHERE name='promptpay-qr'`).run();
+    await DB.prepare(`INSERT INTO ebook_files(name,part,data) VALUES('promptpay-qr',0,?1)`).bind(img).run();
+    return json(200, { ok: true, name: 'promptpay-qr', bytes: img.length });
+  }
+  const f = PRODUCT.files[which];
   if (!f) return json(400, { error: 'file' });
   const buf = new Uint8Array(await request.arrayBuffer());
   if (buf.length < 1000 || buf.length > 60e6) return json(400, { error: 'size' });
