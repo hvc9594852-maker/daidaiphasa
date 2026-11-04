@@ -73,6 +73,20 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
 .eb-o.approved,.eb-o.rejected{opacity:.6}
 .eb-big{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:9;cursor:zoom-out}
 .eb-big img{max-width:92vw;max-height:92vh;border-radius:12px}
+.who-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+.split{display:flex;height:12px;border-radius:99px;overflow:hidden;background:var(--bg);margin:10px 0 8px}
+.split i{display:block;height:100%}
+.split .a{background:var(--acc)}.split .b{background:var(--ink);opacity:.75}
+.legend2{display:flex;gap:14px;font-size:13px;color:var(--sub)}
+.feed{width:100%;border-collapse:collapse;font-size:14px}
+.feed th{text-align:left;font-weight:600;color:var(--sub);font-size:12.5px;padding:6px 8px;border-bottom:1px solid var(--line)}
+.feed td{padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.feed td.pg{white-space:normal;word-break:break-all}
+.feed tr.grp td{border-top:2px solid var(--line)}
+.tag{display:inline-block;font-size:11.5px;border-radius:99px;padding:1px 8px;background:var(--bg)}
+.tag.ret{background:var(--acc);color:#fff}
+.feedwrap{max-height:520px;overflow:auto}
+@media (max-width:860px){.who-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -101,6 +115,18 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
   <section class="grid3">
     <div class="card" style="grid-column:span 2"><h2>หน้าที่คนเปิด</h2><table id="tPages"></table></div>
     <div class="card"><h2>ดาวน์โหลด</h2><table id="tDl"></table><h2 style="margin-top:18px">คลิก Shopee</h2><table id="tShop"></table></div>
+  </section>
+
+  <section class="who-grid">
+    <div class="card"><h2>มาจากประเทศ</h2><table id="tCountry"></table></div>
+    <div class="card"><h2>เมือง</h2><table id="tCity"></table></div>
+    <div class="card"><h2>มาจากไหน</h2><table id="tSrc"></table></div>
+    <div class="card"><h2>คนใหม่ / กลับมาซ้ำ</h2><div id="retBox"></div><h2 style="margin-top:16px">อุปกรณ์</h2><table id="tDev"></table></div>
+  </section>
+  <section class="card" style="margin-bottom:12px">
+    <h2>คนที่เข้ามาล่าสุด</h2>
+    <p class="muted" style="margin:-4px 0 10px">ไม่ระบุตัวตน · รหัสผู้เข้าชมเปลี่ยนทุกวัน · ประเทศ/เมืองประมาณจาก IP โดย Cloudflare</p>
+    <div class="feedwrap"><table class="feed" id="feed"></table></div>
   </section>
 
   <section class="card" id="ebook" style="margin-bottom:12px">
@@ -179,6 +205,29 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
     var SN={}; (window.SHOP_ITEMS||[]).forEach(function(x){ SN[String(x.id).toLowerCase()]=x.title; });
     rows($('tShop'), pick('ev:shop-'), function(k){ k=k.slice(8); return SN[k]||k; });
     chart(data.daily, data.days, data.since);
+    // ---- who / where ----
+    var thR; try{ thR=new Intl.DisplayNames(['th'],{type:'region'}); }catch(e){}
+    var flag=function(cc){ return /^[A-Z]{2}$/.test(cc)&&cc!=='XX'&&cc!=='T1'?String.fromCodePoint.apply(null,cc.split('').map(function(c){return 127397+c.charCodeAt(0);})):'🌐'; };
+    var cname=function(cc){ try{ return cc==='XX'||cc==='T1'?'ไม่ทราบ':(thR?thR.of(cc):cc); }catch(e){ return cc; } };
+    var SRC={direct:'เข้าตรง / พิมพ์ลิงก์เอง',google:'Google',bing:'Bing',yahoo:'Yahoo',duckduckgo:'DuckDuckGo',facebook:'Facebook',instagram:'Instagram',line:'LINE',x:'X (Twitter)',tiktok:'TikTok',youtube:'YouTube',pantip:'Pantip',reddit:'Reddit',shopee:'Shopee',chatgpt:'ChatGPT',claude:'Claude',perplexity:'Perplexity'};
+    var DEV={mobile:'มือถือ',desktop:'คอมพิวเตอร์',tablet:'แท็บเล็ต'};
+    rows($('tCountry'), pick('c:'), function(k){ k=k.slice(2); return flag(k)+' '+cname(k); });
+    rows($('tCity'), pick('city:'), function(k){ var a=k.slice(5).split('|'); return flag(a[0])+' '+a[1]; });
+    rows($('tSrc'), pick('src:'), function(k){ k=k.slice(4); return SRC[k]||k; });
+    rows($('tDev'), pick('dev:'), function(k){ k=k.slice(4); return DEV[k]||k; });
+    var nNew=T['vis:new']||0, nRet=T['vis:ret']||0, tot=nNew+nRet;
+    $('retBox').innerHTML = tot ? '<div class="split"><i class="a" style="width:'+(nRet/tot*100)+'%"></i><i class="b" style="width:'+(nNew/tot*100)+'%"></i></div><div class="legend2"><span>กลับมาซ้ำ <b>'+fmt(nRet)+'</b> ('+Math.round(nRet/tot*100)+'%)</span><span>คนใหม่ <b>'+fmt(nNew)+'</b></span></div>' : '<div class="empty">ยังไม่มีข้อมูล</div>';
+    var v=data.visits||[];
+    if(!v.length){ $('feed').innerHTML='<tr><td class="empty">ยังไม่มีข้อมูล (เริ่มเก็บหลังอัปเดตนี้)</td></tr>'; }
+    else{
+      var last='';
+      $('feed').innerHTML='<tr><th>เวลา</th><th>ผู้เข้าชม</th><th>มาจาก</th><th>ที่ไหน</th><th>อุปกรณ์</th><th>หน้า</th></tr>'+v.map(function(x){
+        var t=new Date(x.ts.replace(' ','T')+'Z').toLocaleString('th-TH',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+        var g=x.vid!==last; last=x.vid;
+        return '<tr'+(g?' class="grp"':'')+'><td>'+t+'</td><td>#'+esc(x.vid)+' <span class="tag'+(x.ret?' ret':'')+'">'+(x.ret?'กลับมาซ้ำ':'ใหม่')+'</span></td><td>'+esc(SRC[x.src]||x.src)+'</td><td>'+flag(x.country)+' '+esc(x.city||cname(x.country))+'</td><td>'+(DEV[x.device]||'')+'</td><td class="pg">'+esc(x.page)+'</td></tr>';
+      }).join('');
+    }
+
     paintEntries();
     $('upd').textContent='อัปเดต '+new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
   }

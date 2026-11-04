@@ -15,8 +15,10 @@ export async function onRequestGet({ request, env }) {
     DB.prepare(`SELECT k, SUM(n) AS n FROM counts WHERE day >= ?1 AND k NOT LIKE 'v:%' GROUP BY k ORDER BY n DESC`).bind(since),
     DB.prepare(`SELECT id, kind, data, status, created_at FROM entries WHERE status != 'hidden' ORDER BY id DESC LIMIT 500`)
   ]);
+  let visits = [];
+  try { visits = (await DB.prepare(`SELECT ts, vid, page, country, city, src, device, ret FROM visits ORDER BY ts DESC LIMIT 200`).all()).results; } catch (e) {}
   return json(200, {
-    today: today(), since, days,
+    today: today(), since, days, visits,
     daily: daily.results, totals: totals.results,
     entries: entries.results.map(e => Object.assign(e, { data: JSON.parse(e.data || '{}') }))
   });
