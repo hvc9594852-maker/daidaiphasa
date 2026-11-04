@@ -4,7 +4,7 @@ import { db } from './db.js';
 
 export const PRODUCTS = {
   'english-2562': {
-    id: 'english-2562', page: '/ebook',
+    id: 'english-2562', page: '/ebook-english',
     title: '2,562 คำศัพท์อังกฤษที่ใช้บ่อย',
     price: 14900,                       // satang (฿149.00)
     files: { pdf: { name: 'english-2562.pdf', download: '2562-English-Words-Thai.pdf', type: 'application/pdf' },

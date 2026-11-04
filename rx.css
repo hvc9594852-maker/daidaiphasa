@@ -232,8 +232,10 @@ footer{margin-bottom:12px}
 /* ebook promo (in the learn section, beside saved words) */
 .ebk{display:flex;gap:20px;align-items:center;margin-top:22px;padding:18px 20px 18px 18px;border-radius:24px;background:var(--wash,#F4F1EA);color:var(--ink);text-decoration:none;transition:transform .2s ease,box-shadow .2s ease}
 .ebk:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(17,17,17,.08)}
-.ebk-cover{position:relative;flex:none;width:96px;border-radius:3px 8px 8px 3px;overflow:hidden;box-shadow:0 10px 22px rgba(17,17,17,.16),0 0 0 1px rgba(17,17,17,.06);transform:rotate(-4deg);transition:transform .25s ease}
-.ebk:hover .ebk-cover{transform:rotate(-1deg) scale(1.04)}
+.ebk-covers{position:relative;flex:none;width:132px;height:150px}
+.ebk-cover{position:absolute;bottom:4px;width:96px;border-radius:3px 8px 8px 3px;overflow:hidden;box-shadow:0 10px 22px rgba(17,17,17,.16),0 0 0 1px rgba(17,17,17,.06);transform:rotate(-4deg);transition:transform .25s ease}
+.ebk-cover:first-child{left:36px;transform:rotate(6deg)}.ebk-cover:last-child{left:0;transform:rotate(-5deg)}
+.ebk:hover .ebk-cover:first-child{transform:rotate(9deg) translateX(6px)}.ebk:hover .ebk-cover:last-child{transform:rotate(-7deg) translateX(-4px)}
 .ebk-cover img{display:block;width:100%;height:auto}
 .ebk-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.22) 0,rgba(255,255,255,.22) 1.4%,rgba(0,0,0,.10) 3%,rgba(0,0,0,0) 6%);pointer-events:none}
 .ebk-body{display:flex;flex-direction:column;gap:4px;min-width:0}
@@ -249,7 +251,7 @@ footer{margin-bottom:12px}
 .ebk-go{font-weight:600;font-size:15px;margin-top:4px}
 .ebk-go span{display:inline-block;transition:transform .2s}
 .ebk:hover .ebk-go span{transform:translateX(4px)}
-@media (max-width:640px){.ebk{gap:14px;padding:14px}.ebk-cover{width:76px}.ebk-title{font-size:19px}}
+@media (max-width:640px){.ebk{gap:14px;padding:14px}.ebk-covers{width:104px;height:120px}.ebk-cover{width:76px}.ebk-cover:first-child{left:28px}.ebk-title{font-size:19px}}
 /* nav: glowing, wiggling ebook link */
 .navlinks a.nav-ebook{position:relative;display:inline-flex;align-items:center;gap:6px;color:#111!important;font-weight:600;background:var(--signal);border-radius:999px;padding:6px 14px!important;text-decoration:none!important;box-shadow:0 0 0 0 rgba(255,90,31,.55),0 0 18px rgba(255,90,31,.55);animation:ebkGlow 2.4s ease-in-out infinite,ebkWiggle 4.8s ease-in-out infinite;transform-origin:50% 60%}
 .navlinks a.nav-ebook::after{display:none!important}
