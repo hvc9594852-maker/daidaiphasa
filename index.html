@@ -36,7 +36,7 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2391353056454673" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap">
-<link rel="stylesheet" href="/rx.css?v=26">
+<link rel="stylesheet" href="/rx.css?v=27">
 <style>
 /* Layout: printed-dictionary page with game type — ruled black frames, one orange signal, wide gutters */
 :root{
@@ -699,7 +699,14 @@ footer a{color:#F4F4F0}
           <li>ดูคีย์ลัดหรือปิดโปรแกรม: คลิกที่ไอคอน KeySwap</li>
         </ol>
         <a class="ks-btn" id="ksWinBtn" href="/downloads/KeySwap-Windows.exe" download>ดาวน์โหลดสำหรับ Windows</a>
-        <p class="ks-fine">ถ้า Windows ขึ้นหน้าต่าง "Windows protected your PC" เป็นเพราะโปรแกรมยังไม่มีลายเซ็นดิจิทัล กด More info แล้ว Run anyway · <a href="/_src/keyswap/main_windows.go">ดูซอร์สโค้ด</a></p>
+        <details class="ks-help" open><summary>ขึ้นคำเตือนตอนดาวน์โหลดหรือเปิด? ทำตามนี้</summary>
+          <ol>
+            <li><b>เบราว์เซอร์บอกว่าไฟล์ไม่ค่อยมีคนโหลด</b> กด <code>⋯</code> หรือลูกศรข้างไฟล์ › <code>Keep</code> › <code>Keep anyway</code></li>
+            <li><b>ขึ้นหน้าจอสีฟ้า "Windows protected your PC"</b> กด <code>More info</code> แล้วกด <code>Run anyway</code></li>
+            <li>ทำแค่ครั้งแรกครั้งเดียว ครั้งต่อไปเปิดได้เลย</li>
+          </ol>
+          <p>คำเตือนนี้ขึ้นเพราะโปรแกรมยังไม่มีใบรับรองลายเซ็นดิจิทัลแบบเสียเงิน ไม่ได้แปลว่ามีไวรัส · <a href="/_src/keyswap/main_windows.go">ดูซอร์สโค้ดทั้งหมด</a></p>
+        </details>
       </div>
       <div class="ks-card" data-os="mac">
         <div class="ks-top"><b>Mac</b><span>macOS 11 ขึ้นไป · Apple Silicon และ Intel · 10 MB</span></div>
@@ -709,7 +716,15 @@ footer a{color:#F4F4F0}
           <li>คลุมดำข้อความ แล้วกดคีย์ลัดตามตาราง · ดูคีย์ลัดหรือปิดโปรแกรมได้จากไอคอน ๆ ที่แถบเมนูด้านบน</li>
         </ol>
         <a class="ks-btn" id="ksMacBtn" href="/downloads/KeySwap-Mac.zip" download>ดาวน์โหลดสำหรับ Mac</a>
-        <p class="ks-fine">ถ้า Mac บอกว่าเปิดไม่ได้เพราะยังไม่ได้ตรวจสอบผู้พัฒนา ให้ไปที่ System Settings › Privacy &amp; Security แล้วกด Open Anyway</p>
+        <details class="ks-help" open><summary>ขึ้นว่า "KeySwap Not Opened"? ทำตามนี้</summary>
+          <ol>
+            <li>กด <code>Done</code> <b>(อย่ากด Move to Trash)</b></li>
+            <li>เปิด <code>System Settings</code> › <code>Privacy &amp; Security</code> เลื่อนลงล่างสุด จะเห็นข้อความ "KeySwap was blocked…" กด <code>Open Anyway</code> แล้วใส่รหัสผ่าน Mac</li>
+            <li>เปิด KeySwap อีกครั้ง กด <code>Open Anyway</code> อีกที จากนั้นเปิดได้ตามปกติตลอด</li>
+          </ol>
+          <p>หรือวิธีลัด: เปิดแอป Terminal วางคำสั่งนี้แล้วกด Enter <code class="ks-cmd">xattr -dr com.apple.quarantine /Applications/KeySwap.app</code></p>
+          <p>คำเตือนนี้ขึ้นเพราะ KeySwap ยังไม่ได้ส่งให้ Apple ตรวจ (ต้องสมัครสมาชิกนักพัฒนาแบบเสียเงิน) ไม่ได้แปลว่ามีไวรัส · <a href="/_src/keyswap/main_darwin.go">ดูซอร์สโค้ด</a></p>
+        </details>
       </div>
     </div>
   </aside>
