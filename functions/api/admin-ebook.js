@@ -2,9 +2,9 @@
 // GET  /api/admin-ebook             → orders (without slip images) + book file status
 // GET  /api/admin-ebook?slip=<id>   → slip image of one order
 // POST /api/admin-ebook {id, action:'approve'|'reject'|'pending', note}
-// PUT  /api/admin-ebook?file=pdf|epub  (body = file bytes) → stores the private book file in D1, 1 MB per row
+// PUT  /api/admin-ebook?file=pdf|epub&product=<id>  (body = file bytes) → stores the private book file in D1, 1 MB per row
 import { json, isAdmin, askLogin } from '../_lib/db.js';
-import { edb, PRODUCT, promptpayPayload, maskId, payConfig, idFromPayload } from '../_lib/ebook.js';
+import { edb, PRODUCTS, promptpayPayload, maskId, payConfig, idFromPayload } from '../_lib/ebook.js';
 const CHUNK = 1000000;
 
 export async function onRequestGet({ request, env }) {
@@ -21,11 +21,11 @@ export async function onRequestGet({ request, env }) {
   }
   const pc = await payConfig(env, DB);
   const [orders, files] = await DB.batch([
-    DB.prepare(`SELECT id,email,name,amount,status,note,downloads,created_at,slip_at,decided_at,(slip IS NOT NULL) AS has_slip FROM ebook_orders ORDER BY created_at DESC LIMIT 500`),
+    DB.prepare(`SELECT id,product,email,name,amount,status,note,downloads,created_at,slip_at,decided_at,(slip IS NOT NULL) AS has_slip FROM ebook_orders ORDER BY created_at DESC LIMIT 500`),
     DB.prepare(`SELECT name, COUNT(*) AS parts, SUM(LENGTH(data)) AS bytes FROM ebook_files GROUP BY name`)
   ]);
   return json(200, {
-    product: { title: PRODUCT.title, price: PRODUCT.price, files: PRODUCT.files },
+    products: Object.values(PRODUCTS).map(P => ({ id: P.id, title: P.title, price: P.price, page: P.page, files: P.files })),
     payment: { ready: !!pc, payee: pc ? maskId(pc.id) : '', name: pc ? pc.name || '' : '', bank: pc ? pc.bank || '' : '',
       qrImage: (files.results || []).some(f => f.name === 'promptpay-qr') },
     orders: orders.results, files: files.results
@@ -57,7 +57,7 @@ export async function onRequestPut({ request, env }) {
   if (!(await isAdmin(request, env))) return askLogin();
   const DB = await edb(env).catch(() => null);
   if (!DB) return json(503, { error: 'storage not configured' });
-  const which = new URL(request.url).searchParams.get('file') || '';
+  const u = new URL(request.url), which = u.searchParams.get('file') || '';
   if (which === 'qr') {
     const img = new Uint8Array(await request.arrayBuffer());
     const ok = (img[0] === 0x89 && img[1] === 0x50) || (img[0] === 0xFF && img[1] === 0xD8) || (img[8] === 0x57 && img[9] === 0x45);
@@ -66,7 +66,8 @@ export async function onRequestPut({ request, env }) {
     await DB.prepare(`INSERT INTO ebook_files(name,part,data) VALUES('promptpay-qr',0,?1)`).bind(img).run();
     return json(200, { ok: true, name: 'promptpay-qr', bytes: img.length });
   }
-  const f = PRODUCT.files[which];
+  const P = PRODUCTS[u.searchParams.get('product') || 'english-2562'];
+  const f = P && P.files[which];
   if (!f) return json(400, { error: 'file' });
   const buf = new Uint8Array(await request.arrayBuffer());
   if (buf.length < 1000 || buf.length > 60e6) return json(400, { error: 'size' });

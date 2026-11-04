@@ -2,14 +2,26 @@
 // Needs: D1 binding DB, env PROMPTPAY_ID (เบอร์มือถือ 10 หลัก หรือเลขบัตรประชาชน 13 หลัก ที่ผูก PromptPay)
 import { db } from './db.js';
 
-export const PRODUCT = {
-  id: 'english-2562',
-  title: '2,562 คำศัพท์อังกฤษที่ใช้บ่อย',
-  price: 14900,                       // satang (฿149.00)
-  files: { pdf: { name: 'english-2562.pdf', download: '2562-English-Words-Thai.pdf', type: 'application/pdf' },
-           epub: { name: 'english-2562.epub', download: '2562-English-Words-Thai.epub', type: 'application/epub+zip' } },
-  maxDownloads: 30
+export const PRODUCTS = {
+  'english-2562': {
+    id: 'english-2562', page: '/ebook',
+    title: '2,562 คำศัพท์อังกฤษที่ใช้บ่อย',
+    price: 14900,                       // satang (฿149.00)
+    files: { pdf: { name: 'english-2562.pdf', download: '2562-English-Words-Thai.pdf', type: 'application/pdf' },
+             epub: { name: 'english-2562.epub', download: '2562-English-Words-Thai.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
+  },
+  'japanese-3000': {
+    id: 'japanese-3000', page: '/ebook-japanese',
+    title: '3,000 คำศัพท์ญี่ปุ่น JLPT N5–N1',
+    price: 14900,
+    files: { pdf: { name: 'japanese-3000.pdf', download: '3000-Japanese-Words-JLPT-Thai.pdf', type: 'application/pdf' },
+             epub: { name: 'japanese-3000.epub', download: '3000-Japanese-Words-JLPT-Thai.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
+  }
 };
+export const PRODUCT = PRODUCTS['english-2562'];
+export function product(id) { return PRODUCTS[id] || PRODUCT; }
 
 let ready = null;
 export async function edb(env) {

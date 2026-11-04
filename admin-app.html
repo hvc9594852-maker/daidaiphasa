@@ -259,11 +259,12 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
   var eb=null, ebTab='review';
   var EBT=[{id:'review',label:'รอตรวจสลิป'},{id:'pending',label:'ยังไม่แนบสลิป'},{id:'approved',label:'อนุมัติแล้ว'},{id:'rejected',label:'ไม่ผ่าน'}];
   function fmtB(n){ return n>1048576?(n/1048576).toFixed(1)+' MB':Math.round(n/1024)+' KB'; }
+  function ebTitle(id){ var P=(eb.products||[]).filter(function(x){return x.id===id;})[0]; return P?P.title:(id||''); }
   function ebPaint(){
     var p=eb.payment, ok=p.ready||p.qrImage; $('ebPay').textContent=p.ready?('PromptPay '+(p.name?p.name+' · ':'')+p.payee):(p.qrImage?'ใช้รูป QR ของร้าน (ลูกค้าพิมพ์ยอดเอง)':'ยังไม่มีช่องทางรับเงิน — อัปโหลดรูป QR หรือตั้ง PROMPTPAY_ID'); $('ebPay').className='eb-pay'+(ok?'':' bad');
     var have={}; (eb.files||[]).forEach(function(f){ have[f.name]=f; });
-    $('ebFiles').innerHTML=Object.keys(eb.product.files).map(function(k){ var f=eb.product.files[k], h=have[f.name];
-      return '<div class="eb-file"><b>'+k.toUpperCase()+'</b><span>'+(h?'อัปโหลดแล้ว '+fmtB(h.bytes):'ยังไม่มีไฟล์')+'</span><label>'+(h?'เปลี่ยนไฟล์':'อัปโหลด')+'<input type="file" data-up="'+k+'" accept="'+(k==='pdf'?'.pdf,application/pdf':'.epub,application/epub+zip')+'"></label></div>'; }).join('')+
+    $('ebFiles').innerHTML=(eb.products||[]).map(function(P){ return Object.keys(P.files).map(function(k){ var f=P.files[k], h=have[f.name];
+      return '<div class="eb-file"><b>'+esc(P.title)+' · '+k.toUpperCase()+'</b><span>'+(h?'อัปโหลดแล้ว '+fmtB(h.bytes):'ยังไม่มีไฟล์')+'</span><label>'+(h?'เปลี่ยนไฟล์':'อัปโหลด')+'<input type="file" data-up="'+k+'" data-prod="'+P.id+'" accept="'+(k==='pdf'?'.pdf,application/pdf':'.epub,application/epub+zip')+'"></label></div>'; }).join(''); }).join('')+
       '<div class="eb-file"><b>QR รับเงิน</b><span>'+(p.qrImage?'<img src="/api/ebook/qr?'+Date.now()+'" alt="" style="width:44px;height:44px;border-radius:6px;object-fit:cover;vertical-align:middle">':'ยังไม่มีรูป')+'</span><label>'+(p.qrImage?'เปลี่ยนรูป':'อัปโหลด')+'<input type="file" data-up="qr" accept="image/png,image/jpeg"></label></div>';
     var c={}; eb.orders.forEach(function(o){ c[o.status]=(c[o.status]||0)+1; });
     var earned=eb.orders.filter(function(o){return o.status==='approved';}).reduce(function(a,o){return a+o.amount;},0);
@@ -275,7 +276,7 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
       var sl=o.has_slip?'<img class="slip" loading="lazy" data-big="/api/admin-ebook?slip='+o.id+'" src="/api/admin-ebook?slip='+o.id+'" alt="สลิป">':'<div class="noslip">ยังไม่มีสลิป</div>';
       var acts=o.status==='approved'?'<button class="btn" data-eid="'+o.id+'" data-a="reject">ยกเลิกสิทธิ์</button>':
         '<button class="btn" data-eid="'+o.id+'" data-a="approve">อนุมัติ</button><button class="btn" data-eid="'+o.id+'" data-a="reject">ไม่ผ่าน</button>';
-      return '<div class="eb-o '+o.status+'">'+sl+'<div class="body"><div class="amt">฿'+(o.amount/100).toFixed(2)+'</div><div>'+esc(o.email)+(o.name?' · '+esc(o.name):'')+'</div><div class="meta">#'+o.id+' · '+when+(o.status==='approved'?' · โหลดแล้ว '+o.downloads+' ครั้ง':'')+(o.note?' · '+esc(o.note):'')+'</div></div><div class="acts">'+acts+'</div></div>';
+      return '<div class="eb-o '+o.status+'">'+sl+'<div class="body"><div class="amt">฿'+(o.amount/100).toFixed(2)+'</div><div><b>'+esc(ebTitle(o.product))+'</b></div><div>'+esc(o.email)+(o.name?' · '+esc(o.name):'')+'</div><div class="meta">#'+o.id+' · '+when+(o.status==='approved'?' · โหลดแล้ว '+o.downloads+' ครั้ง':'')+(o.note?' · '+esc(o.note):'')+'</div></div><div class="acts">'+acts+'</div></div>';
     }).join('');
   }
   function ebLoad(){
@@ -294,7 +295,7 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
   $('ebFiles').addEventListener('change',function(ev){
     var inp=ev.target.closest('input[data-up]'); if(!inp||!inp.files[0]) return;
     var lab=inp.parentNode; lab.firstChild.textContent='กำลังอัปโหลด…';
-    fetch('/api/admin-ebook?file='+inp.dataset.up,{method:'PUT',credentials:'same-origin',body:inp.files[0]})
+    fetch('/api/admin-ebook?file='+inp.dataset.up+(inp.dataset.prod?'&product='+inp.dataset.prod:''),{method:'PUT',credentials:'same-origin',body:inp.files[0]})
       .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||r.status); }); })
       .then(ebLoad).catch(function(e){ alert('อัปโหลดไม่สำเร็จ: '+e.message); ebLoad(); });
   });
