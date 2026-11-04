@@ -232,9 +232,10 @@ footer{margin-bottom:12px}
 /* ebook promo (in the learn section, beside saved words) */
 .ebk{display:flex;gap:20px;align-items:center;margin-top:22px;padding:18px 20px 18px 18px;border-radius:24px;background:var(--wash,#F4F1EA);color:var(--ink);text-decoration:none;transition:transform .2s ease,box-shadow .2s ease}
 .ebk:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(17,17,17,.08)}
-.ebk-cover{flex:none;width:96px;border-radius:12px;overflow:hidden;box-shadow:0 10px 22px rgba(17,17,17,.16),0 0 0 1px rgba(17,17,17,.06);transform:rotate(-4deg);transition:transform .25s ease}
+.ebk-cover{position:relative;flex:none;width:96px;border-radius:3px 8px 8px 3px;overflow:hidden;box-shadow:0 10px 22px rgba(17,17,17,.16),0 0 0 1px rgba(17,17,17,.06);transform:rotate(-4deg);transition:transform .25s ease}
 .ebk:hover .ebk-cover{transform:rotate(-1deg) scale(1.04)}
 .ebk-cover img{display:block;width:100%;height:auto}
+.ebk-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.22) 0,rgba(255,255,255,.22) 1.4%,rgba(0,0,0,.10) 3%,rgba(0,0,0,0) 6%);pointer-events:none}
 .ebk-body{display:flex;flex-direction:column;gap:4px;min-width:0}
 .ebk-kick{font-size:13px;font-weight:600;color:var(--sub)}
 .ebk-kick b{margin-left:6px;background:var(--signal);color:#111;border-radius:999px;padding:1px 9px;font-family:var(--display)}
