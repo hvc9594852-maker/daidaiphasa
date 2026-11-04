@@ -1,6 +1,6 @@
 // POST /api/hit  {k:['page:/braille' | 'tool:braille' | ...], ref, utm, ret}  — anonymous daily counters + recent-visit log
 // No names, IPs or cookies are stored: country/city come from Cloudflare's IP lookup, the visitor id is a hash that changes every day.
-import { json, db, bump, who, today } from '../_lib/db.js';
+import { json, db, bump, who, today, isAdmin } from '../_lib/db.js';
 const OK = /^(page|tool|ev):[a-z0-9\-\/_.]{1,60}$/;
 
 function source(ref, utm) {
@@ -35,6 +35,8 @@ export async function onRequestPost({ request, env }) {
   if (!keys.length) return json(400, { error: 'key' });
   const ua = request.headers.get('user-agent') || '';
   if (/bot|crawl|spider|slurp|preview|headless|lighthouse/i.test(ua)) return json(200, { ok: true, skipped: 'bot' });
+  // don't count the owner: logged-in admin, or a browser marked with ?notrack=1
+  if (/(?:^|;\s*)dd_notrack=1/.test(request.headers.get('cookie') || '') || await isAdmin(request, env)) return json(200, { ok: true, skipped: 'owner' });
   const DB = await db(env).catch(() => null);
   if (!DB) return json(200, { ok: false });
   for (const k of keys) await bump(DB, k);

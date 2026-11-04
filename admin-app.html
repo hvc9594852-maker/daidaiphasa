@@ -97,6 +97,7 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
     <span class="muted" id="upd"></span>
     <select id="days" aria-label="ช่วงเวลา"><option value="1">วันนี้</option><option value="7">7 วัน</option><option value="30" selected>30 วัน</option><option value="90">90 วัน</option><option value="365">1 ปี</option></select>
     <button class="btn" id="reload">รีเฟรช</button>
+    <button class="btn" id="notrack" title="ไม่นับการเข้าเว็บจากเบราว์เซอร์นี้"></button>
   </header>
   <div id="err" class="err" hidden></div>
 
@@ -248,6 +249,11 @@ td.n{text-align:right;font-family:'Chakra Petch';font-weight:600;width:70px}
       .catch(function(){ b.disabled=false; alert('บันทึกไม่ได้ ลองใหม่อีกครั้ง'); });
   });
   $('days').addEventListener('change',load); $('reload').addEventListener('click',load);
+  function ntPaint(){ var on=false; try{ on=localStorage.getItem('dd-notrack')==='1'; }catch(e){} $('notrack').textContent=on?'✓ ไม่นับเครื่องนี้แล้ว':'ไม่นับเครื่องนี้'; }
+  $('notrack').addEventListener('click',function(){ var on=false; try{ on=localStorage.getItem('dd-notrack')==='1'; }catch(e){}
+    try{ if(on){ localStorage.removeItem('dd-notrack'); document.cookie='dd_notrack=; path=/; max-age=0'; } else { localStorage.setItem('dd-notrack','1'); document.cookie='dd_notrack=1; path=/; max-age=63072000; samesite=lax; secure'; } }catch(e){}
+    ntPaint(); });
+  ntPaint();
   load(); setInterval(load,5*60e3);
   // ---------- ebook store ----------
   var eb=null, ebTab='review';

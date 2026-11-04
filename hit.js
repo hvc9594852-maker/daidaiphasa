@@ -2,7 +2,14 @@
    Counts page views, tools used, where visitors came from (referring site) and whether they have been here before
    (a first-visit date kept only in this browser's localStorage). */
 (function(){
-  if(!/^https?:$/.test(location.protocol) || /^(localhost|127\.)/.test(location.hostname)) { window.dHit=function(){}; return; }
+  // owner's own devices: open any page with ?notrack=1 once (or press the button in /admin) to stop counting this browser; ?notrack=0 to undo
+  try{
+    var nt=new URLSearchParams(location.search).get('notrack');
+    if(nt==='1'){ localStorage.setItem('dd-notrack','1'); document.cookie='dd_notrack=1; path=/; max-age=63072000; samesite=lax; secure'; }
+    if(nt==='0'){ localStorage.removeItem('dd-notrack'); document.cookie='dd_notrack=; path=/; max-age=0'; }
+  }catch(e){}
+  var off=false; try{ off=localStorage.getItem('dd-notrack')==='1' || /(^|;\s*)dd_notrack=1/.test(document.cookie); }catch(e){}
+  if(off || !/^https?:$/.test(location.protocol) || /^(localhost|127\.)/.test(location.hostname)) { window.dHit=function(){}; return; }
   function send(body){
     try{
       var s=JSON.stringify(body);
