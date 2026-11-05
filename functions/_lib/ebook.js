@@ -18,6 +18,30 @@ export const PRODUCTS = {
     files: { pdf: { name: 'japanese-3000.pdf', download: '3000-Japanese-Words-JLPT-Thai.pdf', type: 'application/pdf' },
              epub: { name: 'japanese-3000.epub', download: '3000-Japanese-Words-JLPT-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
+  },
+  'spanish-3000': {
+    id: 'spanish-3000', page: '/ebook-spanish',
+    title: '3,000 คำศัพท์สเปน A1–C2',
+    price: 14900,
+    files: { pdf: { name: 'spanish-3000.pdf', download: '3000-Spanish-Words-Thai.pdf', type: 'application/pdf' },
+             epub: { name: 'spanish-3000.epub', download: '3000-Spanish-Words-Thai.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
+  },
+  'french-3000': {
+    id: 'french-3000', page: '/ebook-french',
+    title: '3,000 คำศัพท์ฝรั่งเศส A1–C2',
+    price: 14900,
+    files: { pdf: { name: 'french-3000.pdf', download: '3000-French-Words-Thai.pdf', type: 'application/pdf' },
+             epub: { name: 'french-3000.epub', download: '3000-French-Words-Thai.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
+  },
+  'korean-3000': {
+    id: 'korean-3000', page: '/ebook-korean',
+    title: '3,000 คำศัพท์เกาหลี เตรียมสอบ TOPIK',
+    price: 14900,
+    files: { pdf: { name: 'korean-3000.pdf', download: '3000-Korean-Words-TOPIK-Thai.pdf', type: 'application/pdf' },
+             epub: { name: 'korean-3000.epub', download: '3000-Korean-Words-TOPIK-Thai.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
   }
 };
 export const PRODUCT = PRODUCTS['english-2562'];
