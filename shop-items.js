@@ -18,4 +18,7 @@ window.SHOP_ITEMS = [
   {id:'name-titles-stamp', title:'ตรายางชื่อ-นามสกุล สั่งทำได้', note:'ประทับ นาย นาง นางสาว พร้อมชื่อ-สกุล บนเอกสารและแบบฟอร์ม', url:'https://s.shopee.co.th/LoUY7xLPU', tags:['post:origin-of-thai-name-titles']},
   {id:'thai-space-proverbs', title:'2,000 สำนวน สุภาษิต คำพังเพยไทย คำที่มักเขียนผิด', note:'เขียนไทยติดกันอยู่แล้ว ยิ่งต้องสะกดให้ถูก รวมคำที่คนไทยมักเขียนผิด', url:'https://s.shopee.co.th/2qVqqImsyA', tags:['post:thai-no-spaces-between-words','dictionary']},
   {id:'thai-space-rbs-dict', title:'พจนานุกรมสร้างชาติ (มติชน)', note:'เบื้องหลังพจนานุกรมฉบับราชบัณฑิตยสถาน หน่วยงานเดียวกับที่วางหลักการเว้นวรรค', url:'https://s.shopee.co.th/5q9SPriz44', tags:['post:thai-no-spaces-between-words','dictionary']},
+  {id:'tone-marks-sheet', title:'แบบฝึกหัดการผันวรรณยุกต์ภาษาไทย', note:'ฝึกผัน ป่า ป้า ป๊า ป๋า ด้วยไม้ทั้งสี่ที่บทความเล่าที่มา ขายแล้วกว่า 300 ชุด', url:'https://s.shopee.co.th/8VAGsG53Fy', tags:['post:origin-of-thai-tone-marks']},
+  {id:'tone-marks-p456', title:'สรุปหลักภาษาไทย ประถม 4-5-6 พร้อมข้อสอบ', note:'ทวนหลักภาษา อักษรสูง กลาง ต่ำ และการผันเสียงที่ใช้คู่กับวรรณยุกต์', url:'https://s.shopee.co.th/3g517Lovtt', tags:['post:origin-of-thai-tone-marks']},
+  {id:'tone-marks-note', title:'NOTE สรุปหลักภาษาไทย ม.ต้น', note:'สรุปไตรยางศ์และวรรณยุกต์แบบเข้มข้นสำหรับเตรียมสอบ', url:'https://s.shopee.co.th/7fb9skj0lf', tags:['post:origin-of-thai-tone-marks']},
 ];
