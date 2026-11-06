@@ -21,4 +21,7 @@ window.SHOP_ITEMS = [
   {id:'tone-marks-sheet', title:'แบบฝึกหัดการผันวรรณยุกต์ภาษาไทย', note:'ฝึกผัน ป่า ป้า ป๊า ป๋า ด้วยไม้ทั้งสี่ที่บทความเล่าที่มา ขายแล้วกว่า 300 ชุด', url:'https://s.shopee.co.th/8VAGsG53Fy', tags:['post:origin-of-thai-tone-marks']},
   {id:'tone-marks-p456', title:'สรุปหลักภาษาไทย ประถม 4-5-6 พร้อมข้อสอบ', note:'ทวนหลักภาษา อักษรสูง กลาง ต่ำ และการผันเสียงที่ใช้คู่กับวรรณยุกต์', url:'https://s.shopee.co.th/3g517Lovtt', tags:['post:origin-of-thai-tone-marks']},
   {id:'tone-marks-note', title:'NOTE สรุปหลักภาษาไทย ม.ต้น', note:'สรุปไตรยางศ์และวรรณยุกต์แบบเข้มข้นสำหรับเตรียมสอบ', url:'https://s.shopee.co.th/7fb9skj0lf', tags:['post:origin-of-thai-tone-marks']},
+  {id:'numerals-clock', title:'นาฬิกาแขวนผนัง 12 นิ้ว หน้าปัดเลขไทย', note:'เห็นรูปเลข ๑ ถึง ๑๒ ที่บทความเล่าว่าเดินทางมาจากเลขเขมรทุกครั้งที่ดูเวลา ขายแล้วกว่า 900 เรือน', url:'https://s.shopee.co.th/AKbwRjxG4r', tags:['post:origin-of-thai-numerals']},
+  {id:'numerals-book', title:'หนังสือเรียนรู้ตัวเลข เลขไทย เลขอารบิก', note:'ฝึกอ่านตัวเลขสองชุดที่เราสลับใช้ทุกวัน ขายแล้วกว่า 2,000 เล่ม', url:'https://s.shopee.co.th/30pLiJG7ve', tags:['post:origin-of-thai-numerals']},
+  {id:'numerals-tracing', title:'แบบฝึกหัดคัดตัวเลข เลขไทย-อารบิก', note:'คัดลายมือเลขไทยตัวโค้งมนแบบบนการ์ดงานแต่งที่บทความยกตัวอย่าง', url:'https://s.shopee.co.th/1gJy7sohfp', tags:['post:origin-of-thai-numerals']},
 ];
