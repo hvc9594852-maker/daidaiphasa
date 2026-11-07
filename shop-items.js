@@ -24,4 +24,6 @@ window.SHOP_ITEMS = [
   {id:'numerals-clock', title:'นาฬิกาแขวนผนัง 12 นิ้ว หน้าปัดเลขไทย', note:'เห็นรูปเลข ๑ ถึง ๑๒ ที่บทความเล่าว่าเดินทางมาจากเลขเขมรทุกครั้งที่ดูเวลา ขายแล้วกว่า 900 เรือน', url:'https://s.shopee.co.th/AKbwRjxG4r', tags:['post:origin-of-thai-numerals']},
   {id:'numerals-book', title:'หนังสือเรียนรู้ตัวเลข เลขไทย เลขอารบิก', note:'ฝึกอ่านตัวเลขสองชุดที่เราสลับใช้ทุกวัน ขายแล้วกว่า 2,000 เล่ม', url:'https://s.shopee.co.th/30pLiJG7ve', tags:['post:origin-of-thai-numerals']},
   {id:'numerals-tracing', title:'แบบฝึกหัดคัดตัวเลข เลขไทย-อารบิก', note:'คัดลายมือเลขไทยตัวโค้งมนแบบบนการ์ดงานแต่งที่บทความยกตัวอย่าง', url:'https://s.shopee.co.th/1gJy7sohfp', tags:['post:origin-of-thai-numerals']},
+  {id:'polite-animal-p3', title:'เก่งภาษาไทย ป.3 สรุปหลักพร้อมแบบฝึก', note:'บทเรียนคำสุภาพ ป.3 ที่สอนคู่ หมู-สุกร วัว-โค อยู่ในวิชานี้ ขายแล้วกว่า 200 เล่ม', url:'https://s.shopee.co.th/2Vt6iEXdYA', tags:['post:polite-animal-names']},
+  {id:'polite-animal-royal', title:'สื่อการสอนเรื่องคำราชาศัพท์', note:'ต่อยอดจากคำสุภาพไปถึงราชาศัพท์ ซึ่งก็ยืมจากบาลี สันสกฤต และเขมรเช่นกัน', url:'https://s.shopee.co.th/1BNj7pn3AC', tags:['post:polite-animal-names']},
 ];
