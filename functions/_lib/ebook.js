@@ -6,7 +6,7 @@ export const PRODUCTS = {
   'english-2562': {
     id: 'english-2562', page: '/ebook-english',
     title: '2,562 คำศัพท์อังกฤษที่ใช้บ่อย',
-    price: 4500,                        // satang (฿45.00)
+    price: 4900,                        // satang (฿49.00)
     files: { pdf: { name: 'english-2562.pdf', download: '2562-English-Words-Thai.pdf', type: 'application/pdf' },
              epub: { name: 'english-2562.epub', download: '2562-English-Words-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
@@ -14,7 +14,7 @@ export const PRODUCTS = {
   'japanese-3000': {
     id: 'japanese-3000', page: '/ebook-japanese',
     title: '3,000 คำศัพท์ญี่ปุ่น JLPT N5–N1',
-    price: 4500,
+    price: 4900,
     files: { pdf: { name: 'japanese-3000.pdf', download: '3000-Japanese-Words-JLPT-Thai.pdf', type: 'application/pdf' },
              epub: { name: 'japanese-3000.epub', download: '3000-Japanese-Words-JLPT-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
@@ -22,7 +22,7 @@ export const PRODUCTS = {
   'spanish-3000': {
     id: 'spanish-3000', page: '/ebook-spanish',
     title: '3,000 คำศัพท์สเปน A1–C2',
-    price: 4500,
+    price: 4900,
     files: { pdf: { name: 'spanish-3000.pdf', download: '3000-Spanish-Words-Thai.pdf', type: 'application/pdf' },
              epub: { name: 'spanish-3000.epub', download: '3000-Spanish-Words-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
@@ -30,7 +30,7 @@ export const PRODUCTS = {
   'korean-3000': {
     id: 'korean-3000', page: '/ebook-korean',
     title: '3,000 คำศัพท์เกาหลี เตรียมสอบ TOPIK',
-    price: 4500,
+    price: 4900,
     files: { pdf: { name: 'korean-3000.pdf', download: '3000-Korean-Words-TOPIK-Thai.pdf', type: 'application/pdf' },
              epub: { name: 'korean-3000.epub', download: '3000-Korean-Words-TOPIK-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
@@ -38,7 +38,7 @@ export const PRODUCTS = {
   'sign-language': {
     id: 'sign-language', page: '/ebook-sign-language',
     title: 'ภาษามือ อ่านให้ถูก',
-    price: 4500,
+    price: 4900,
     files: { pdf: { name: 'sign-language.pdf', download: 'Sign-Language-Thai.pdf', type: 'application/pdf' },
              epub: { name: 'sign-language.epub', download: 'Sign-Language-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
@@ -46,7 +46,7 @@ export const PRODUCTS = {
   'braille': {
     id: 'braille', page: '/ebook-braille',
     title: 'อักษรเบรลล์ อ่านด้วยนิ้ว',
-    price: 4500,
+    price: 4900,
     files: { pdf: { name: 'braille.pdf', download: 'Braille-Thai.pdf', type: 'application/pdf' },
              epub: { name: 'braille.epub', download: 'Braille-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
@@ -54,7 +54,7 @@ export const PRODUCTS = {
   'morse-code': {
     id: 'morse-code', page: '/ebook-morse-code',
     title: 'รหัสมอร์ส จุดและขีด',
-    price: 4500,
+    price: 4900,
     files: { pdf: { name: 'morse-code.pdf', download: 'Morse-Code-Thai.pdf', type: 'application/pdf' },
              epub: { name: 'morse-code.epub', download: 'Morse-Code-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
@@ -62,7 +62,7 @@ export const PRODUCTS = {
   'phasa-lu': {
     id: 'phasa-lu', page: '/ebook-phasa-lu',
     title: 'ภาษาลู ซักรุก ละนุ',
-    price: 4500,
+    price: 4900,
     files: { pdf: { name: 'phasa-lu.pdf', download: 'Phasa-Lu-Thai.pdf', type: 'application/pdf' },
              epub: { name: 'phasa-lu.epub', download: 'Phasa-Lu-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
