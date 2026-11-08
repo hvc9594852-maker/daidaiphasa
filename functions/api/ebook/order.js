@@ -12,7 +12,11 @@ function view(o, env, pc) {
     out.payeeName = pc ? pc.name || '' : '';
     out.bank = pc ? pc.bank || '' : '';
   }
-  if (o.status === 'approved') out.files = Object.keys(P.files);
+  if (o.status === 'approved') {
+    out.files = Object.keys(P.files);
+    if (P.bundle) out.items = P.bundle.map(id => ({ id, title: PRODUCTS[id].title, files: Object.keys(PRODUCTS[id].files) }));
+  }
+  if (P.bundle) out.bundle = P.bundle;
   if (o.status === 'rejected') out.note = o.note || '';
   return out;
 }
@@ -33,7 +37,7 @@ export async function onRequestPost({ request, env }) {
   const w = await who(request);
   const recent = await DB.prepare(`SELECT COUNT(*) AS c FROM ebook_orders WHERE who=?1 AND created_at > datetime('now','-1 hour')`).bind(w).first();
   if (recent && recent.c >= 6) return json(429, { error: 'สร้างคำสั่งซื้อบ่อยเกินไป ลองใหม่ภายหลัง' });
-  // unique amount among open orders in the last 3 days: ฿149.01 – ฿149.99
+  // unique amount among open orders in the last 3 days: price +0.01 – +0.99
   const open = await DB.prepare(`SELECT amount FROM ebook_orders WHERE status IN ('pending','review') AND created_at > datetime('now','-3 days')`).all();
   const used = new Set((open.results || []).map(r => r.amount));
   let amount = 0;

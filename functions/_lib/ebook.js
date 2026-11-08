@@ -6,7 +6,7 @@ export const PRODUCTS = {
   'english-2562': {
     id: 'english-2562', page: '/ebook-english',
     title: '2,562 คำศัพท์อังกฤษที่ใช้บ่อย',
-    price: 14900,                       // satang (฿149.00)
+    price: 4500,                        // satang (฿45.00)
     files: { pdf: { name: 'english-2562.pdf', download: '2562-English-Words-Thai.pdf', type: 'application/pdf' },
              epub: { name: 'english-2562.epub', download: '2562-English-Words-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
@@ -14,7 +14,7 @@ export const PRODUCTS = {
   'japanese-3000': {
     id: 'japanese-3000', page: '/ebook-japanese',
     title: '3,000 คำศัพท์ญี่ปุ่น JLPT N5–N1',
-    price: 14900,
+    price: 4500,
     files: { pdf: { name: 'japanese-3000.pdf', download: '3000-Japanese-Words-JLPT-Thai.pdf', type: 'application/pdf' },
              epub: { name: 'japanese-3000.epub', download: '3000-Japanese-Words-JLPT-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
@@ -22,7 +22,7 @@ export const PRODUCTS = {
   'spanish-3000': {
     id: 'spanish-3000', page: '/ebook-spanish',
     title: '3,000 คำศัพท์สเปน A1–C2',
-    price: 14900,
+    price: 4500,
     files: { pdf: { name: 'spanish-3000.pdf', download: '3000-Spanish-Words-Thai.pdf', type: 'application/pdf' },
              epub: { name: 'spanish-3000.epub', download: '3000-Spanish-Words-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
@@ -30,14 +30,67 @@ export const PRODUCTS = {
   'korean-3000': {
     id: 'korean-3000', page: '/ebook-korean',
     title: '3,000 คำศัพท์เกาหลี เตรียมสอบ TOPIK',
-    price: 14900,
+    price: 4500,
     files: { pdf: { name: 'korean-3000.pdf', download: '3000-Korean-Words-TOPIK-Thai.pdf', type: 'application/pdf' },
              epub: { name: 'korean-3000.epub', download: '3000-Korean-Words-TOPIK-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
+  },
+  'sign-language': {
+    id: 'sign-language', page: '/ebook-sign-language',
+    title: 'ภาษามือ อ่านให้ถูก',
+    price: 4500,
+    files: { pdf: { name: 'sign-language.pdf', download: 'Sign-Language-Thai.pdf', type: 'application/pdf' },
+             epub: { name: 'sign-language.epub', download: 'Sign-Language-Thai.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
+  },
+  'braille': {
+    id: 'braille', page: '/ebook-braille',
+    title: 'อักษรเบรลล์ อ่านด้วยนิ้ว',
+    price: 4500,
+    files: { pdf: { name: 'braille.pdf', download: 'Braille-Thai.pdf', type: 'application/pdf' },
+             epub: { name: 'braille.epub', download: 'Braille-Thai.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
+  },
+  'morse-code': {
+    id: 'morse-code', page: '/ebook-morse-code',
+    title: 'รหัสมอร์ส จุดและขีด',
+    price: 4500,
+    files: { pdf: { name: 'morse-code.pdf', download: 'Morse-Code-Thai.pdf', type: 'application/pdf' },
+             epub: { name: 'morse-code.epub', download: 'Morse-Code-Thai.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
+  },
+  'phasa-lu': {
+    id: 'phasa-lu', page: '/ebook-phasa-lu',
+    title: 'ภาษาลู ซักรุก ละนุ',
+    price: 4500,
+    files: { pdf: { name: 'phasa-lu.pdf', download: 'Phasa-Lu-Thai.pdf', type: 'application/pdf' },
+             epub: { name: 'phasa-lu.epub', download: 'Phasa-Lu-Thai.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
+  },
+  // ---- bundles: one order unlocks every book inside (download with f=<bookId>.pdf|epub) ----
+  'pack-lang': {
+    id: 'pack-lang', page: '/ebook-pack', title: 'แพ็คภาษา (อังกฤษ ญี่ปุ่น สเปน เกาหลี)', price: 13900, files: {},
+    bundle: ['english-2562', 'japanese-3000', 'spanish-3000', 'korean-3000'], maxDownloads: 120
+  },
+  'pack-comm': {
+    id: 'pack-comm', page: '/ebook-pack', title: 'แพ็คภาษาสื่อสาร (ภาษามือ เบรลล์ มอร์ส ภาษาลู)', price: 13900, files: {},
+    bundle: ['sign-language', 'braille', 'morse-code', 'phasa-lu'], maxDownloads: 120
+  },
+  'pack-all': {
+    id: 'pack-all', page: '/ebook-pack', title: 'แพ็ครวมทุกเล่ม (8 เล่ม)', price: 24900, files: {},
+    bundle: ['english-2562', 'japanese-3000', 'spanish-3000', 'korean-3000', 'sign-language', 'braille', 'morse-code', 'phasa-lu'], maxDownloads: 240
   }
 };
 export const PRODUCT = PRODUCTS['english-2562'];
 export function product(id) { return PRODUCTS[id] || PRODUCT; }
+// which file an order may download: f = 'pdf'|'epub' for a single book, '<bookId>.pdf|epub' for a bundle
+export function orderFile(P, fk) {
+  const m = /^(?:([a-z0-9-]+)\.)?(pdf|epub)$/.exec(String(fk || ''));
+  if (!m) return null;
+  if (P.bundle) { if (!m[1] || !P.bundle.includes(m[1])) return null; return PRODUCTS[m[1]].files[m[2]] || null; }
+  if (m[1] && m[1] !== P.id) return null;
+  return P.files[m[2]] || null;
+}
 
 let ready = null;
 export async function edb(env) {

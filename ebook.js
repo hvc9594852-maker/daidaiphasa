@@ -3,7 +3,19 @@
   var $ = function(id){ return document.getElementById(id); };
   var PROD = (document.getElementById('buy') && document.getElementById('buy').dataset.product) || 'english-2562';
   var PAGE = location.pathname.replace(/\.html$/, '') || '/ebook';
-  var KEY = PROD === 'english-2562' ? 'ebook-order' : 'ebook-order-' + PROD, order = null, slipData = '', pollT = 0;
+  var PACK = !!document.querySelector('[data-pick]');
+  var KEY = PACK ? 'ebook-order-pack' : (PROD === 'english-2562' ? 'ebook-order' : 'ebook-order-' + PROD), order = null, slipData = '', pollT = 0;
+  // bundle page: pick a pack before ordering
+  function pick(id){
+    var b = document.querySelector('[data-pick="' + id + '"]'); if (!b) return;
+    PROD = id; $('buy').dataset.product = id;
+    document.querySelectorAll('[data-pick]').forEach(function(x){ var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+    if ($('picked')) $('picked').textContent = b.dataset.title + ' · ' + b.dataset.price;
+  }
+  if (PACK){
+    document.addEventListener('click', function(e){ var b = e.target.closest('[data-pick]'); if (!b) return; e.preventDefault(); if (!order) pick(b.dataset.pick); if (b.dataset.go) $('buy').scrollIntoView({behavior:'smooth'}); });
+    var q0 = new URLSearchParams(location.search).get('p'); pick(q0 && document.querySelector('[data-pick="' + q0 + '"]') ? q0 : PROD);
+  }
 
   function save(o){ try{ localStorage.setItem(KEY, JSON.stringify({id:o.id, k:o.k})); }catch(e){} }
   function load(){
@@ -26,7 +38,8 @@
   }
 
   function show(o){
-    if (o.product && o.product !== PROD && o.page && order && order.k){ location.replace(o.page + '?o=' + encodeURIComponent(order.id) + '&k=' + encodeURIComponent(order.k) + '#buy'); return; }
+    if (PACK && o.product && o.page === PAGE && o.product !== PROD) pick(o.product);
+    if (o.product && o.product !== PROD && o.page && o.page !== PAGE && order && order.k){ location.replace(o.page + '?o=' + encodeURIComponent(order.id) + '&k=' + encodeURIComponent(order.k) + '#buy'); return; }
     order = Object.assign(order || {}, o);
     clearTimeout(pollT);
     if (o.status === 'pending'){
@@ -52,7 +65,15 @@
       step(3); pollT = setTimeout(refresh, 20000);
     } else if (o.status === 'approved'){
       var base = '/api/ebook/download?id=' + encodeURIComponent(order.id) + '&k=' + encodeURIComponent(order.k) + '&f=';
-      $('dpdf').href = base + 'pdf'; $('depub').href = base + 'epub';
+      if (o.items && o.items.length){
+        var row = $('dpdf').parentNode, box = $('dlist');
+        if (!box){ box = document.createElement('div'); box.id = 'dlist'; box.className = 'dlist'; row.parentNode.insertBefore(box, row); }
+        row.hidden = true;
+        box.innerHTML = o.items.map(function(it){
+          return '<div class="dl-item"><b>' + it.title.replace(/[<&]/g, '') + '</b><span>' + it.files.map(function(f){
+            return '<a class="btn ' + (f === 'pdf' ? 'btn-go' : 'btn-ink') + '" href="' + base + encodeURIComponent(it.id + '.' + f) + '">' + f.toUpperCase() + '</a>'; }).join('') + '</span></div>';
+        }).join('');
+      } else { $('dpdf').href = base + 'pdf'; $('depub').href = base + 'epub'; }
       $('dlleft').textContent = 'ดาวน์โหลดไปแล้ว ' + (o.downloads||0) + ' จาก ' + (o.maxDownloads||30) + ' ครั้ง';
       step(4);
     } else if (o.status === 'rejected'){
@@ -113,7 +134,7 @@
   });
   $('copyAmt').addEventListener('click', function(){ if (!order || !order.amount) return; var t = (order.amount/100).toFixed(2); try{ navigator.clipboard.writeText(t); this.textContent = 'คัดลอกแล้ว'; var me = this; setTimeout(function(){ me.textContent = 'คัดลอกยอด'; }, 1500); }catch(e){} });
   $('again').addEventListener('click', function(){ order = null; try{ localStorage.removeItem(KEY); }catch(e){} history.replaceState(null,'',PAGE + '#buy'); step(1); });
-  document.addEventListener('click', function(e){ var a = e.target.closest('#dpdf,#depub'); if (a) setTimeout(refresh, 2500); });
+  document.addEventListener('click', function(e){ var a = e.target.closest('#dpdf,#depub,#dlist a'); if (a) setTimeout(refresh, 2500); });
 
   order = load();
   if (order) refresh(); else step(1);
