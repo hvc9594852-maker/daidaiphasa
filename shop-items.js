@@ -26,4 +26,6 @@ window.SHOP_ITEMS = [
   {id:'numerals-tracing', title:'แบบฝึกหัดคัดตัวเลข เลขไทย-อารบิก', note:'คัดลายมือเลขไทยตัวโค้งมนแบบบนการ์ดงานแต่งที่บทความยกตัวอย่าง', url:'https://s.shopee.co.th/1gJy7sohfp', tags:['post:origin-of-thai-numerals']},
   {id:'polite-animal-p3', title:'เก่งภาษาไทย ป.3 สรุปหลักพร้อมแบบฝึก', note:'บทเรียนคำสุภาพ ป.3 ที่สอนคู่ หมู-สุกร วัว-โค อยู่ในวิชานี้ ขายแล้วกว่า 200 เล่ม', url:'https://s.shopee.co.th/2Vt6iEXdYA', tags:['post:polite-animal-names']},
   {id:'polite-animal-royal', title:'สื่อการสอนเรื่องคำราชาศัพท์', note:'ต่อยอดจากคำสุภาพไปถึงราชาศัพท์ ซึ่งก็ยืมจากบาลี สันสกฤต และเขมรเช่นกัน', url:'https://s.shopee.co.th/1BNj7pn3AC', tags:['post:polite-animal-names']},
+  {id:'typhoon-weather-station', title:'สถานีวัดอากาศดิจิทัล วัดลม ฝน และความชื้น', note:'วัดความเร็วลมได้เอง ลองเทียบกับเกณฑ์ 34 นอตที่พายุเริ่มได้ชื่อ ขายแล้วกว่า 600 ชิ้น', url:'https://s.shopee.co.th/906dyEfSHu', tags:['post:typhoon-names-from-thailand']},
+  {id:'typhoon-asia-map', title:'โปสเตอร์แผนที่ทวีปเอเชีย หุ้มพลาสติก', note:'ไล่ดูที่ตั้งของ 14 สมาชิกที่ช่วยกันตั้งชื่อพายุ และเส้นทางพายุในทะเลจีนใต้', url:'https://s.shopee.co.th/9AQ4AWBJsy', tags:['post:typhoon-names-from-thailand']},
 ];
