@@ -28,4 +28,6 @@ window.SHOP_ITEMS = [
   {id:'polite-animal-royal', title:'สื่อการสอนเรื่องคำราชาศัพท์', note:'ต่อยอดจากคำสุภาพไปถึงราชาศัพท์ ซึ่งก็ยืมจากบาลี สันสกฤต และเขมรเช่นกัน', url:'https://s.shopee.co.th/1BNj7pn3AC', tags:['post:polite-animal-names']},
   {id:'typhoon-weather-station', title:'สถานีวัดอากาศดิจิทัล วัดลม ฝน และความชื้น', note:'วัดความเร็วลมได้เอง ลองเทียบกับเกณฑ์ 34 นอตที่พายุเริ่มได้ชื่อ ขายแล้วกว่า 600 ชิ้น', url:'https://s.shopee.co.th/906dyEfSHu', tags:['post:typhoon-names-from-thailand']},
   {id:'typhoon-asia-map', title:'โปสเตอร์แผนที่ทวีปเอเชีย หุ้มพลาสติก', note:'ไล่ดูที่ตั้งของ 14 สมาชิกที่ช่วยกันตั้งชื่อพายุ และเส้นทางพายุในทะเลจีนใต้', url:'https://s.shopee.co.th/9AQ4AWBJsy', tags:['post:typhoon-names-from-thailand']},
+  {id:'eng-spelling-course', title:'หนังสือฝึกสะกดคำภาษาอังกฤษ พร้อมคอร์สสอน', note:'ตัวสะกดอังกฤษไม่ตรงเสียงอย่างที่บทความเล่า เล่มนี้ฝึกจำแบบเป็นระบบ ขายแล้วกว่า 1,000 เล่ม', url:'https://s.shopee.co.th/3qOaYU7rz0', tags:['post:why-english-spelling-is-weird','english','vocab']},
+  {id:'eng-spelling-phonics', title:'ชุดหนังสือ Phonics for kids Level 1-2-3', note:'โฟนิกส์สอนกฎเสียงกับตัวอักษร และข้อยกเว้นที่เกิดจากประวัติศาสตร์ภาษา ขายแล้วกว่า 300 ชุด', url:'https://s.shopee.co.th/1W0fmGSKto', tags:['post:why-english-spelling-is-weird','english']},
 ];
