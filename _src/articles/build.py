@@ -53,8 +53,6 @@ FOOT = '''<footer class="bot"><div class="in">
 </div></footer>
 <script src="/bgwords.js?v=4" defer></script>
 <script src="/hit.js?v=3" defer></script>
-<script src="/shop-items.js?v=2" defer></script>
-<script src="/shop.js?v=3" defer></script>
 </body>
 </html>
 '''
@@ -321,7 +319,7 @@ lu_steps = (
  '<div><div style="font-family:var(--sans);font-size:13px;letter-spacing:.1em;color:var(--sub)">ต่อกัน</div><div style="font-size:54px;font-weight:700;line-height:1.5">ลากมูก</div></div>'
  '</div>')
 A5 = dict(slug='phasa-lu', cat='ภาษาลู', tool='/pasa-lu', tool_name='แปลงภาษาลู',
-title='ภาษาลูคืออะไร พูดยังไง ถอดรหัสทีละพยางค์พร้อมตัวอย่าง',
+title='ภาษาลูคืออะไร วิธีพูดภาษาลูทีละขั้น พร้อมตัวอย่างคำและตัวแปลงภาษาลู',
 h1='ซักรุก ละนุ',
 dek='ภาษาลับที่เริ่มจากวงสนทนาของกะเทยเมื่อราวสามสิบปีก่อน กลายเป็นภาษาที่วัยรุ่นทั้งประเทศหยิบมาเล่น เบื้องหลังมันคือกติกาสลับเสียงข้อเดียว',
 desc='ภาษาลูคือภาษาลับที่สลับเสียงในพยางค์ เช่น รัก เป็น ซักรุก อธิบายหลักการพูดภาษาลูทีละขั้น พร้อมตัวอย่างคำที่ใช้บ่อย ที่มา และข้อควรรู้ก่อนใช้',
@@ -398,7 +396,7 @@ body=f'''
 
 <h2>เบรลล์ที่พูดภาษาไทย</h2>
 <p>อักษรเบรลล์ไทยดัดแปลงโดยเจเนวีฟ คอลฟิลด์ หญิงตาบอดชาวอเมริกันที่รู้ทั้งเบรลล์อังกฤษและเบรลล์ญี่ปุ่น เธอก่อตั้งโรงเรียนสอนคนตาบอดกรุงเทพฯ ราวปี 2481–2482 (แหล่งข้อมูลระบุปีต่างกันเล็กน้อย) และเป็นผู้บุกเบิกการศึกษาสำหรับคนตาบอดในไทย</p>
-<p class="end">เบรลล์ไทยยืมพยัญชนะส่วนใหญ่มาจากระบบสากล สระเสียงสั้นห้าตัวหลักยืมจากเบรลล์ญี่ปุ่น แล้วสร้างสระเสียงยาวต่อจากนั้น สิ่งที่ต่างจากการเขียนภาษาไทยปกติคือสระทุกตัวเป็นช่องเต็มที่เขียนตามหลังพยัญชนะต้นเสมอ ไม่ว่าในตัวเขียนปกติจะอยู่ข้างหน้า ข้างบน หรือข้างล่าง วรรณยุกต์ก็มีช่องของตัวเอง ตอนนี้เครื่องมือของเรายังแปลงได้เฉพาะเบรลล์ภาษาอังกฤษ ส่วนเบรลล์ไทยเรากำลังทำอยู่</p>
+<p class="end">เบรลล์ไทยยืมพยัญชนะส่วนใหญ่มาจากระบบสากล สระเสียงสั้นห้าตัวหลักยืมจากเบรลล์ญี่ปุ่น แล้วสร้างสระเสียงยาวต่อจากนั้น สิ่งที่ต่างจากการเขียนภาษาไทยปกติคือสระทุกตัวเป็นช่องเต็มที่เขียนตามหลังพยัญชนะต้นเสมอ ไม่ว่าในตัวเขียนปกติจะอยู่ข้างหน้า ข้างบน หรือข้างล่าง วรรณยุกต์ก็มีช่องของตัวเอง เครื่องมือแปลงอักษรเบรลล์ของเราแปลงได้ทั้งเบรลล์ภาษาอังกฤษและเบรลล์ไทย และแปลงจากเบรลล์กลับเป็นตัวหนังสือได้ด้วย</p>
 ''',
 sources=[('Wikipedia: Thai and Lao Braille', 'https://en.wikipedia.org/wiki/Thai_and_Lao_Braille'),
          ('Wikipedia: Genevieve Caulfield', 'https://en.wikipedia.org/wiki/Genevieve_Caulfield'),
@@ -424,11 +422,50 @@ _slugs = [a['slug'] for a in STORIES + GUIDES + POSTS]
 assert len(_slugs) == len(set(_slugs)), 'duplicate slug'
 ARTICLES = POSTS + STORIES + GUIDES
 
+
+# hand-picked related reads (topic links), shown before the rotating "อ่านเรื่องอื่น" cards
+RELATED = {
+ 'sign-language-not-universal': ['thai-fingerspelling-chart','where-to-learn-thai-sign-language','braille-alphabet'],
+ 'thai-fingerspelling-chart': ['sign-language-not-universal','where-to-learn-thai-sign-language','origin-of-thai-tone-marks'],
+ 'where-to-learn-thai-sign-language': ['thai-fingerspelling-chart','sign-language-not-universal','braille-alphabet'],
+ 'why-english-spelling-is-weird': ['ok-word-origin','where-to-learn-english','thai-name-in-english'],
+ 'ok-word-origin': ['why-english-spelling-is-weird','fan-word-origin','emoji-origin'],
+ 'fan-word-origin': ['ok-word-origin','farang-word-origin','origin-of-sawasdee'],
+ 'emoji-origin': ['how-the-world-types-laughter','ok-word-origin','japanese-three-scripts'],
+ 'how-the-world-types-laughter': ['emoji-origin','fix-wrong-keyboard-language','hangul-origin'],
+ 'origin-of-sawasdee': ['origin-of-thai-name-titles','fan-word-origin','farang-word-origin'],
+ 'origin-of-thai-name-titles': ['origin-of-sawasdee','thai-name-in-english','day-names-planets'],
+ 'day-names-planets': ['origin-of-thai-name-titles','typhoon-names-from-thailand','origin-of-thai-numerals'],
+ 'typhoon-names-from-thailand': ['day-names-planets','polite-animal-names','origin-of-thai-name-titles'],
+ 'thai-no-spaces-between-words': ['japanese-three-scripts','origin-of-thai-tone-marks','mai-yamok'],
+ 'japanese-three-scripts': ['thai-no-spaces-between-words','hangul-origin','where-to-learn-japanese'],
+ 'hangul-origin': ['japanese-three-scripts','where-to-learn-korean','how-the-world-types-laughter'],
+ 'origin-of-thai-tone-marks': ['mai-yamok','kho-khuat-kho-khon','thai-no-spaces-between-words'],
+ 'origin-of-thai-numerals': ['mai-yamok','day-names-planets','origin-of-thai-tone-marks'],
+ 'mai-yamok': ['origin-of-thai-numerals','origin-of-thai-tone-marks','thai-no-spaces-between-words'],
+ 'kho-khuat-kho-khon': ['origin-of-thai-tone-marks','national-dictionaries','mai-yamok'],
+ 'polite-animal-names': ['thai-words-from-portuguese','typhoon-names-from-thailand','farang-word-origin'],
+ 'thai-words-from-portuguese': ['farang-word-origin','polite-animal-names','origin-of-sawasdee'],
+ 'farang-word-origin': ['thai-words-from-portuguese','fan-word-origin','origin-of-sawasdee'],
+ 'national-dictionaries': ['official-dictionaries-online','kho-khuat-kho-khon','forgetting-curve-vocabulary'],
+ 'official-dictionaries-online': ['national-dictionaries','forgetting-curve-vocabulary','why-english-spelling-is-weird'],
+ 'forgetting-curve-vocabulary': ['official-dictionaries-online','where-to-learn-english','where-to-learn-japanese'],
+ 'fix-wrong-keyboard-language': ['how-the-world-types-laughter','thai-no-spaces-between-words','thai-name-in-english'],
+ 'thai-name-in-english': ['origin-of-thai-name-titles','fix-wrong-keyboard-language','why-english-spelling-is-weird'],
+ 'morse-code-chart': ['braille-alphabet','emoji-origin','sign-language-not-universal'],
+ 'braille-alphabet': ['morse-code-chart','thai-fingerspelling-chart','sign-language-not-universal'],
+ 'phasa-lu': ['how-the-world-types-laughter','origin-of-sawasdee','thai-no-spaces-between-words'],
+}
+
 def text_len(h): return len(re.sub(r'<[^>]+>', '', re.sub(r'<svg.*?</svg>', '', h, flags=re.S)))
 
 def card(a, uid, tag='li'):
     return (f'<{tag}><a href="/{a["slug"]}"><div class="pic">{cover(a["slug"], uid)}</div>'
             f'<span class="cat">{a["cat"]}</span><h3>{a["h1"]}</h3><p>{a["card"]}</p></a></{tag}>')
+
+def faq_html(a):
+    if not a.get('faq'): return ''
+    return '<section class="story faq"><h2>คำถามที่พบบ่อย</h2>' + ''.join(f'<h3>{q}</h3><p>{ans}</p>' for q, ans in a['faq']) + '</section>'
 
 def build_article(a):
     path = '/' + a['slug']
@@ -440,7 +477,12 @@ def build_article(a):
           "publisher": {"@type": "Organization", "name": "ใดๆภาษา.com", "url": "https://daidaiphasa.com/"}}
     src = ''.join(f'<li><a href="{u}" rel="noopener">{html.escape(t)}</a></li>' for t, u in a['sources'])
     pool = GUIDES if a in GUIDES else (POSTS + STORIES)
-    i = pool.index(a); others = [pool[(i + k) % len(pool)] for k in (1, 2, 3)]
+    by = {x['slug']: x for x in ARTICLES}
+    others = [by[x] for x in RELATED.get(a['slug'], []) if x in by]
+    i = pool.index(a); k = 1
+    while len(others) < 6 and k < len(pool):
+        o = pool[(i + k) % len(pool)]; k += 1
+        if o is not a and o not in others: others.append(o)
     more = ''.join(card(o, f'r{n}') for n, o in enumerate(others))
     body = f'''<main>
 <article>
@@ -456,6 +498,7 @@ def build_article(a):
 <div class="story">
 {a['body']}
 </div>
+{faq_html(a)}
 <div class="tool"><a href="{a['tool']}"><span><small>ลองใช้เครื่องมือในเรื่องนี้</small><strong>{a['tool_name']}</strong></span><span class="go">→</span></a></div>
 <div class="refs"><h2>อ้างอิง</h2><ol>{src}</ol></div>
 </article>
@@ -468,7 +511,11 @@ def build_article(a):
         {"@type": "ListItem", "position": 3, "name": a['h1'], "item": "https://daidaiphasa.com" + path}]}
     ld["articleSection"] = a['cat']
     ld["keywords"] = a.get('keywords', a['cat'])
-    page = head(a['title'] + ' | ใดๆภาษา.com', a['desc'], path, [ld, crumbs]) + body + FOOT
+    lds = [ld, crumbs]
+    if a.get('faq'):
+        lds.append({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r'<[^>]+>', '', ans)}} for q, ans in a['faq']]})
+    page = head(a['title'] + ' | ใดๆภาษา.com', a['desc'], path, lds) + body + FOOT
     d = a.get('date_iso', DATE_ISO)
     extra = (f'<meta property="article:published_time" content="{d}T09:00:00+07:00">\n'
              f'<meta property="article:modified_time" content="{d}T09:00:00+07:00">\n'

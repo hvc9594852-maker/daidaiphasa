@@ -1,5 +1,7 @@
 /* ใดๆภาษา.com — แสดงสินค้าแนะนำจาก Shopee Affiliate (ข้อมูลอยู่ใน shop-items.js) */
 (function(){
+  // paused while the site is under AdSense review — set to false to show the Shopee box again
+  var SHOP_PAUSED=true; if(SHOP_PAUSED) return;
   var items=(window.SHOP_ITEMS||[]).filter(function(x){ return x && x.url && /^https:\/\/([a-z0-9-]+\.)*shopee\.co\.th\//i.test(x.url); });
   if(!items.length) return;
   var page=(location.pathname.replace(/\.html$/,'').replace(/\/+$/,'')||'/').toLowerCase();
