@@ -40,6 +40,7 @@ ld = {"@context": "https://schema.org", "@graph": [
    "featureList": ["Thai translator", "Thai romanization (RTGS)", "Braille translator", "Morse code translator with sound", "ASL fingerspelling", "World languages globe"]}]}
 h = re.sub(r'<script type="application/ld\+json">.*?</script>', '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + '</script>', h, 1, flags=re.S)
 h = h.replace('</head>', '<script>window.__UI="en";window.__EN_TOOLS=' + json.dumps(EN_TOOLS, ensure_ascii=False) + ';</script>\n</head>', 1)
+h = h.replace('<a href="/ebook" class="nav-ebook"', '<a href="/en/ebook" class="nav-ebook"', 1)
 os.makedirs(os.path.join(ROOT, 'en'), exist_ok=True)
 open(os.path.join(ROOT, 'en', 'index.html'), 'w', encoding='utf-8').write(h)
 print('en/index.html', len(h))

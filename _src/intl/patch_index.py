@@ -92,6 +92,7 @@ else:
 rep("    translateTree(document.body);\n    if (!$('countryView').hidden && CV.lang) paintLangName(CV.lang);\n",
     "    paintDeck(l);\n    translateTree(document.body);\n    if (!$('countryView').hidden && CV.lang) paintLangName(CV.lang);\n")
 
-rep('<a href="/ebook" class="nav-ebook"', '<a href="/ebook" class="nav-ebook th-only"')
+# nav-ebook stays visible (setUiLang points it to /en/ebook); only the Thai 'new' badge is Thai-only
+rep('ebook<span class="nav-ebook-new">ใหม่</span>', 'ebook<span class="nav-ebook-new th-only">ใหม่</span>')
 open(P, 'w', encoding='utf-8').write(s)
 print('patched')
