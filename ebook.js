@@ -1,10 +1,11 @@
 /* ใดๆภาษา.com — ebook checkout (PromptPay + slip, approved by the owner in /admin) */
 (function(){
   var $ = function(id){ return document.getElementById(id); };
+  var L = window.EBOOK_L || {}; function T(t){ return L[t] || t; }
   var PROD = (document.getElementById('buy') && document.getElementById('buy').dataset.product) || 'english-2562';
   var PAGE = location.pathname.replace(/\.html$/, '') || '/ebook';
   var PACK = !!document.querySelector('[data-pick]');
-  var KEY = PACK ? 'ebook-order-pack' : (PROD === 'english-2562' ? 'ebook-order' : 'ebook-order-' + PROD), order = null, slipData = '', pollT = 0;
+  var KEY = ($('buy') && $('buy').dataset.key) || (PACK ? 'ebook-order-pack' : (PROD === 'english-2562' ? 'ebook-order' : 'ebook-order-' + PROD)), order = null, slipData = '', pollT = 0;
   // bundle page: pick a pack before ordering
   function pick(id){
     var b = document.querySelector('[data-pick="' + id + '"]'); if (!b) return;
@@ -24,7 +25,7 @@
     try{ return JSON.parse(localStorage.getItem(KEY) || 'null'); }catch(e){ return null; }
   }
   function link(o){ return location.origin + PAGE + '?o=' + encodeURIComponent(o.id) + '&k=' + encodeURIComponent(o.k) + '#buy'; }
-  function baht(s){ return '฿' + (s/100).toFixed(2); }
+  function baht(s){ return T('฿') + (s/100).toFixed(2); }
   function track(k){ if (window.dHit) dHit('ev:ebook-' + (PROD === 'english-2562' ? '' : PROD + '-') + k); }
 
   function step(n){
@@ -45,19 +46,19 @@
     if (o.status === 'pending'){
       $('amt').textContent = baht(o.amount); $('amt2').textContent = baht(o.amount);
       if (o.payeeName){ $('payname').textContent = o.payeeName; $('payname2').textContent = o.payeeName; }
-      $('paybank').textContent = o.bank ? 'ธนาคาร' + o.bank.replace(/^ธนาคาร/, '') : '';
+      $('paybank').textContent = o.bank ? T('ธนาคาร') + o.bank.replace(/^ธนาคาร/, '') : '';
       $('amtOn').textContent = '';
       if (o.qr && window.qrcode){
         var q = qrcode(0, 'M'); q.addData(o.qr); q.make();
         $('qr').innerHTML = q.createSvgTag({cellSize:6, margin:1, scalable:true});
         $('amtOn').textContent = baht(o.amount);
-        $('typeamt').innerHTML = 'ยอด <b>' + baht(o.amount) + '</b> ใส่มาใน QR ให้แล้ว ตรวจให้ตรงก่อนกดโอน';
+        $('typeamt').innerHTML = T('ยอด <b>') + baht(o.amount) + T('</b> ใส่มาใน QR ให้แล้ว ตรวจให้ตรงก่อนกดโอน');
         try{ var c = document.createElement('canvas'), n = q.getModuleCount(), cs = 10, m = 4; c.width = c.height = (n + m*2) * cs;
           var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0,0,c.width,c.height); g.fillStyle = '#000';
           for (var r=0;r<n;r++) for (var cc=0;cc<n;cc++) if (q.isDark(r,cc)) g.fillRect((cc+m)*cs,(r+m)*cs,cs,cs);
           $('saveqr').href = c.toDataURL('image/png'); $('saveqr').hidden = false; }catch(e){}
       } else if (o.qrImage){
-        $('qr').innerHTML = '<img src="' + o.qrImage + '" alt="QR PromptPay ของร้าน">';
+        $('qr').innerHTML = '<img src="' + o.qrImage + T('" alt="QR PromptPay ของร้าน">');
         $('saveqr').href = o.qrImage; $('saveqr').hidden = false;
       }
       step(2);
@@ -74,10 +75,10 @@
             return '<a class="btn ' + (f === 'pdf' ? 'btn-go' : 'btn-ink') + '" href="' + base + encodeURIComponent(it.id + '.' + f) + '">' + f.toUpperCase() + '</a>'; }).join('') + '</span></div>';
         }).join('');
       } else { $('dpdf').href = base + 'pdf'; $('depub').href = base + 'epub'; }
-      $('dlleft').textContent = 'ดาวน์โหลดไปแล้ว ' + (o.downloads||0) + ' จาก ' + (o.maxDownloads||30) + ' ครั้ง';
+      $('dlleft').textContent = T('ดาวน์โหลดไปแล้ว ') + (o.downloads||0) + T(' จาก ') + (o.maxDownloads||30) + T(' ครั้ง');
       step(4);
     } else if (o.status === 'rejected'){
-      $('rej').textContent = o.note ? 'เหตุผล: ' + o.note : '';
+      $('rej').textContent = o.note ? T('เหตุผล: ') + o.note : '';
       step(5);
     }
   }
@@ -93,18 +94,18 @@
   $('s1').addEventListener('submit', function(e){
     e.preventDefault();
     var em = $('em').value.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){ $('e1').textContent = 'กรอกอีเมลให้ถูกต้อง'; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){ $('e1').textContent = T('กรอกอีเมลให้ถูกต้อง'); return; }
     $('e1').textContent = ''; $('b1').disabled = true;
     fetch('/api/ebook/order', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:em, name:$('nm').value.trim(), hp:$('hp').value, product:PROD})})
       .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }); })
       .then(function(x){
         $('b1').disabled = false;
-        if (!x.ok){ $('e1').textContent = x.j.error || 'สร้างคำสั่งซื้อไม่ได้ ลองใหม่อีกครั้ง'; return; }
+        if (!x.ok){ $('e1').textContent = T(x.j.error) || T('สร้างคำสั่งซื้อไม่ได้ ลองใหม่อีกครั้ง'); return; }
         order = {id:x.j.id, k:x.j.k}; save(order); track('order');
         history.replaceState(null, '', link(order).replace(location.origin, ''));
         show(x.j);
       })
-      .catch(function(){ $('b1').disabled = false; $('e1').textContent = 'เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง'; });
+      .catch(function(){ $('b1').disabled = false; $('e1').textContent = T('เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง'); });
   });
 
   // slip: shrink to a small JPEG before upload
@@ -118,10 +119,10 @@
       c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
       var q = .82; slipData = c.toDataURL('image/jpeg', q);
       while (slipData.length > 850000 && q > .3){ q -= .15; slipData = c.toDataURL('image/jpeg', q); }
-      $('dropt').innerHTML = '<img src="' + slipData + '" alt="สลิปที่เลือก">แตะเพื่อเปลี่ยนรูป';
+      $('dropt').innerHTML = '<img src="' + slipData + T('" alt="สลิปที่เลือก">แตะเพื่อเปลี่ยนรูป');
       $('b2').disabled = false; URL.revokeObjectURL(url);
     };
-    img.onerror = function(){ $('e2').textContent = 'เปิดรูปนี้ไม่ได้ ลองใช้รูป JPG หรือ PNG'; };
+    img.onerror = function(){ $('e2').textContent = T('เปิดรูปนี้ไม่ได้ ลองใช้รูป JPG หรือ PNG'); };
     img.src = url;
   });
   $('b2').addEventListener('click', function(){
@@ -129,10 +130,10 @@
     $('b2').disabled = true; $('e2').textContent = '';
     fetch('/api/ebook/slip', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:order.id, k:order.k, slip:slipData})})
       .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }); })
-      .then(function(x){ if (!x.ok){ $('b2').disabled = false; $('e2').textContent = x.j.error || 'ส่งสลิปไม่สำเร็จ'; return; } track('slip'); show({status:x.j.status}); })
-      .catch(function(){ $('b2').disabled = false; $('e2').textContent = 'เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง'; });
+      .then(function(x){ if (!x.ok){ $('b2').disabled = false; $('e2').textContent = T(x.j.error) || T('ส่งสลิปไม่สำเร็จ'); return; } track('slip'); show({status:x.j.status}); })
+      .catch(function(){ $('b2').disabled = false; $('e2').textContent = T('เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง'); });
   });
-  $('copyAmt').addEventListener('click', function(){ if (!order || !order.amount) return; var t = (order.amount/100).toFixed(2); try{ navigator.clipboard.writeText(t); this.textContent = 'คัดลอกแล้ว'; var me = this; setTimeout(function(){ me.textContent = 'คัดลอกยอด'; }, 1500); }catch(e){} });
+  $('copyAmt').addEventListener('click', function(){ if (!order || !order.amount) return; var t = (order.amount/100).toFixed(2); try{ navigator.clipboard.writeText(t); this.textContent = T('คัดลอกแล้ว'); var me = this; setTimeout(function(){ me.textContent = T('คัดลอกยอด'); }, 1500); }catch(e){} });
   $('again').addEventListener('click', function(){ order = null; try{ localStorage.removeItem(KEY); }catch(e){} history.replaceState(null,'',PAGE + '#buy'); step(1); });
   document.addEventListener('click', function(e){ var a = e.target.closest('#dpdf,#depub,#dlist a'); if (a) setTimeout(refresh, 2500); });
 

@@ -84,6 +84,65 @@ body{font-family:var(--body);font-weight:300;font-size:17px;line-height:1.7}
 .wl .msg{margin:10px 0 0;font-weight:600}
 @media (max-width:720px){.dh{grid-template-columns:1fr}.dh img{max-width:200px}.pages{grid-template-columns:1fr 1fr}.pages img:nth-child(3){display:none}}
 </style>
+<style>
+.buyrow{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--body);font-weight:600;font-size:17px;border:0;border-radius:999px;padding:15px 30px;cursor:pointer;text-decoration:none;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-go{background:var(--signal);color:#111}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--rule)}
+.btn:disabled{opacity:.5;cursor:default;transform:none}
+.sec2{padding:clamp(36px,5vw,64px) 0;position:relative}
+.sec2::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;border-radius:99px;background:var(--ink);opacity:.85}
+.sec2 h2{font-size:clamp(26px,3.4vw,40px);margin-bottom:8px}
+.sec2 .sub{color:var(--sub);margin:0 0 22px}
+.faq details{background:var(--wash);border-radius:var(--r-md);padding:4px 22px;margin-bottom:10px}
+.faq summary{cursor:pointer;font-weight:600;padding:14px 0;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";float:right;font-family:var(--display);color:var(--signal)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{margin:0 0 16px;color:var(--sub)}
+.checkout{background:var(--wash);border-radius:var(--r-lg);padding:clamp(22px,4vw,40px);scroll-margin-top:20px}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.steps span{font-size:14px;border-radius:999px;padding:5px 14px;background:var(--paper);color:var(--sub)}
+.steps span.on{background:var(--ink);color:var(--paper)}
+.steps span.done{background:var(--tint);color:var(--ink)}
+.field{display:grid;gap:6px;margin-bottom:14px;max-width:460px}
+.field label{font-size:14px;color:var(--sub)}
+.field input{font:inherit;font-weight:400;padding:12px 16px;border-radius:14px;border:1.5px solid var(--rule);background:var(--paper);color:var(--ink)}
+.field input:focus{outline:none;border-color:var(--signal)}
+.pay{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start}
+.qrcard{width:300px;background:#fff;border-radius:26px;overflow:hidden;box-shadow:0 18px 50px rgba(17,17,17,.12),0 0 0 1px rgba(17,17,17,.05);color:#111}
+.qrtop{background:#113566;color:#fff;text-align:center;padding:13px 10px 12px}
+.qrtop .tq{font-family:var(--display);font-weight:700;letter-spacing:.08em;font-size:15px}
+.qrbody{padding:18px 22px 10px;text-align:center}
+.ppl{display:inline-block;font-family:var(--display);font-weight:600;font-size:17px;color:#113566;border:2px solid #113566;border-radius:8px;padding:0 9px;line-height:1.5}
+.ppl b{font-weight:700;margin-left:1px}
+.amt-on{font-family:var(--display);font-weight:700;font-size:20px;color:#111}
+.amt-on:empty{display:none}
+.qrfoot{display:flex;flex-direction:column;align-items:center;gap:2px;border-top:2px dashed #EEEAE2;margin:6px 18px 0;padding:12px 0 18px;text-align:center}
+.qrfoot span{font-size:13px;color:#8a857b}
+.qrfoot b{font-weight:600;font-size:18px;line-height:1.35}
+.qrfoot small{font-size:13px;color:#6B675E}
+.paycol{min-width:0}
+.amtrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:2px 0 6px}
+.copy{font:inherit;font-size:14px;font-weight:500;border:0;border-radius:999px;padding:7px 14px;background:var(--tint);color:var(--ink);cursor:pointer}
+.howto{margin:12px 0 4px;padding-left:1.3em;display:grid;gap:6px}
+.howto li::marker{font-family:var(--display);font-weight:700;color:var(--signal)}
+.amt{font-family:var(--display);font-weight:700;font-size:40px;line-height:1}
+.amt small{font-size:15px;color:var(--sub);font-weight:500}
+.hint{font-size:14px;color:var(--sub)}
+.drop{display:block;border:2px dashed var(--rule);border-radius:var(--r-md);padding:18px;text-align:center;cursor:pointer;background:var(--paper);margin:14px 0}
+.drop:hover{border-color:var(--signal)}
+.drop img{max-width:160px;max-height:220px;border-radius:12px;display:block;margin:0 auto 8px}
+.status{display:flex;gap:14px;align-items:center;background:var(--paper);border-radius:var(--r-md);padding:16px 20px;margin:12px 0}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--signal);flex:none;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.ordlink{font-family:var(--mono,monospace);font-size:13px;word-break:break-all;background:var(--paper);border-radius:12px;padding:8px 12px}
+.err{color:#C2410C;font-weight:500;min-height:1.5em}
+@media (max-width:820px){.pay{grid-template-columns:1fr}.qrcard{justify-self:center;width:min(300px,100%)}}
+.pick-on{outline:3px solid var(--signal)}#picked{font-family:var(--display);font-weight:700;font-size:20px;margin:0 0 12px}
+</style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Book", "name": "Thai for Beginners: 721 Words & Phrases", "description": "Tones made simple, romanization with tone marks, survival phrases and everyday vocabulary.", "bookFormat": "https://schema.org/EBook", "inLanguage": "en", "author": {"@type": "Organization", "name": "daidaiphasa.com"}, "numberOfPages": 98, "image": "https://daidaiphasa.com/en/ebook-assets/thai-cover.webp", "url": "https://daidaiphasa.com/en/ebook#thai", "offers": {"@type": "Offer", "price": "4.99", "priceCurrency": "USD", "availability": "https://schema.org/PreOrder", "url": "https://daidaiphasa.com/en/ebook#thai"}}, {"@type": "Book", "name": "3,000 Japanese Words: JLPT N5–N1", "description": "Kanji, kana, romaji, English meanings and a real example sentence for every word.", "bookFormat": "https://schema.org/EBook", "inLanguage": "en", "author": {"@type": "Organization", "name": "daidaiphasa.com"}, "numberOfPages": 449, "image": "https://daidaiphasa.com/en/ebook-assets/japanese-cover.webp", "url": "https://daidaiphasa.com/en/ebook#japanese", "offers": {"@type": "Offer", "price": "4.99", "priceCurrency": "USD", "availability": "https://schema.org/PreOrder", "url": "https://daidaiphasa.com/en/ebook#japanese"}}, {"@type": "Book", "name": "Sign Language: From Its Origins to Reading It Right", "description": "The history of sign languages, how signs work, how to read signers, and the full ASL alphabet.", "bookFormat": "https://schema.org/EBook", "inLanguage": "en", "author": {"@type": "Organization", "name": "daidaiphasa.com"}, "numberOfPages": 83, "image": "https://daidaiphasa.com/en/ebook-assets/sign-cover.webp", "url": "https://daidaiphasa.com/en/ebook#sign", "offers": {"@type": "Offer", "price": "4.99", "priceCurrency": "USD", "availability": "https://schema.org/PreOrder", "url": "https://daidaiphasa.com/en/ebook#sign"}}, {"@type": "Book", "name": "Braille: A Complete Beginner's Guide", "description": "Louis Braille's six dots, the English (UEB) code, contractions and hundreds of exercises.", "bookFormat": "https://schema.org/EBook", "inLanguage": "en", "author": {"@type": "Organization", "name": "daidaiphasa.com"}, "numberOfPages": 59, "image": "https://daidaiphasa.com/en/ebook-assets/braille-cover.webp", "url": "https://daidaiphasa.com/en/ebook#braille", "offers": {"@type": "Offer", "price": "4.99", "priceCurrency": "USD", "availability": "https://schema.org/PreOrder", "url": "https://daidaiphasa.com/en/ebook#braille"}}, {"@type": "Book", "name": "Morse Code: Learn It, Hear It, Send It", "description": "From the first telegraph to ham radio: the full code, timing, Q codes and hundreds of exercises.", "bookFormat": "https://schema.org/EBook", "inLanguage": "en", "author": {"@type": "Organization", "name": "daidaiphasa.com"}, "numberOfPages": 50, "image": "https://daidaiphasa.com/en/ebook-assets/morse-cover.webp", "url": "https://daidaiphasa.com/en/ebook#morse", "offers": {"@type": "Offer", "price": "4.99", "priceCurrency": "USD", "availability": "https://schema.org/PreOrder", "url": "https://daidaiphasa.com/en/ebook#morse"}}]}</script>
 </head>
 <body>
@@ -98,16 +157,11 @@ body{font-family:var(--body);font-weight:300;font-size:17px;line-height:1.7}
     <p>Start speaking Thai, build a 3,000-word Japanese vocabulary, or learn to read sign language, braille and Morse code. Every book comes as PDF and EPUB, with practice exercises and answers.</p>
   </section>
   <section class="packrow" aria-label="Bundle">
-    <a href="#waitlist" class="hot"><b>All five books</b><span>Thai · Japanese · Sign language · Braille · Morse</span><strong>$14.99<del>$24.95</del></strong></a>
+    <a href="#buy" class="hot" data-pick="pack-en" data-title="All five books" data-price="$14.99 · ฿499" data-go="1"><b>All five books</b><span>Thai · Japanese · Sign language · Braille · Morse</span><strong>$14.99<del>$24.95</del></strong></a>
     <a href="#thai"><b>New: Thai for Beginners</b><span>721 words &amp; phrases with tone marks</span><strong>$4.99</strong></a>
     <a href="#japanese"><b>3,000 Japanese Words</b><span>JLPT N5 to N1</span><strong>$4.99</strong></a>
   </section>
-  <section class="wl" id="waitlist"><h2>International checkout opens soon</h2>
-  <p>We're setting up card and PayPal payments for buyers outside Thailand. Leave your email and we'll send you one message when it's ready.</p>
-  <form id="wlf"><input type="email" name="email" required placeholder="you@example.com" aria-label="Email">
-  <select name="book" aria-label="Book"><option value="all">All five books</option><option value="thai">Thai for Beginners: 721 Words & Phrases</option><option value="japanese">3,000 Japanese Words: JLPT N5–N1</option><option value="sign">Sign Language: From Its Origins to Reading It Right</option><option value="braille">Braille: A Complete Beginner's Guide</option><option value="morse">Morse Code: Learn It, Hear It, Send It</option></select>
-  <input type="text" name="hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
-  <button class="cta" type="submit">Notify me</button></form><p class="msg" id="wlm" role="status"></p></section>
+  
   <h2 class="shelf-t">The books</h2>
   <section class="shelf" aria-label="Ebooks"><a class="book" href="#thai"><span class="cv"><img src="/en/ebook-assets/thai-cover.webp" width="900" height="1273" alt="Cover of Thai for Beginners: 721 Words &amp; Phrases"></span>
 <span class="meta"><span class="lv">Thai · Beginner</span><h2>Thai for Beginners: 721 Words &amp; Phrases</h2><span class="d">Tones made simple, romanization with tone marks, survival phrases and everyday vocabulary. · PDF 98 pages + EPUB</span>
@@ -122,31 +176,96 @@ body{font-family:var(--body);font-weight:300;font-size:17px;line-height:1.7}
 <span class="buy"><span class="pr">$4.99<small>PDF + EPUB</small></span><span class="go">Details</span></span></span></a></section>
   <section class="det" id="thai"><div class="dh"><img src="/en/ebook-assets/thai-cover.webp" width="900" height="1273" alt="" loading="lazy"><div><span class="lv">Thai · Beginner</span><h2>Thai for Beginners: 721 Words &amp; Phrases</h2><p>Tones made simple, romanization with tone marks, survival phrases and everyday vocabulary.</p>
 <ul><li>How Thai works: no conjugation, no plurals, polite particles</li><li>The five tones with a romanization key you can read at a glance</li><li>611 essential words in 18 topics, from food to emergencies</li><li>110 ready-to-use phrases for restaurants, taxis, hotels and shopping</li><li>A self-test with answers</li></ul><p class="pr2">$4.99 <small>USD · PDF 98 pages + EPUB · instant download</small></p>
-<button class="cta" data-book="thai">Buy — checkout opening soon</button></div></div>
+<button class="cta" data-pick="thai-en" data-title="Thai for Beginners" data-price="$4.99 · ฿169" data-go="1">Buy now · $4.99 (฿169)</button></div></div>
 <div class="pages"><img src="/en/ebook-assets/thai-p1.webp" alt="Sample page 1 from Thai for Beginners: 721 Words &amp; Phrases" loading="lazy"><img src="/en/ebook-assets/thai-p2.webp" alt="Sample page 2 from Thai for Beginners: 721 Words &amp; Phrases" loading="lazy"><img src="/en/ebook-assets/thai-p3.webp" alt="Sample page 3 from Thai for Beginners: 721 Words &amp; Phrases" loading="lazy"></div></section><section class="det" id="japanese"><div class="dh"><img src="/en/ebook-assets/japanese-cover.webp" width="900" height="1273" alt="" loading="lazy"><div><span class="lv">Japanese · JLPT N5–N1</span><h2>3,000 Japanese Words: JLPT N5–N1</h2><p>Kanji, kana, romaji, English meanings and a real example sentence for every word.</p>
 <ul><li>600 words for each JLPT level, N5 to N1</li><li>Kanji, kana and Hepburn romaji for every entry</li><li>English meaning plus a natural example sentence and translation</li><li>Pronunciation guide to long vowels, double consonants and particles</li><li>Sorted by kana inside each level for quick lookup</li></ul><p class="pr2">$4.99 <small>USD · PDF 449 pages + EPUB · instant download</small></p>
-<button class="cta" data-book="japanese">Buy — checkout opening soon</button></div></div>
+<button class="cta" data-pick="japanese-en" data-title="3,000 Japanese Words" data-price="$4.99 · ฿169" data-go="1">Buy now · $4.99 (฿169)</button></div></div>
 <div class="pages"><img src="/en/ebook-assets/japanese-p1.webp" alt="Sample page 1 from 3,000 Japanese Words: JLPT N5–N1" loading="lazy"><img src="/en/ebook-assets/japanese-p2.webp" alt="Sample page 2 from 3,000 Japanese Words: JLPT N5–N1" loading="lazy"><img src="/en/ebook-assets/japanese-p3.webp" alt="Sample page 3 from 3,000 Japanese Words: JLPT N5–N1" loading="lazy"></div></section><section class="det" id="sign"><div class="dh"><img src="/en/ebook-assets/sign-cover.webp" width="900" height="1273" alt="" loading="lazy"><div><span class="lv">Sign language · ASL · Thai</span><h2>Sign Language: From Its Origins to Reading It Right</h2><p>The history of sign languages, how signs work, how to read signers, and the full ASL alphabet.</p>
 <ul><li>Five myths about sign language, and why they're wrong</li><li>A timeline from Plato to the International Day of Sign Languages</li><li>The five parameters of a sign and the basics of sign grammar</li><li>Eight principles for reading signers and fingerspelling</li><li>ASL A–Z with confusable pairs, Deaf etiquette, a bonus Thai Sign Language chapter, and 300+ exercises</li></ul><p class="pr2">$4.99 <small>USD · PDF 83 pages + EPUB · instant download</small></p>
-<button class="cta" data-book="sign">Buy — checkout opening soon</button></div></div>
+<button class="cta" data-pick="sign-en" data-title="Sign Language" data-price="$4.99 · ฿169" data-go="1">Buy now · $4.99 (฿169)</button></div></div>
 <div class="pages"><img src="/en/ebook-assets/sign-p1.webp" alt="Sample page 1 from Sign Language: From Its Origins to Reading It Right" loading="lazy"><img src="/en/ebook-assets/sign-p2.webp" alt="Sample page 2 from Sign Language: From Its Origins to Reading It Right" loading="lazy"><img src="/en/ebook-assets/sign-p3.webp" alt="Sample page 3 from Sign Language: From Its Origins to Reading It Right" loading="lazy"></div></section><section class="det" id="braille"><div class="dh"><img src="/en/ebook-assets/braille-cover.webp" width="900" height="1273" alt="" loading="lazy"><div><span class="lv">Braille · UEB · Thai</span><h2>Braille: A Complete Beginner's Guide</h2><p>Louis Braille's six dots, the English (UEB) code, contractions and hundreds of exercises.</p>
 <ul><li>The story of Louis Braille and the six-dot cell</li><li>The full alphabet, numbers, capitals and punctuation in UEB</li><li>The most common grade 2 contractions</li><li>Reading by touch, slate and stylus, braille displays</li><li>Bonus Thai braille chapter, 400+ exercises with answers</li></ul><p class="pr2">$4.99 <small>USD · PDF 59 pages + EPUB · instant download</small></p>
-<button class="cta" data-book="braille">Buy — checkout opening soon</button></div></div>
+<button class="cta" data-pick="braille-en" data-title="Braille" data-price="$4.99 · ฿169" data-go="1">Buy now · $4.99 (฿169)</button></div></div>
 <div class="pages"><img src="/en/ebook-assets/braille-p1.webp" alt="Sample page 1 from Braille: A Complete Beginner's Guide" loading="lazy"><img src="/en/ebook-assets/braille-p2.webp" alt="Sample page 2 from Braille: A Complete Beginner's Guide" loading="lazy"><img src="/en/ebook-assets/braille-p3.webp" alt="Sample page 3 from Braille: A Complete Beginner's Guide" loading="lazy"></div></section><section class="det" id="morse"><div class="dh"><img src="/en/ebook-assets/morse-cover.webp" width="900" height="1273" alt="" loading="lazy"><div><span class="lv">Morse code · ITU · Thai</span><h2>Morse Code: Learn It, Hear It, Send It</h2><p>From the first telegraph to ham radio: the full code, timing, Q codes and hundreds of exercises.</p>
 <ul><li>History from 1844 to today, and the truth about SOS</li><li>International Morse A–Z, numbers, punctuation and prosigns</li><li>Timing, PARIS and words per minute</li><li>The Koch and Farnsworth methods and a 30-day plan</li><li>Q codes, a sample radio contact, bonus Thai Morse, 400+ exercises</li></ul><p class="pr2">$4.99 <small>USD · PDF 50 pages + EPUB · instant download</small></p>
-<button class="cta" data-book="morse">Buy — checkout opening soon</button></div></div>
+<button class="cta" data-pick="morse-en" data-title="Morse Code" data-price="$4.99 · ฿169" data-go="1">Buy now · $4.99 (฿169)</button></div></div>
 <div class="pages"><img src="/en/ebook-assets/morse-p1.webp" alt="Sample page 1 from Morse Code: Learn It, Hear It, Send It" loading="lazy"><img src="/en/ebook-assets/morse-p2.webp" alt="Sample page 2 from Morse Code: Learn It, Hear It, Send It" loading="lazy"><img src="/en/ebook-assets/morse-p3.webp" alt="Sample page 3 from Morse Code: Learn It, Hear It, Send It" loading="lazy"></div></section>
+<section class="sec2" id="buy" data-product="pack-en" data-key="ebook-order-en">
+  <h2>Buy</h2>
+  <p class="hint">Pay with Thai PromptPay, attach your transfer slip, and your download links appear on this page once we've checked it (usually within 24 hours).</p>
+  <p id="picked"></p>
+  <div class="checkout">
+    <div class="steps"><span data-s="1">1 · Email</span><span data-s="2">2 · Pay + slip</span><span data-s="3">3 · Checking</span><span data-s="4">4 · Download</span></div>
+    <form id="s1" novalidate>
+      <div class="field"><label for="em">Email (only used if we need to contact you about the order)</label><input id="em" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+      <div class="field"><label for="nm">Name (optional)</label><input id="nm" type="text" autocomplete="name" maxlength="80"></div>
+      <input type="text" id="hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+      <p class="err" id="e1"></p>
+      <button class="btn btn-ink" id="b1">Continue to payment →</button>
+    </form>
+    <div id="s2" hidden>
+      <div class="pay">
+        <div class="qrcard">
+          <div class="qrtop"><span class="tq">THAI QR PAYMENT</span></div>
+          <div class="qrbody"><span class="ppl">Prompt<b>Pay</b></span><div id="qr"></div><div class="amt-on" id="amtOn"></div></div>
+          <div class="qrfoot"><span>Account name</span><b id="payname">—</b><small id="paybank"></small></div>
+        </div>
+        <div class="paycol">
+          <p class="hint" style="margin:0">Amount to pay (Thai baht)</p>
+          <div class="amtrow"><div class="amt" id="amt">฿169.00</div><button type="button" class="copy" id="copyAmt">Copy amount</button></div>
+          <ol class="howto">
+            <li>Open your Thai banking app and scan this QR <span class="hint">(on a phone: save the QR image, then choose it in your banking app)</span></li>
+            <li id="typeamt">Pay exactly <b id="amt2">฿169.00</b>, including the satang. The odd satang help us match your payment to your order.</li>
+            <li>Check the recipient name matches <b id="payname2">the account name on the left</b>, then pay</li>
+            <li>Attach a screenshot of your transfer slip below</li>
+          </ol>
+          <label class="drop" id="drop"><input type="file" id="slip" accept="image/*" hidden><span id="dropt">Tap to choose your slip image</span></label>
+          <p class="err" id="e2"></p>
+          <div class="buyrow"><button class="btn btn-ink" id="b2" disabled>Send slip</button><a class="btn btn-line" id="saveqr" download="promptpay-daidaiphasa.png" href="#" hidden>Save QR image</a></div>
+        </div>
+      </div>
+    </div>
+    <div id="s3" hidden><div class="status"><span class="dot"></span><div><b>Slip received, we're checking it</b><br><span class="hint">Usually within 24 hours. This page switches to download buttons automatically when it's approved.</span></div></div></div>
+    <div id="s4" hidden>
+      <div class="status" style="background:var(--tint)"><div><b>Payment confirmed. Thank you for your support!</b><br><span class="hint" id="dlleft"></span></div></div>
+      <div class="buyrow"><a class="btn btn-go" id="dpdf" href="#">Download PDF</a><a class="btn btn-ink" id="depub" href="#">Download EPUB</a></div>
+    </div>
+    <div id="s5" hidden>
+      <div class="status"><div><b>This order could not be verified</b><br><span class="hint" id="rej"></span><br><span class="hint">If you think this is a mistake, contact us via the <a href="/contact">contact page</a> with your order number.</span></div></div>
+      <button class="btn btn-line" id="again">Start a new order</button>
+    </div>
+    <div id="keep" hidden>
+      <p class="hint" style="margin-top:18px">Keep this link to check your order or download again any time · Order number <b id="oid"></b></p>
+      <div class="ordlink" id="olink"></div>
+    </div>
+  </div>
+</section>
+<section class="wl" id="waitlist"><h2>No Thai bank account? Card &amp; PayPal checkout is coming</h2>
+  <p>Right now we accept Thai PromptPay (any Thai banking app or a Thai e-wallet). Card and PayPal payments for buyers abroad are on the way: leave your email and we'll send you one message when they're ready.</p>
+  <form id="wlf"><input type="email" name="email" required placeholder="you@example.com" aria-label="Email">
+  <select name="book" aria-label="Book"><option value="all">All five books</option><option value="thai">Thai for Beginners: 721 Words & Phrases</option><option value="japanese">3,000 Japanese Words: JLPT N5–N1</option><option value="sign">Sign Language: From Its Origins to Reading It Right</option><option value="braille">Braille: A Complete Beginner's Guide</option><option value="morse">Morse Code: Learn It, Hear It, Send It</option></select>
+  <input type="text" name="hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+  <button class="cta" type="submit">Notify me</button></form><p class="msg" id="wlm" role="status"></p></section><section class="sec2 faq"><h2>FAQ</h2>
+<details><summary>When do I get the files?</summary><p>As soon as we've checked your slip, usually within 24 hours. The download buttons appear on your order page (the link you get after ordering). On the same device, this page remembers your order automatically.</p></details>
+<details><summary>What can I read them on?</summary><p>The PDF opens on any device and prints well at A5. The EPUB suits reading apps like Apple Books, Google Play Books and Kobo, and can be sent to Kindle with Send to Kindle.</p></details>
+<details><summary>How many times can I download?</summary><p>30 times per order (150 for the five-book bundle), for your own phone, tablet and computer. Please don't share the files.</p></details>
+<details><summary>I don't have a Thai bank account</summary><p>Thai PromptPay works with any Thai banking app and some e-wallets. If you can't use it, leave your email above and we'll tell you when card and PayPal checkout is ready.</p></details>
+<details><summary>Is the braille book embossed?</summary><p>No. It's a digital book that shows braille dots as pictures, made for sighted learners such as family members, teachers and volunteers.</p></details>
+</section>
+<p class="hint" style="margin:0 0 50px">Books by daidaiphasa.com. How we handle order data: <a href="/privacy">privacy policy</a>.</p>
 </main>
 <footer class="bot"><div class="in">
 <span>© 2026 daidaiphasa.com</span>
 <nav aria-label="Footer"><a href="/en/">Tools</a><a href="/privacy">Privacy</a><a href="/contact">Contact</a></nav>
 </div></footer>
 <script>
-document.querySelectorAll('.cta[data-book]').forEach(function(b){b.addEventListener('click',function(){var s=document.querySelector('#wlf select');s.value=b.dataset.book;location.hash='waitlist';document.querySelector('#wlf input[type=email]').focus();window.dHit&&dHit('ev:en-ebook-buy-'+b.dataset.book);});});
 document.getElementById('wlf').addEventListener('submit',function(e){e.preventDefault();var f=e.target,m=document.getElementById('wlm');m.textContent='Sending…';
 fetch('/api/submit',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({kind:'submissions',hp:f.hp.value,item:{type:'en_ebook_waitlist',email:f.email.value,book:f.book.value,lang:navigator.language||''}})})
 .then(function(r){m.textContent=r.ok?'Thanks! We\'ll email you when checkout opens.':'Sorry, something went wrong. Please try again later.';if(r.ok)f.reset();}).catch(function(){m.textContent='Network error. Please try again.';});});
 </script>
+<script>window.EBOOK_L={"฿": "฿", "ธนาคาร": "Bank: ", "ยอด <b>": "Amount <b>", "</b> ใส่มาใน QR ให้แล้ว ตรวจให้ตรงก่อนกดโอน": "</b> is already in the QR. Check it before you pay.", "\" alt=\"QR PromptPay ของร้าน\">": "\" alt=\"Shop PromptPay QR\">", "ดาวน์โหลดไปแล้ว ": "Downloaded ", " จาก ": " of ", " ครั้ง": " times", "เหตุผล: ": "Reason: ", "กรอกอีเมลให้ถูกต้อง": "Please enter a valid email.", "สร้างคำสั่งซื้อไม่ได้ ลองใหม่อีกครั้ง": "Couldn't create the order. Please try again.", "เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง": "Connection failed. Please try again.", "\" alt=\"สลิปที่เลือก\">แตะเพื่อเปลี่ยนรูป": "\" alt=\"Selected slip\">Tap to change", "เปิดรูปนี้ไม่ได้ ลองใช้รูป JPG หรือ PNG": "Can't open this image. Try a JPG or PNG.", "ส่งสลิปไม่สำเร็จ": "Couldn't send the slip.", "คัดลอกแล้ว": "Copied", "คัดลอกยอด": "Copy amount", "อีเมลไม่ถูกต้อง": "Invalid email.", "ไม่พบสินค้า": "Product not found.", "ร้านยังไม่เปิดรับชำระเงิน": "Payments are not open yet.", "สร้างคำสั่งซื้อบ่อยเกินไป ลองใหม่ภายหลัง": "Too many orders. Please try again later.", "ไฟล์สลิปไม่ถูกต้อง": "Invalid slip image.", "รูปสลิปใหญ่เกินไป": "Slip image is too large.", "ไม่พบคำสั่งซื้อ": "Order not found."};</script>
+<script src="/qrcode.js?v=1"></script>
+<script src="/ebook.js?v=6"></script>
 <script src="/hit.js?v=3" defer></script>
 </body>
 </html>

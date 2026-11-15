@@ -67,6 +67,41 @@ export const PRODUCTS = {
              epub: { name: 'phasa-lu.epub', download: 'Phasa-Lu-Thai.epub', type: 'application/epub+zip' } },
     maxDownloads: 30
   },
+  // ---- international (English) editions, sold on /en/ebook ----
+  'thai-en': {
+    id: 'thai-en', page: '/en/ebook', title: 'Thai for Beginners: 721 Words & Phrases', price: 16900, en: true,
+    files: { pdf: { name: 'thai-beginners-en.pdf', download: 'Thai-for-Beginners.pdf', type: 'application/pdf' },
+             epub: { name: 'thai-beginners-en.epub', download: 'Thai-for-Beginners.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
+  },
+  'japanese-en': {
+    id: 'japanese-en', page: '/en/ebook', title: '3,000 Japanese Words: JLPT N5–N1', price: 16900, en: true,
+    files: { pdf: { name: 'japanese-3000-en.pdf', download: '3000-Japanese-Words-JLPT.pdf', type: 'application/pdf' },
+             epub: { name: 'japanese-3000-en.epub', download: '3000-Japanese-Words-JLPT.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
+  },
+  'sign-en': {
+    id: 'sign-en', page: '/en/ebook', title: 'Sign Language: From Its Origins to Reading It Right', price: 16900, en: true,
+    files: { pdf: { name: 'sign-language-en.pdf', download: 'Sign-Language-ASL.pdf', type: 'application/pdf' },
+             epub: { name: 'sign-language-en.epub', download: 'Sign-Language-ASL.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
+  },
+  'braille-en': {
+    id: 'braille-en', page: '/en/ebook', title: "Braille: A Complete Beginner's Guide", price: 16900, en: true,
+    files: { pdf: { name: 'braille-en.pdf', download: 'Braille-Beginners-Guide.pdf', type: 'application/pdf' },
+             epub: { name: 'braille-en.epub', download: 'Braille-Beginners-Guide.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
+  },
+  'morse-en': {
+    id: 'morse-en', page: '/en/ebook', title: 'Morse Code: Learn It, Hear It, Send It', price: 16900, en: true,
+    files: { pdf: { name: 'morse-code-en.pdf', download: 'Morse-Code.pdf', type: 'application/pdf' },
+             epub: { name: 'morse-code-en.epub', download: 'Morse-Code.epub', type: 'application/epub+zip' } },
+    maxDownloads: 30
+  },
+  'pack-en': {
+    id: 'pack-en', page: '/en/ebook', title: 'All five international ebooks', price: 49900, files: {}, en: true,
+    bundle: ['thai-en', 'japanese-en', 'sign-en', 'braille-en', 'morse-en'], maxDownloads: 150
+  },
   // ---- bundles: one order unlocks every book inside (download with f=<bookId>.pdf|epub) ----
   'pack-lang': {
     id: 'pack-lang', page: '/ebook-pack', title: 'แพ็คภาษา (อังกฤษ ญี่ปุ่น สเปน เกาหลี)', price: 13900, files: {},
