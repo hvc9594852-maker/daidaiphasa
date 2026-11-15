@@ -42,7 +42,7 @@ func Translate(text string) (string, error) {
 	req.Header.Set("X-Client", "KeySwap")
 	resp, err := httpClient.Do(req)
 	if err != nil {
-		return "", errors.New("เชื่อมต่ออินเทอร์เน็ตไม่ได้")
+		return "", errors.New(T("เชื่อมต่ออินเทอร์เน็ตไม่ได้"))
 	}
 	defer resp.Body.Close()
 	var out struct {
@@ -52,9 +52,9 @@ func Translate(text string) (string, error) {
 	_ = json.NewDecoder(resp.Body).Decode(&out)
 	switch {
 	case resp.StatusCode == 429:
-		return "", errors.New("ระบบแปลใช้ครบโควตาแล้ว ลองใหม่ภายหลัง")
+		return "", errors.New(T("ระบบแปลใช้ครบโควตาแล้ว ลองใหม่ภายหลัง"))
 	case resp.StatusCode != 200 || out.Text == "":
-		return "", errors.New("แปลไม่สำเร็จ")
+		return "", errors.New(T("แปลไม่สำเร็จ"))
 	}
 	return out.Text, nil
 }

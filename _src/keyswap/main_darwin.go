@@ -56,11 +56,11 @@ type hotkey struct {
 }
 
 var hotkeys = []hotkey{
-	{1, 17, controlKey | shiftKey, "⌃⇧T  สลับแป้น ไทย ⇄ อังกฤษ", "swap"},
-	{2, 15, controlKey | optionKey, "⌃⌥R  ถอดเสียง", "romanize"},
-	{3, 11, controlKey | optionKey, "⌃⌥B  อักษรเบรลล์", "braille"},
-	{4, 46, controlKey | optionKey, "⌃⌥M  รหัสมอร์ส", "morse"},
-	{5, 37, controlKey | optionKey, "⌃⌥L  แปลภาษา (ต้องต่อเน็ต)", "translate"},
+	{1, 17, controlKey | shiftKey, T("⌃⇧T  สลับแป้น ไทย ⇄ อังกฤษ"), "swap"},
+	{2, 15, controlKey | optionKey, T("⌃⌥R  ถอดเสียง"), "romanize"},
+	{3, 11, controlKey | optionKey, T("⌃⌥B  อักษรเบรลล์"), "braille"},
+	{4, 46, controlKey | optionKey, T("⌃⌥M  รหัสมอร์ส"), "morse"},
+	{5, 37, controlKey | optionKey, T("⌃⌥L  แปลภาษา (ต้องต่อเน็ต)"), "translate"},
 }
 
 type eventTypeSpec struct{ class, kind uint32 }
@@ -87,7 +87,7 @@ func fourCC(s string) uint32 {
 func load(path string) uintptr {
 	h, err := purego.Dlopen(path, purego.RTLD_NOW|purego.RTLD_GLOBAL)
 	if err != nil {
-		fatal("โหลด " + filepath.Base(path) + " ไม่ได้")
+		fatal(T("โหลด ") + filepath.Base(path) + T(" ไม่ได้"))
 	}
 	return h
 }
@@ -162,7 +162,7 @@ func notify(text string) {
 
 func fatal(text string) {
 	logf_("fatal: %s", text)
-	osascript("display dialog " + q(text) + " with title \"KeySwap\" buttons {\"ตกลง\"} default button 1 with icon caution")
+	osascript("display dialog " + q(text) + T(" with title \"KeySwap\" buttons {\"ตกลง\"} default button 1 with icon caution"))
 	os.Exit(1)
 }
 
@@ -267,10 +267,10 @@ func askPermission() {
 	asking = true
 	go func() {
 		defer func() { asking = false }()
-		ans := osascript(`button returned of (display dialog "KeySwap ต้องได้รับอนุญาตก่อนใช้งาน (ครั้งเดียว)\n\nเปิด System Settings › Privacy & Security › Accessibility (บาง macOS ชื่อ Device Control and Data Access) แล้วเปิดสวิตช์ KeySwap\n\nเปิดสวิตช์แล้ว กด รีสตาร์ต KeySwap" with title "KeySwap" buttons {"เปิด System Settings", "รีสตาร์ต KeySwap"} default button 2)`)
-		if ans == "เปิด System Settings" {
+		ans := osascript(T(`button returned of (display dialog "KeySwap ต้องได้รับอนุญาตก่อนใช้งาน (ครั้งเดียว)\n\nเปิด System Settings › Privacy & Security › Accessibility (บาง macOS ชื่อ Device Control and Data Access) แล้วเปิดสวิตช์ KeySwap\n\nเปิดสวิตช์แล้ว กด รีสตาร์ต KeySwap" with title "KeySwap" buttons {"เปิด System Settings", "รีสตาร์ต KeySwap"} default button 2)`))
+		if ans == T("เปิด System Settings") {
 			exec.Command("/usr/bin/open", "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility").Run()
-		} else if ans == "รีสตาร์ต KeySwap" {
+		} else if ans == T("รีสตาร์ต KeySwap") {
 			relaunch()
 		}
 	}()
@@ -283,7 +283,7 @@ func watchPermission() {
 			time.Sleep(2 * time.Second)
 			if AXIsProcessTrusted() {
 				logf_("permission granted while running")
-				notify("KeySwap ได้รับอนุญาตแล้ว พร้อมใช้งาน")
+				notify(T("KeySwap ได้รับอนุญาตแล้ว พร้อมใช้งาน"))
 				return
 			}
 		}
@@ -325,22 +325,22 @@ func setupMenu() {
 		}
 		menu.Send(sel("addItem:"), it)
 	}
-	add("KeySwap · ใดๆภาษา.com — คลุมดำข้อความแล้วกด", "", "")
+	add(T("KeySwap · ใดๆภาษา.com — คลุมดำข้อความแล้วกด"), "", "")
 	add("-", "", "")
 	for _, h := range hotkeys {
 		add(h.label, "", "")
 	}
 	add("-", "", "")
-	add("อนุญาตการใช้งาน (Accessibility)…", "permission:", "")
-	add("รีสตาร์ต KeySwap", "restart:", "")
-	add("เปิดเว็บ ใดๆภาษา.com", "website:", "")
+	add(T("อนุญาตการใช้งาน (Accessibility)…"), "permission:", "")
+	add(T("รีสตาร์ต KeySwap"), "restart:", "")
+	add(T("เปิดเว็บ ใดๆภาษา.com"), "website:", "")
 	add("-", "", "")
-	add("ปิด KeySwap", "quit:", "q")
+	add(T("ปิด KeySwap"), "quit:", "q")
 
 	bar := objc.ID(objc.GetClass("NSStatusBar")).Send(sel("systemStatusBar"))
 	item := bar.Send(sel("statusItemWithLength:"), float64(-1)) // NSVariableStatusItemLength
 	item.Send(sel("retain"))
-	item.Send(sel("button")).Send(sel("setTitle:"), nsString("ๆ"))
+	item.Send(sel("button")).Send(sel("setTitle:"), nsString(T("ๆ")))
 	item.Send(sel("setMenu:"), menu)
 	logf_("menu bar item ready")
 }
@@ -358,8 +358,8 @@ func checkRunning() {
 	b, err := os.ReadFile(pidFile())
 	if err == nil {
 		if pid, err := strconv.Atoi(strings.TrimSpace(string(b))); err == nil && pid != os.Getpid() && syscall.Kill(pid, 0) == nil {
-			ans := osascript(`button returned of (display dialog "KeySwap กำลังทำงานอยู่แล้ว\n\nต้องการปิด KeySwap ไหม?" with title "KeySwap" buttons {"ยกเลิก", "ปิด KeySwap"} default button 2)`)
-			if ans == "ปิด KeySwap" {
+			ans := osascript(T(`button returned of (display dialog "KeySwap กำลังทำงานอยู่แล้ว\n\nต้องการปิด KeySwap ไหม?" with title "KeySwap" buttons {"ยกเลิก", "ปิด KeySwap"} default button 2)`))
+			if ans == T("ปิด KeySwap") {
 				syscall.Kill(pid, syscall.SIGTERM)
 				os.Remove(pidFile())
 			}
@@ -394,7 +394,7 @@ func main() {
 	defer func() {
 		if r := recover(); r != nil {
 			logf_("panic: %v", r)
-			fatal(fmt.Sprint("KeySwap หยุดทำงาน: ", r))
+			fatal(fmt.Sprint(T("KeySwap หยุดทำงาน: "), r))
 		}
 	}()
 	checkRunning()
@@ -418,7 +418,7 @@ func main() {
 	logf_("frameworks loaded")
 	var err error
 	if eng, err = newEngine(); err != nil {
-		fatal("KeySwap เริ่มทำงานไม่ได้: " + err.Error())
+		fatal(T("KeySwap เริ่มทำงานไม่ได้: ") + err.Error())
 	}
 	logf_("engine ready")
 
@@ -451,18 +451,18 @@ func main() {
 		watchPermission()
 	}
 
-	msg := "KeySwap พร้อมใช้งานแล้ว\n\nคลุมดำข้อความ แล้วกดคีย์ลัด:\n"
+	msg := T("KeySwap พร้อมใช้งานแล้ว\n\nคลุมดำข้อความ แล้วกดคีย์ลัด:\n")
 	for _, h := range hotkeys {
 		msg += "\n" + h.label
 	}
 	if len(failed) > 0 {
-		msg += "\n\nคีย์ลัดเหล่านี้มีแอปอื่นใช้อยู่:\n" + strings.Join(failed, "\n")
+		msg += T("\n\nคีย์ลัดเหล่านี้มีแอปอื่นใช้อยู่:\n") + strings.Join(failed, "\n")
 	}
 	if !trusted {
-		msg += "\n\nขั้นตอนเดียวที่เหลือ: เปิด System Settings › Privacy & Security › Accessibility แล้วเปิดสวิตช์ของ KeySwap"
+		msg += T("\n\nขั้นตอนเดียวที่เหลือ: เปิด System Settings › Privacy & Security › Accessibility แล้วเปิดสวิตช์ของ KeySwap")
 	}
-	msg += "\n\nดูคีย์ลัด รีสตาร์ต หรือปิด KeySwap ได้จากไอคอน ๆ ที่แถบเมนูด้านบนของจอ"
-	go osascript(fmt.Sprintf("display dialog %s with title \"KeySwap · ใดๆภาษา.com\" buttons {\"ตกลง\"} default button 1", q(msg)))
+	msg += T("\n\nดูคีย์ลัด รีสตาร์ต หรือปิด KeySwap ได้จากไอคอน ๆ ที่แถบเมนูด้านบนของจอ")
+	go osascript(fmt.Sprintf(T("display dialog %s with title \"KeySwap · ใดๆภาษา.com\" buttons {\"ตกลง\"} default button 1"), q(msg)))
 
 	logf_("running")
 	app.Send(sel("run"))

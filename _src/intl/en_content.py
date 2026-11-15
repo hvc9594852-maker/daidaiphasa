@@ -21,6 +21,7 @@ ENTRIES = [
  dict(go='dict', hw='dictionary', say='/ˈdɪk.ʃə.ner.i/', pos='n.', def_='Type a word once and open the free official dictionary for 8 languages, from Merriam-Webster to the Royal Institute Thai dictionary.', ex='house → 8 dictionaries'),
  dict(go='morse', hw='Morse', say='/mɔːrs/', pos='n.', def_='Convert text to Morse code and back, and listen to it at real timing.', ex='sos → ... --- ...'),
  dict(go='tr', hw='translate', say='/trænsˈleɪt/', pos='v.', def_='Translate between Thai and 20 languages with automatic language detection and text-to-speech.', ex='thank you → ขอบคุณ'),
+ dict(go='', url='/en/keyswap', hw='KeySwap', say='/ˈkiː.swɒp/', pos='app', def_='Free Windows and Mac app: select text in any program and press a shortcut to fix Thai/English keyboard mix-ups, romanize, or convert to Braille and Morse.', ex='l;ylfu → สวัสดี'),
 ]
 STRINGS = {
  'ใดๆภาษา':'daidaiphasa','ใดๆภาษา.com':'daidaiphasa.com','ลองใช้เครื่องมือ':'Try the tools','สวัสดี':'Hello',
@@ -50,3 +51,6 @@ STRINGS.update({'มอร์ส':'Morse','ทุกลิงก์เป็น�
  'thank you → ขอบคุณ':'thank you → ขอบคุณ'})
 
 STRINGS['แก้ข้อความที่ลืมสลับแป้น ถอดเสียง ถอดศัพท์เฉพาะกลุ่ม หมุนลูกโลกดูภาษาทั่วโลก และย้อนดูประวัติภาษาตั้งแต่เสียงแรกของมนุษย์'] = 'Free tools for every kind of language: translate Thai, romanize Thai names, write in Braille, send Morse code, fingerspell in ASL, spin the globe to explore world languages, and trace language back to the first human sounds.'
+
+# extra UI strings (options, placeholders)
+STRINGS.update({"เดาภาษาให้เอง": "Detect language", "เดาภาษาเอง": "Detect language", "พจนานุกรมภาษาไทย": "Thai dictionary", "พจนานุกรมภาษาฝรั่งเศส": "French dictionary", "พจนานุกรมภาษาสเปน": "Spanish dictionary", "พจนานุกรมภาษาอินโดนีเซีย": "Indonesian dictionary", "พจนานุกรมภาษาเกาหลี": "Korean dictionary", "พจนานุกรมภาษาญี่ปุ่น": "Japanese dictionary", "พจนานุกรมภาษาจีน (ตัวเต็ม)": "Chinese dictionary (Traditional)", "เบรลล์ไทย": "Thai Braille", "เบรลล์อังกฤษ": "English Braille", "เกาหลี": "Korean", "เยอรมัน": "German", "มลายู": "Malay", "เขมร": "Khmer", "พม่า": "Burmese", "อาหรับ": "Arabic", "ฮินดี": "Hindi", "ดัตช์": "Dutch", "ความหมายผิด": "Wrong meaning", "คีย์ลัดของ KeySwap": "KeySwap shortcuts", "เล่าสิ่งที่เกิดขึ้น หรือสิ่งที่อยากให้แก้": "Tell us what happened or what you would like fixed", "เรื่องเล่าของภาษา": "Language stories", "เช่น กด Open Anyway แล้วไม่มีอะไรเกิดขึ้น · ใช้ macOS 15 / Windows 11": "e.g. I clicked Open Anyway and nothing happened · macOS 15 / Windows 11", "ร้าน ebook ภาษาและภาษาสื่อสาร เล่มละ 49 บาท": "Language ebooks"})

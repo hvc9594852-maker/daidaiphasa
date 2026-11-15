@@ -64,7 +64,7 @@ rep("    var b=document.createElement('button'); b.className='entry'; b.type='bu
 import json, os
 sys.path.insert(0, os.path.dirname(__file__)); import en_content as EC
 deck_en = [f'<span class="era">{e}</span>\n        <h3>{t}</h3>\n        {b}' for e, t, b in EC.DECK]
-ent_en = [dict(go=e['go'], hw=e['hw'], say=e['say'], pos=e['pos'], **{'def': e['def_']}, ex=e['ex']) for e in EC.ENTRIES]
+ent_en = [dict(go=e['go'], **({'url': e['url']} if e.get('url') else {}), hw=e['hw'], say=e['say'], pos=e['pos'], **{'def': e['def_']}, ex=e['ex']) for e in EC.ENTRIES]
 strings = {k: v for k, v in EC.STRINGS.items()}
 strings.update(json.load(open(os.path.join(os.path.dirname(__file__), 'countries_en.json'), encoding='utf-8')))
 MARK = '/*INTL-EXTRA*/'
@@ -75,15 +75,15 @@ if MARK in s:
 else:
     rep("  var out = {};\n  Object.keys(T).forEach(function(l){", blk + "  var out = {};\n  Object.keys(T).forEach(function(l){")
 rep("pl=[[/^(\\d+) จาก", "pl=[[/^(\\d+) จาก") if False else None
+PAINT = "  function paintDeck(l){ var sl=document.querySelectorAll('#deck .slide'); if(!sl.length) return;\n    var en=l!=='th', dots=document.querySelectorAll('#deckDots button');\n    Array.prototype.forEach.call(sl,function(x,i){\n      var era=x.querySelector('.era'), main=x.querySelector('.sl-main'), ch=x.querySelector('.sl-ch');\n      if(!x._th) x._th={era:era?era.innerHTML:'', main:main?main.innerHTML:x.innerHTML, ch:ch?ch.textContent:''};\n      var e=x._th.era, m=x._th.main, c=x._th.ch;\n      if(en && DECK_EN[i]){ var t=document.createElement('div'); t.innerHTML=DECK_EN[i]; var te=t.querySelector('.era'); if(te){ e=te.innerHTML; te.parentNode.removeChild(te); } m=t.innerHTML.trim(); c='Chapter '+(i+1)+' of '+sl.length; }\n      if(main){ if(main.innerHTML!==m) main.innerHTML=m; } else if(x.innerHTML!==m) x.innerHTML=m;\n      if(era && era.innerHTML!==e) era.innerHTML=e;\n      if(ch) ch.textContent=c;\n      var d=dots[i]; if(d){ var sp=d.querySelector('span'); if(sp) sp.textContent=era?era.textContent:''; var h3=x.querySelector('h3'); d.title=h3?h3.textContent:''; d.setAttribute('aria-label',(en?'Go to slide ':'ไปสไลด์ที่ ')+(i+1)); }\n    }); }\n"
 MARK2 = '/*INTL-DECK*/'
 deckjs = (MARK2 + "\n  var DECK_EN=" + json.dumps(deck_en, ensure_ascii=False) + ", DECK_TH=null;\n"
-  "  function paintDeck(l){ var sl=document.querySelectorAll('#deck .slide'); if(!sl.length) return; if(!DECK_TH) DECK_TH=Array.prototype.map.call(sl,function(x){return x.innerHTML;});\n"
-  "    Array.prototype.forEach.call(sl,function(x,i){ var h=(l==='th'||!DECK_EN[i])?DECK_TH[i]:DECK_EN[i]; if(x.innerHTML!==h) x.innerHTML=h; }); }\n"
+  + PAINT +
   "  var ENT_EN=" + json.dumps(ent_en, ensure_ascii=False) + ";\n"
   "  (function(){ var box=document.getElementById('entries'); if(!box) return; ENT_EN.forEach(function(e){ var b=document.createElement('button'); b.className='entry intl-only'; b.type='button';\n"
   "    b.innerHTML='<span class=\"top\"><span class=\"hw\"></span><span class=\"say\"></span><span class=\"pos\"></span></span><span class=\"def\"></span><span class=\"ex\"></span>';\n"
   "    b.querySelector('.hw').textContent=e.hw; b.querySelector('.say').textContent=e.say; b.querySelector('.pos').textContent=e.pos; b.querySelector('.def').textContent=e['def']; b.querySelector('.ex').textContent=e.ex;\n"
-  "    b.addEventListener('click',function(){ setMode(e.go,true); document.getElementById('tool').scrollIntoView({behavior:'smooth'}); }); box.appendChild(b); });\n"
+  "    b.addEventListener('click',function(){ if(e.url){ location.href=e.url; return; } setMode(e.go,true); document.getElementById('tool').scrollIntoView({behavior:'smooth'}); }); box.appendChild(b); });\n"
   "    Array.prototype.forEach.call(box.querySelectorAll('.entry:not(.intl-only)'),function(b){ b.classList.add('th-only'); }); })();\n  " + "/*INTL-DECK-END*/\n")
 if MARK2 in s:
     a = s.index(MARK2); b = s.index('/*INTL-DECK-END*/') + len('/*INTL-DECK-END*/') + 1; s = s[:a] + deckjs + s[b:]

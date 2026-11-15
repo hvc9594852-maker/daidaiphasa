@@ -126,10 +126,11 @@ const (
 
 	cmdQuit = 100
 
-	appTitle  = "KeySwap · ใดๆภาษา.com"
 	mutexName = "Local\\DaidaiphasaKeySwap"
 	quitName  = "Local\\DaidaiphasaKeySwapQuit"
 )
+
+var appTitle = T("KeySwap · ใดๆภาษา.com")
 
 type hotkey struct {
 	id    uintptr
@@ -140,11 +141,11 @@ type hotkey struct {
 }
 
 var hotkeys = []hotkey{
-	{1, modControl | modShift, 'T', "Ctrl + Shift + T   สลับแป้น ไทย ⇄ อังกฤษ", "swap"},
-	{2, modControl | modAlt, 'R', "Ctrl + Alt + R   ถอดเสียง", "romanize"},
-	{3, modControl | modAlt, 'B', "Ctrl + Alt + B   อักษรเบรลล์", "braille"},
-	{4, modControl | modAlt, 'M', "Ctrl + Alt + M   รหัสมอร์ส", "morse"},
-	{5, modControl | modAlt, 'L', "Ctrl + Alt + L   แปลภาษา (ต้องต่อเน็ต)", "translate"},
+	{1, modControl | modShift, 'T', T("Ctrl + Shift + T   สลับแป้น ไทย ⇄ อังกฤษ"), "swap"},
+	{2, modControl | modAlt, 'R', T("Ctrl + Alt + R   ถอดเสียง"), "romanize"},
+	{3, modControl | modAlt, 'B', T("Ctrl + Alt + B   อักษรเบรลล์"), "braille"},
+	{4, modControl | modAlt, 'M', T("Ctrl + Alt + M   รหัสมอร์ส"), "morse"},
+	{5, modControl | modAlt, 'L', T("Ctrl + Alt + L   แปลภาษา (ต้องต่อเน็ต)"), "translate"},
 }
 
 // INPUT (keyboard) laid out for 64-bit Windows: 40 bytes.
@@ -404,13 +405,13 @@ func showMenu(hwnd uintptr) {
 	add := func(flags uintptr, id uintptr, text string) {
 		pAppendMenuW.Call(m, flags, id, uintptr(unsafe.Pointer(u16(text))))
 	}
-	add(mfString|mfGrayed, 0, "KeySwap · คลุมดำข้อความแล้วกด")
+	add(mfString|mfGrayed, 0, T("KeySwap · คลุมดำข้อความแล้วกด"))
 	add(mfSeparator, 0, "")
 	for _, h := range hotkeys {
 		add(mfString|mfGrayed, 0, h.label)
 	}
 	add(mfSeparator, 0, "")
-	add(mfString, cmdQuit, "ปิด KeySwap")
+	add(mfString, cmdQuit, T("ปิด KeySwap"))
 	var pt point
 	pGetCursorPos.Call(uintptr(unsafe.Pointer(&pt)))
 	pSetForegroundWindow.Call(hwnd)
@@ -450,7 +451,7 @@ func addTray() {
 	icon, _, _ := pLoadIconW.Call(0, idiApplication)
 	tray = notifyIconData{hwnd: trayHwnd, id: 1, flags: nifMessage | nifIcon | nifTip, callbackMessage: wmTray, icon: icon}
 	tray.size = uint32(unsafe.Sizeof(tray))
-	copyU16(tray.tip[:], "KeySwap · ใดๆภาษา.com")
+	copyU16(tray.tip[:], T("KeySwap · ใดๆภาษา.com"))
 	pShellNotifyIconW.Call(nimAdd, uintptr(unsafe.Pointer(&tray)))
 }
 
@@ -460,7 +461,7 @@ func main() {
 	// one copy at a time; opening it again offers to close the running one
 	_, _, e := pCreateMutexW.Call(0, 0, uintptr(unsafe.Pointer(u16(mutexName))))
 	if e == syscall.Errno(errorAlreadyExists) {
-		if messageBox("KeySwap กำลังทำงานอยู่แล้ว\n\nต้องการปิด KeySwap ไหม?", mbYesNo|mbIconQuestion) == idYes {
+		if messageBox(T("KeySwap กำลังทำงานอยู่แล้ว\n\nต้องการปิด KeySwap ไหม?"), mbYesNo|mbIconQuestion) == idYes {
 			if ev, _, _ := pOpenEventW.Call(eventModifyState, 0, uintptr(unsafe.Pointer(u16(quitName)))); ev != 0 {
 				pSetEvent.Call(ev)
 			}
@@ -470,7 +471,7 @@ func main() {
 
 	var err error
 	if eng, err = newEngine(); err != nil {
-		messageBox("KeySwap เริ่มทำงานไม่ได้: "+err.Error(), mbOK|mbIconWarning)
+		messageBox(T("KeySwap เริ่มทำงานไม่ได้: ")+err.Error(), mbOK|mbIconWarning)
 		return
 	}
 
@@ -484,7 +485,7 @@ func main() {
 		}
 	}
 	if ok == 0 {
-		messageBox("ใช้คีย์ลัดของ KeySwap ไม่ได้เลย เพราะมีโปรแกรมอื่นใช้อยู่", mbOK|mbIconWarning)
+		messageBox(T("ใช้คีย์ลัดของ KeySwap ไม่ได้เลย เพราะมีโปรแกรมอื่นใช้อยู่"), mbOK|mbIconWarning)
 		return
 	}
 
@@ -499,17 +500,17 @@ func main() {
 	addTray()
 	defer pShellNotifyIconW.Call(nimDelete, uintptr(unsafe.Pointer(&tray)))
 
-	welcome := "KeySwap พร้อมใช้งานแล้ว\n\nคลุมดำข้อความ แล้วกดคีย์ลัด:\n"
+	welcome := T("KeySwap พร้อมใช้งานแล้ว\n\nคลุมดำข้อความ แล้วกดคีย์ลัด:\n")
 	for _, h := range hotkeys {
 		welcome += "\n" + h.label
 	}
 	if len(failed) > 0 {
-		welcome += "\n\nคีย์ลัดเหล่านี้มีโปรแกรมอื่นใช้อยู่ เลยใช้ไม่ได้:"
+		welcome += T("\n\nคีย์ลัดเหล่านี้มีโปรแกรมอื่นใช้อยู่ เลยใช้ไม่ได้:")
 		for _, f := range failed {
 			welcome += "\n" + f
 		}
 	}
-	welcome += "\n\nดูคีย์ลัดหรือปิดโปรแกรมได้จากไอคอน KeySwap ที่มุมขวาล่างของจอ"
+	welcome += T("\n\nดูคีย์ลัดหรือปิดโปรแกรมได้จากไอคอน KeySwap ที่มุมขวาล่างของจอ")
 	go messageBox(welcome, mbOK|mbIconInfo)
 
 	var m msg
